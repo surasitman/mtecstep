@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ก้าวสู่ 7,000</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Serif+Thai:wght@400;600&display=swap">
+<style>
+:root{--color-fg:#1d2329;--color-fg-muted:#5d6872;--color-bg:#f6f8f7;--color-panel:#ffffff;--color-border-line:#dfe4e2;
+--color-ok:#1d8a5a;--color-warn:#c27a12;--color-bad:#c2412d;
+--sx-c0:#2f6fb3;--sx-c1:#7a9cc6;--cds-chart-muted:#b9c2c8;--cds-chart-grid:#e6eaea;--cds-chart-reference:#3b4650;--cds-text-secondary:#5d6872;
+--cds-surface-popover:#ffffff;--cds-border:#d5dbd9;--cds-shadow-popover:0 4px 16px rgba(0,0,0,.12);
+--font-anthropic-sans:"IBM Plex Sans Thai",system-ui,"Segoe UI",Tahoma,sans-serif;--font-anthropic-serif:"Noto Serif Thai",Georgia,serif;
+--cds-font-size-caption:.8rem;--cds-font-size-body:.95rem;--cds-font-size-heading:1.15rem;--cds-font-size-title:2rem;--cds-font-weight-medium:600;
+--cds-gap-xs:4px;--cds-gap-sm:8px;--cds-gap-md:14px;--cds-gap-lg:22px;--cds-gap-xl:36px;--cds-pad-lg:18px;--cds-radius:10px;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--color-fg:#e7ecea;--color-fg-muted:#9aa6ad;--color-bg:#131819;--color-panel:#1b2224;--color-border-line:#2c3538;
+--color-ok:#4cc38a;--color-warn:#e9a23b;--color-bad:#ef6f5a;--sx-c0:#6aa5e6;--sx-c1:#9db8d8;--cds-chart-muted:#56616a;--cds-chart-grid:#283033;--cds-chart-reference:#c9d2d6;--cds-text-secondary:#9aa6ad;
+--cds-surface-popover:#222a2d;--cds-border:#38433f;--cds-shadow-popover:0 4px 16px rgba(0,0,0,.5);color-scheme:dark}}
+html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
+.wrap{max-width:1180px;margin:0 auto;padding-block:32px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media print{.sx-tt{display:none}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+window.SX_DATA = {"kpi": [{"people": "326", "person_days": "3715", "hit_pct": "50.2", "all18_people": "18", "all18_pct": "5.5", "mean_steps": "7950", "median_steps": "7020", "avg_over7k_people": "136", "logged18_people": "68", "logged18_pct": "20.9", "weekday_hit_pct": "52.8", "weekend_hit_pct": "42.6", "weekday_median": "7209", "weekend_median": "5891", "first_half_hit_pct": "48.2", "second_half_hit_pct": "51.9", "under500_days": "138"}], "daily": [{"date": "2026-11-01", "dow": "อา.", "weekend": "True", "people": "124", "mean_steps": "6866.0", "median_steps": "5591.0", "hit_pct": "38.7"}, {"date": "2026-11-02", "dow": "จ.", "weekend": "False", "people": "166", "mean_steps": "8236.0", "median_steps": "7328.0", "hit_pct": "53.0"}, {"date": "2026-11-03", "dow": "อ.", "weekend": "False", "people": "184", "mean_steps": "7766.0", "median_steps": "6979.0", "hit_pct": "49.5"}, {"date": "2026-11-04", "dow": "พ.", "weekend": "False", "people": "195", "mean_steps": "7523.0", "median_steps": "6893.0", "hit_pct": "49.2"}, {"date": "2026-11-05", "dow": "พฤ.", "weekend": "False", "people": "200", "mean_steps": "8061.0", "median_steps": "7128.0", "hit_pct": "52.5"}, {"date": "2026-11-06", "dow": "ศ.", "weekend": "False", "people": "201", "mean_steps": "7464.0", "median_steps": "6635.0", "hit_pct": "47.3"}, {"date": "2026-11-07", "dow": "ส.", "weekend": "True", "people": "188", "mean_steps": "7292.0", "median_steps": "6136.0", "hit_pct": "43.1"}, {"date": "2026-11-08", "dow": "อา.", "weekend": "True", "people": "192", "mean_steps": "7258.0", "median_steps": "5584.0", "hit_pct": "41.1"}, {"date": "2026-11-09", "dow": "จ.", "weekend": "False", "people": "231", "mean_steps": "8496.0", "median_steps": "7416.0", "hit_pct": "55.4"}, {"date": "2026-11-10", "dow": "อ.", "weekend": "False", "people": "244", "mean_steps": "8241.0", "median_steps": "7692.0", "hit_pct": "54.9"}, {"date": "2026-11-11", "dow": "พ.", "weekend": "False", "people": "251", "mean_steps": "7861.0", "median_steps": "6829.0", "hit_pct": "49.4"}, {"date": "2026-11-12", "dow": "พฤ.", "weekend": "False", "people": "240", "mean_steps": "8465.0", "median_steps": "7646.0", "hit_pct": "58.8"}, {"date": "2026-11-13", "dow": "ศ.", "weekend": "False", "people": "219", "mean_steps": "8380.0", "median_steps": "7598.0", "hit_pct": "58.0"}, {"date": "2026-11-14", "dow": "ส.", "weekend": "True", "people": "211", "mean_steps": "7592.0", "median_steps": "6449.0", "hit_pct": "46.0"}, {"date": "2026-11-15", "dow": "อา.", "weekend": "True", "people": "216", "mean_steps": "7588.0", "median_steps": "5474.0", "hit_pct": "42.6"}, {"date": "2026-11-16", "dow": "จ.", "weekend": "False", "people": "240", "mean_steps": "8274.0", "median_steps": "6780.0", "hit_pct": "48.8"}, {"date": "2026-11-17", "dow": "อ.", "weekend": "False", "people": "227", "mean_steps": "8659.0", "median_steps": "7460.0", "hit_pct": "54.6"}, {"date": "2026-11-18", "dow": "พ.", "weekend": "False", "people": "186", "mean_steps": "8259.0", "median_steps": "7256.0", "hit_pct": "53.2"}], "weekday": [{"day": "จ.", "person_days": "637", "mean_steps": "8345.0", "median_steps": "7146.0", "hit_pct": "52.3"}, {"day": "อ.", "person_days": "655", "mean_steps": "8253.0", "median_steps": "7433.0", "hit_pct": "53.3"}, {"day": "พ.", "person_days": "632", "mean_steps": "7874.0", "median_steps": "7019.0", "hit_pct": "50.5"}, {"day": "พฤ.", "person_days": "440", "mean_steps": "8281.0", "median_steps": "7404.0", "hit_pct": "55.9"}, {"day": "ศ.", "person_days": "420", "mean_steps": "7942.0", "median_steps": "7198.0", "hit_pct": "52.9"}, {"day": "ส.", "person_days": "399", "mean_steps": "7451.0", "median_steps": "6221.0", "hit_pct": "44.6"}, {"day": "อา.", "person_days": "532", "mean_steps": "7300.0", "median_steps": "5534.0", "hit_pct": "41.2"}], "segments": [{"segment": "A", "description": "ผ่านครบ 18 วัน", "people": "18", "share_pct": "5.5", "avg_steps": "17311.0", "hit_days_pct": "100.0", "avg_days": "18.0", "weekday_hit_pct": "100.0", "weekend_hit_pct": "100.0", "action": "ให้เป็นทูต/หัวหน้าทีมย่อย"}, {"segment": "B", "description": "ผ่าน 80% ของวันขึ้นไป", "people": "30", "share_pct": "9.2", "avg_steps": "11800.0", "hit_days_pct": "92.3", "avg_days": "16.7", "weekday_hit_pct": "95.7", "weekend_hit_pct": "82.0", "action": "วางแผนกิจกรรมเสาร์-อาทิตย์"}, {"segment": "C", "description": "เฉลี่ยผ่าน แต่ทำได้บางวัน", "people": "62", "share_pct": "19.0", "avg_steps": "8649.0", "hit_days_pct": "60.5", "avg_days": "14.8", "weekday_hit_pct": "64.7", "weekend_hit_pct": "50.8", "action": "ตั้งขั้นต่ำรายวัน แทนการดูค่าเฉลี่ย"}, {"segment": "D1", "description": "เฉลี่ย 5,000–7,000", "people": "61", "share_pct": "18.7", "avg_steps": "5966.0", "hit_days_pct": "36.3", "avg_days": "14.6", "weekday_hit_pct": "41.4", "weekend_hit_pct": "21.3", "action": "เดินเพิ่มวันละ 1,000–2,000 ก้าว"}, {"segment": "D2", "description": "เฉลี่ยต่ำกว่า 5,000", "people": "47", "share_pct": "14.4", "avg_steps": "3709.0", "hit_days_pct": "12.0", "avg_days": "13.4", "weekday_hit_pct": "14.9", "weekend_hit_pct": "6.0", "action": "เป้าขั้นบันได 5k→6k→7k"}, {"segment": "E", "description": "บันทึกไม่ถึง 9 วัน", "people": "108", "share_pct": "33.1", "avg_steps": "4978.0", "hit_days_pct": "24.0", "avg_days": "4.2", "weekday_hit_pct": "26.1", "weekend_hit_pct": "25.6", "action": "แก้การซิงก์/แจ้งเตือนบันทึกก่อน"}], "groups": [{"short": "M-MAT", "group": "1) M-MAT Material Solution", "people": "56", "avg_steps": "7367.0", "hit_pct": "54.6", "avg_days": "11.4", "all18": "3"}, {"short": "M-HEALTH", "group": "2) M-HEALTH Medical & Health", "people": "58", "avg_steps": "7242.0", "hit_pct": "50.5", "avg_days": "11.3", "all18": "2"}, {"short": "M-MOVE", "group": "3) M-MOVE Modern Transport", "people": "71", "avg_steps": "6931.0", "hit_pct": "48.9", "avg_days": "11.6", "all18": "6"}, {"short": "M-MAN", "group": "4) M-MAN Modern Manufacturing", "people": "76", "avg_steps": "7094.0", "hit_pct": "49.9", "avg_days": "12.1", "all18": "5"}, {"short": "M-GREEN", "group": "5) M-GREEN Net Zero & Sustainability", "people": "65", "avg_steps": "6368.0", "hit_pct": "47.9", "avg_days": "10.4", "all18": "2"}], "sources": [{"source": "Manual", "kind": "กรอกเอง", "person_days": "439", "mean_steps": "9960.0", "hit_pct": "77.4"}, {"source": "Garmin", "kind": "นาฬิกา", "person_days": "432", "mean_steps": "11861.0", "hit_pct": "72.2"}, {"source": "ThaiSookWatch", "kind": "นาฬิกา", "person_days": "223", "mean_steps": "10138.0", "hit_pct": "72.2"}, {"source": "ThaiSookSteps", "kind": "โทรศัพท์", "person_days": "186", "mean_steps": "7689.0", "hit_pct": "43.5"}, {"source": "HealthFit", "kind": "โทรศัพท์", "person_days": "2435", "mean_steps": "6713.0", "hit_pct": "39.9"}], "gap": [{"gap": "≤1,000", "days": "297", "share_pct": "16.1", "walk_minutes": "≤10"}, {"gap": "1,001–2,000", "days": "344", "share_pct": "18.6", "walk_minutes": "10–20"}, {"gap": "2,001–3,000", "days": "295", "share_pct": "16.0", "walk_minutes": "20–30"}, {"gap": "3,001–5,000", "days": "526", "share_pct": "28.4", "walk_minutes": "30–50"}, {"gap": "5,001–7,000", "days": "387", "share_pct": "20.9", "walk_minutes": "50–70"}], "profile": [{"dimension": "เพศ", "value": "หญิง", "people": "195", "avg_steps": "6682", "hit_days_pct": "39.9"}, {"dimension": "เพศ", "value": "ชาย", "people": "131", "avg_steps": "7441", "hit_days_pct": "45.1"}, {"dimension": "BMI", "value": "BMI <18.5", "people": "14", "avg_steps": "4970", "hit_days_pct": "26.6"}, {"dimension": "BMI", "value": "BMI 18.5–22.9", "people": "127", "avg_steps": "7200", "hit_days_pct": "43.8"}, {"dimension": "BMI", "value": "BMI 23–24.9", "people": "61", "avg_steps": "7627", "hit_days_pct": "44.2"}, {"dimension": "BMI", "value": "BMI 25–29.9", "people": "76", "avg_steps": "6698", "hit_days_pct": "40.7"}, {"dimension": "BMI", "value": "BMI ≥30", "people": "48", "avg_steps": "6656", "hit_days_pct": "41.1"}]};
+(function(){
+  const draws={}, calcs={};
+  window.dash={
+    colors:['var(--sx-c0)','var(--sx-c1)'],
+    data(id){ if(calcs[id]) return {status:'ok',data:calcs[id]()}; const d=SX_DATA[id]; return d?{status:'ok',data:d}:{status:'missing',data:[]}; },
+    calc(id,o){ calcs[id]=()=>o.fn(...o.inputs.map(i=>SX_DATA[i])); },
+    draw(name,fn){ draws[name]=fn; },
+    _run(){ for(const n in draws){ document.querySelectorAll('[data-draw="'+n+'"]').forEach(el=>draws[n](el)); } }
+  };
+  let t; window.addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(()=>dash._run(),150);});
+})();
+</script>
+</head><body><div class="wrap">
+<style>
+.sx{display:flex;flex-direction:column;gap:var(--cds-gap-xl);font-family:var(--font-anthropic-sans);color:var(--color-fg)}
+.sx h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0;text-wrap:balance}
+.sx h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0;text-wrap:balance}
+.sx p{margin:0;line-height:1.6}
+.sx-sub{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+.sx-lead{font-size:var(--cds-font-size-body);max-width:70ch}
+.sx-lead b{font-variant-numeric:tabular-nums}
+.sx-head{display:flex;flex-direction:column;gap:var(--cds-gap-sm)}
+.sx-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:var(--cds-gap-md)}
+.sx-card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);display:flex;flex-direction:column;gap:var(--cds-gap-xs);min-width:0}
+.sx-tile .v{font-family:var(--font-anthropic-serif);font-weight:400;font-size:2.1rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.sx-tile .l{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.sx-tile .c{font-size:var(--cds-font-size-caption)}
+.sx-bad{color:var(--color-bad)}.sx-warn{color:var(--color-warn)}.sx-ok{color:var(--color-ok)}
+.sx-sec{display:flex;flex-direction:column;gap:var(--cds-gap-md)}
+.sx-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:var(--cds-gap-lg)}
+.sx-chart{position:relative;min-height:220px;width:100%}
+.sx-chart svg{display:block;width:100%;overflow:visible}
+.sx-chart text{fill:var(--cds-text-secondary);font-size:var(--cds-font-size-caption);font-family:var(--font-anthropic-sans)}
+.sx-chart .val{fill:var(--color-fg);font-variant-numeric:tabular-nums}
+.sx-tt{position:absolute;pointer-events:none;background:var(--cds-surface-popover);border:1px solid var(--cds-border);box-shadow:var(--cds-shadow-popover);border-radius:var(--cds-radius);padding:6px 10px;font-size:var(--cds-font-size-caption);line-height:1.5;white-space:nowrap;z-index:5}
+.sx-tt b{font-variant-numeric:tabular-nums}
+.sx-legend{display:flex;flex-wrap:wrap;gap:var(--cds-gap-md);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.sx-legend span{display:inline-flex;align-items:center;gap:6px}
+.sx-sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+.sx-tw{overflow-x:auto}
+.sx table{border-collapse:collapse;width:100%;font-size:var(--cds-font-size-body)}
+.sx th{text-align:left;font-weight:var(--cds-font-weight-medium);color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);padding:8px 10px;border-bottom:1px solid var(--color-border-line);white-space:nowrap}
+.sx td{padding:8px 10px;border-bottom:1px solid var(--color-border-line);vertical-align:top}
+.sx td.n,.sx th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sx-chip{display:inline-block;min-width:2.2em;text-align:center;padding:2px 8px;border-radius:999px;font-weight:var(--cds-font-weight-medium);font-size:var(--cds-font-size-caption);border:1px solid currentColor}
+.sx-meter{display:inline-block;width:60px;height:6px;border-radius:3px;background:var(--cds-chart-grid);vertical-align:middle;margin-left:6px;overflow:hidden}
+.sx-meter i{display:block;height:100%}
+.sx-plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--cds-gap-md)}
+.sx-plan h3{margin:0;font-size:var(--cds-font-size-body);font-weight:var(--cds-font-weight-medium)}
+.sx-plan ul{margin:0;padding-left:1.2em;line-height:1.6;font-size:var(--cds-font-size-body)}
+.sx-plan .who{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.sx-big{font-family:var(--font-anthropic-serif);font-size:1.6rem;font-variant-numeric:tabular-nums}
+.sx-note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);line-height:1.6}
+.sx details summary{cursor:pointer;font-weight:var(--cds-font-weight-medium)}
+</style>
+
+<div class="sx" data-read lang="th">
+  <header class="sx-head" id="top">
+    <h1>ก้าวสู่ 7,000</h1>
+    <p class="sx-sub">ข้อมูลจำนวนก้าว 1–18 พ.ย. 2026 · <span data-draw="n" data-source="kpi" data-field="people" data-row="0" data-fmt="int">—</span> คน · <span data-draw="n" data-source="kpi" data-field="person_days" data-row="0" data-fmt="int">—</span> คน-วัน · เป้าหมาย 7,000 ก้าวขึ้นไปทุกวัน</p>
+    <p class="sx-lead">ครึ่งหนึ่งของวันที่บันทึกยังไม่ถึงเป้า (ผ่าน <b data-draw="n" data-source="kpi" data-field="hit_pct" data-row="0" data-fmt="pct">—</b>) และมีเพียง <b data-draw="n" data-source="kpi" data-field="all18_people" data-row="0" data-fmt="int">—</b> คนที่ผ่านครบทั้ง 18 วัน ตัวฉุดหลักคือการบันทึกไม่ต่อเนื่อง วันเสาร์-อาทิตย์ (ผ่าน <b data-draw="n" data-source="kpi" data-field="weekend_hit_pct" data-row="0" data-fmt="pct">—</b>) และวันที่ขาดเพียงเล็กน้อย</p>
+  </header>
+
+  <section class="sx-tiles" id="kpis">
+    <div class="sx-card sx-tile"><span class="l">วันที่เดินถึง 7,000 ก้าว</span><span class="v" data-draw="n" data-source="kpi" data-field="hit_pct" data-row="0" data-fmt="pct">—</span><span class="c sx-warn">ครึ่งแรก <span data-draw="n" data-source="kpi" data-field="first_half_hit_pct" data-row="0" data-fmt="pct">—</span> → ครึ่งหลัง <span data-draw="n" data-source="kpi" data-field="second_half_hit_pct" data-row="0" data-fmt="pct">—</span></span></div>
+    <div class="sx-card sx-tile"><span class="l">คนที่ผ่านครบ 18 วัน</span><span class="v" data-draw="n" data-source="kpi" data-field="all18_people" data-row="0" data-fmt="int">—</span><span class="c sx-bad"><span data-draw="n" data-source="kpi" data-field="all18_pct" data-row="0" data-fmt="pct">—</span> ของผู้เข้าร่วม</span></div>
+    <div class="sx-card sx-tile"><span class="l">คนที่บันทึกครบ 18 วัน</span><span class="v" data-draw="n" data-source="kpi" data-field="logged18_pct" data-row="0" data-fmt="pct">—</span><span class="c sx-bad"><span data-draw="n" data-source="kpi" data-field="logged18_people" data-row="0" data-fmt="int">—</span> คน · วันที่ต่ำกว่า 500 ก้าว <span data-draw="n" data-source="kpi" data-field="under500_days" data-row="0" data-fmt="int">—</span> วัน</span></div>
+    <div class="sx-card sx-tile"><span class="l">ผ่านเป้า วันธรรมดา / เสาร์-อาทิตย์</span><span class="v"><span data-draw="n" data-source="kpi" data-field="weekday_hit_pct" data-row="0" data-fmt="pct0">—</span> / <span data-draw="n" data-source="kpi" data-field="weekend_hit_pct" data-row="0" data-fmt="pct0">—</span></span><span class="c sx-warn">ค่ากลาง <span data-draw="n" data-source="kpi" data-field="weekday_median" data-row="0" data-fmt="int">—</span> / <span data-draw="n" data-source="kpi" data-field="weekend_median" data-row="0" data-fmt="int">—</span> ก้าว</span></div>
+  </section>
+
+  <section class="sx-sec" id="daily-sec">
+    <h2>ค่ากลางจำนวนก้าวรายวัน เทียบเป้า 7,000</h2>
+    <div class="sx-legend"><span><i class="sx-sw sx-c0"></i>วันธรรมดา</span><span><i class="sx-sw" style="background:var(--color-warn)"></i>เสาร์-อาทิตย์</span><span>เส้นประ = เป้า 7,000 ก้าว · ตัวเลขบนแท่ง = % คนที่ผ่านในวันนั้น</span></div>
+    <div class="sx-chart" id="daily-chart" data-draw="daily" data-source="daily"></div>
+  </section>
+
+  <div class="sx-grid2">
+    <section class="sx-sec" id="weekday-sec">
+      <h2>% วันที่ผ่านเป้า แยกตามวันในสัปดาห์</h2>
+      <div class="sx-chart" id="weekday-chart" data-draw="weekday" data-source="weekday"></div>
+    </section>
+    <section class="sx-sec" id="gap-sec">
+      <h2>วันที่ไม่ผ่าน ขาดไปกี่ก้าว</h2>
+      <div class="sx-chart" id="gap-chart" data-draw="gap" data-source="gap"></div>
+      <div class="sx-card"><span class="sx-note">ถ้าปิดช่องว่างที่ขาดไม่เกิน 2,000 ก้าว (เดินเพิ่ม 10–20 นาที) สัดส่วนวันที่ผ่านจะเพิ่มจาก <span data-draw="n" data-source="kpi" data-field="hit_pct" data-row="0" data-fmt="pct">—</span> เป็น</span><span class="sx-big sx-ok" data-draw="n" data-source="projection" data-fmt="pct">—</span></div>
+    </section>
+  </div>
+
+  <section class="sx-sec" id="segments-sec">
+    <h2>แบ่งกลุ่มผู้เข้าร่วม และสิ่งที่ควรทำกับแต่ละกลุ่ม</h2>
+    <p class="sx-note">% วันที่ผ่าน คิดจากวันที่แต่ละคนบันทึก แล้วเฉลี่ยทั้งกลุ่ม</p>
+    <div class="sx-tw">
+      <table id="segments-table" data-source="segments" data-row-key="segment">
+        <thead><tr><th data-field="segment">กลุ่ม</th><th data-field="description">ลักษณะ</th><th class="n" data-field="people">คน</th><th class="n" data-field="share_pct">สัดส่วน</th><th class="n" data-field="avg_steps">ก้าวเฉลี่ย</th><th class="n" data-field="hit_days_pct">% วันที่ผ่าน</th><th class="n" data-field="weekday_hit_pct">วันธรรมดา</th><th class="n" data-field="weekend_hit_pct">ส.-อา.</th><th data-field="action">แนวทาง</th></tr></thead>
+        <tbody data-draw="segments"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="sx-grid2">
+    <section class="sx-sec" id="sources-sec">
+      <h2>% วันที่ผ่านเป้า แยกตามแหล่งข้อมูล</h2>
+      <div class="sx-chart" id="sources-chart" data-draw="sources" data-source="sources"></div>
+      <p class="sx-note">นาฬิกานับก้าวได้ครบกว่าโทรศัพท์ที่นับเฉพาะตอนพกติดตัว ส่วน Manual เป็นตัวเลขที่ผู้ใช้กรอกเอง ควรสุ่มตรวจ</p>
+    </section>
+    <section class="sx-sec" id="groups-sec">
+      <h2>เทียบรายฝ่าย</h2>
+      <div class="sx-tw">
+        <table id="groups-table" data-source="groups" data-row-key="short">
+          <thead><tr><th data-field="short">ฝ่าย</th><th class="n" data-field="people">คน</th><th class="n" data-field="avg_steps">ก้าวเฉลี่ย</th><th class="n" data-field="hit_pct">% วันที่ผ่าน</th><th class="n" data-field="avg_days">วันที่บันทึกเฉลี่ย</th><th class="n" data-field="all18">ผ่านครบ 18 วัน</th></tr></thead>
+          <tbody data-draw="groups"></tbody>
+        </table>
+      </div>
+      <h2>เพศและ BMI</h2>
+      <div class="sx-tw">
+        <table id="profile-table" data-source="profile" data-row-key="value">
+          <thead><tr><th data-field="value">กลุ่ม</th><th class="n" data-field="people">คน</th><th class="n" data-field="avg_steps">ก้าวเฉลี่ย</th><th class="n" data-field="hit_days_pct">% วันที่ผ่าน</th></tr></thead>
+          <tbody data-draw="profile"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <section class="sx-sec" id="plan">
+    <h2>แผนให้ทุกคนเดิน 7,000 ก้าวขึ้นไปทุกวัน</h2>
+    <div class="sx-plan">
+      <div class="sx-card"><h3>1. แก้การบันทึกก่อน</h3><span class="who">กลุ่ม E และวันที่ต่ำกว่า 500 ก้าว</span><ul><li>ตั้งค่าซิงก์อัตโนมัติให้ทุกคน และสอนวิธีแก้เมื่อซิงก์ไม่ขึ้น</li><li>แจ้งเตือนตอนเย็นเมื่อยังไม่มีข้อมูลของวันนั้น</li><li>สนับสนุนสายรัดนับก้าว เพราะผู้ใช้นาฬิกาผ่านเป้ามากกว่าเกือบเท่าตัว</li></ul></div>
+      <div class="sx-card"><h3>2. เดินในเวลางาน</h3><span class="who">ทุกกลุ่ม ได้ประมาณ 3,000 ก้าว</span><ul><li>เดินช่วงพัก 10 นาที ตอน 10:00 และ 15:00</li><li>ประชุมแบบเดิน ใช้บันได เดินหลังอาหารกลางวัน</li><li>แจ้งเตือนเมื่อนั่งนานเกิน 60 นาที</li></ul></div>
+      <div class="sx-card"><h3>3. ปิดช่องโหว่เสาร์-อาทิตย์</h3><span class="who">กลุ่ม B, C, D1</span><ul><li>นัดเดินเป็นทีม หรือ virtual walk ช่วงสุดสัปดาห์</li><li>คะแนนคูณสองเมื่อผ่านเป้าวันเสาร์และอาทิตย์</li><li>ข้อความเตือนเช้าวันเสาร์พร้อมเส้นทางเดินแนะนำ</li></ul></div>
+      <div class="sx-card"><h3>4. ปิดส่วนที่ขาดตอนเย็น</h3><span class="who">กลุ่ม C, D1</span><ul><li>แจ้งเตือน 18:00 ว่า "เหลืออีก X ก้าว ≈ Y นาที"</li><li>เดิน 1,000 ก้าวใช้เวลาประมาณ 10 นาที</li></ul></div>
+      <div class="sx-card"><h3>5. เป้าแบบขั้นบันได</h3><span class="who">กลุ่ม D2 และกลุ่ม BMI สูงหรือต่ำ</span><ul><li>สัปดาห์ 1–2: 5,000 · สัปดาห์ 3–4: 6,000 · สัปดาห์ 5 ขึ้นไป: 7,000 ก้าว</li><li>ผู้มีปัญหาข้อเข่าหรือโรคประจำตัว ควรปรึกษาแพทย์ก่อน</li></ul></div>
+      <div class="sx-card"><h3>6. ปรับตัวชี้วัดและรางวัล</h3><span class="who">ผู้จัดโครงการ</span><ul><li>วัดผลจากจำนวนวันที่ผ่านและสถิติผ่านติดต่อกัน แทนค่าเฉลี่ย</li><li>จัดอันดับฝ่ายด้วย % สมาชิกที่ผ่านในแต่ละวัน</li><li>ให้กลุ่ม A และ B เป็นหัวหน้าทีมย่อย ทีมละ 5–6 คน</li></ul></div>
+    </div>
+  </section>
+
+  <section class="sx-sec" id="targets">
+    <h2>เป้าหมายติดตามรายสัปดาห์</h2>
+    <div class="sx-tw">
+      <table>
+        <thead><tr><th>ตัวชี้วัด</th><th class="n">ปัจจุบัน</th><th class="n">เป้า 4 สัปดาห์</th><th class="n">เป้า 8 สัปดาห์</th></tr></thead>
+        <tbody>
+          <tr><td>คนที่บันทึกครบทุกวัน</td><td class="n"><span data-draw="n" data-source="kpi" data-field="logged18_pct" data-row="0" data-fmt="pct0">—</span></td><td class="n">60%</td><td class="n">90%</td></tr>
+          <tr><td>วันที่ผ่าน 7,000 ก้าว</td><td class="n"><span data-draw="n" data-source="kpi" data-field="hit_pct" data-row="0" data-fmt="pct0">—</span></td><td class="n">65%</td><td class="n">80%</td></tr>
+          <tr><td>วันเสาร์-อาทิตย์ที่ผ่าน</td><td class="n"><span data-draw="n" data-source="kpi" data-field="weekend_hit_pct" data-row="0" data-fmt="pct0">—</span></td><td class="n">55%</td><td class="n">75%</td></tr>
+          <tr><td>คนที่ผ่านครบทุกวัน</td><td class="n"><span data-draw="n" data-source="kpi" data-field="all18_pct" data-row="0" data-fmt="pct">—</span></td><td class="n">20%</td><td class="n">50%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <details id="notes">
+    <summary>วิธีคำนวณและข้อควรระวัง</summary>
+    <div class="sx-note">
+      <p>ตัดบัญชีแอดมินออก และรวมรายการซ้ำ (คนเดียวกัน วันเดียวกัน จากต่างแหล่ง ซึ่งจำนวนก้าวเท่ากัน) เหลือ 1 รายการต่อคนต่อวัน ระบุตัวบุคคลด้วยชื่อ นามสกุล และฝ่าย</p>
+      <p>"ผ่านครบ 18 วัน" นับวันที่ไม่ได้บันทึกเป็นไม่ผ่าน แบ่งกลุ่ม: A ผ่านครบ 18 วัน · E บันทึกไม่ถึง 9 วัน · B ผ่าน ≥80% ของวันที่บันทึก · C ค่าเฉลี่ย ≥7,000 · D1 ค่าเฉลี่ย 5,000–6,999 · D2 ค่าเฉลี่ยต่ำกว่า 5,000</p>
+      <p>มี 14 วันที่บันทึกเกิน 30,000 ก้าว (สูงสุด 65,970) ควรสุ่มตรวจสอบ BMI ใช้เกณฑ์เอเชีย จากน้ำหนักตั้งต้น ไฟล์นี้เป็นข้อมูลสรุป ไม่มีรายชื่อบุคคล</p>
+    </div>
+  </details>
+</div>
+
+<script>
+window.sxFmt = function (v, f) {
+  if (v == null || v === '' || isNaN(+v)) return '—';
+  v = +v;
+  if (f === 'pct') return v.toFixed(1) + '%';
+  if (f === 'pct0') return Math.round(v) + '%';
+  return d3.format(',')(Math.round(v));
+};
+window.sxColor = function (i) { return dash.colors[i % dash.colors.length]; };
+document.querySelectorAll('.sx-c0').forEach((e) => { e.style.background = dash.colors[0]; });
+dash.calc('projection', {
+  inputs: ['kpi', 'gap'],
+  title: 'คาดการณ์ % วันที่ผ่าน ถ้าปิดช่องว่าง ≤2,000 ก้าว',
+  description: 'สัดส่วนวันที่ผ่านปัจจุบัน บวกวันที่ไม่ผ่านแต่ขาดไม่เกิน 2,000 ก้าว',
+  fn: (kpi, gap) => {
+    const hit = +kpi[0].hit_pct;
+    const near = gap.filter((r) => r.gap === '≤1,000' || r.gap === '1,001–2,000').reduce((a, r) => a + +r.share_pct, 0);
+    return Math.round((hit + (100 - hit) * near / 100) * 10) / 10;
+  }
+});
+dash.draw('n', (el) => {
+  const r = dash.data(el.dataset.source);
+  if (r.status !== 'ok') { el.textContent = '—'; return; }
+  let v = r.data;
+  if (Array.isArray(v)) { const row = v[+(el.dataset.row || 0)]; v = row ? row[el.dataset.field] : null; }
+  el.textContent = sxFmt(v, el.dataset.fmt);
+});
+</script>
+
+<script>
+// shared helpers for charts
+window.sxTip = function (box) {
+  const tt = document.createElement('div'); tt.className = 'sx-tt'; tt.hidden = true; box.appendChild(tt);
+  return {
+    show(ev, lines) {
+      tt.replaceChildren();
+      lines.forEach(([k, v], i) => { const d = document.createElement('div'); if (v == null) { const b = document.createElement('b'); b.textContent = k; d.appendChild(b); } else { d.append(k + ' '); const b = document.createElement('b'); b.textContent = v; d.appendChild(b); } tt.appendChild(d); });
+      tt.hidden = false;
+      const br = box.getBoundingClientRect();
+      let x = ev.clientX - br.left + 12, y = ev.clientY - br.top - 10;
+      const w = tt.offsetWidth; if (x + w > br.width) x = Math.max(0, ev.clientX - br.left - w - 12);
+      tt.style.left = x + 'px'; tt.style.top = Math.max(0, y) + 'px';
+    },
+    hide() { tt.hidden = true; }
+  };
+};
+window.sxState = function (el, r) {
+  if (r.status === 'ok') return true;
+  el.replaceChildren();
+  const p = document.createElement('p'); p.className = 'sx-note';
+  p.textContent = r.status === 'error' || r.status === 'missing' ? 'โหลดข้อมูลไม่สำเร็จ' : '—';
+  el.appendChild(p); return false;
+};
+// horizontal bars: rows, label key, value key, formatter, color fn, tooltip fn, max
+window.sxHBar = function (el, rows, o) {
+  el.replaceChildren();
+  const W = Math.max(280, el.clientWidth || 400), rh = 30, H = rows.length * rh + 8;
+  const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).attr('role', 'img').attr('aria-label', o.aria);
+  const lab = svg.append('g').selectAll('text').data(rows).join('text').text((d) => d[o.label]).attr('y', (d, i) => i * rh + rh / 2 + 4).attr('x', 0);
+  let lw = 0; lab.each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
+  const left = lw + 10, right = 64;
+  const x = d3.scaleLinear([0, o.max || d3.max(rows, (d) => +d[o.value])], [left, W - right]);
+  const tip = sxTip(el);
+  svg.append('g').selectAll('rect').data(rows).join('rect')
+    .attr('x', left).attr('y', (d, i) => i * rh + 6).attr('height', rh - 12).attr('rx', 3)
+    .attr('width', (d) => Math.max(1, x(+d[o.value]) - left))
+    .style('fill', o.color)
+    .on('pointermove', (ev, d) => tip.show(ev, o.tip(d))).on('pointerleave', () => tip.hide());
+  svg.append('g').selectAll('text').data(rows).join('text').attr('class', 'val')
+    .attr('x', (d) => x(+d[o.value]) + 6).attr('y', (d, i) => i * rh + rh / 2 + 4).text((d) => o.fmt(d[o.value]));
+  if (o.ref != null) {
+    svg.append('line').attr('x1', x(o.ref)).attr('x2', x(o.ref)).attr('y1', 0).attr('y2', H).style('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
+  }
+};
+</script>
+
+<script>
+dash.draw('daily', (el) => {
+  const r = dash.data('daily');
+  if (!sxState(el, r)) return;
+  el.replaceChildren();
+  const rows = r.data.map((d) => ({ ...d, median_steps: +d.median_steps, hit_pct: +d.hit_pct, mean_steps: +d.mean_steps, people: +d.people, wk: d.weekend === 'True' || d.weekend === 'true' }));
+  const W = Math.max(300, el.clientWidth || 600), H = 280, m = { t: 22, r: 8, b: 40, l: 8 };
+  const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).attr('role', 'img').attr('aria-label', 'แผนภูมิแท่งค่ากลางจำนวนก้าวรายวัน 1 ถึง 18 พฤศจิกายน เทียบเป้า 7,000 ก้าว');
+  const y = d3.scaleLinear([0, Math.max(9000, d3.max(rows, (d) => d.median_steps))], [H - m.b, m.t]).nice();
+  const yt = svg.append('g').selectAll('text').data(y.ticks(4)).join('text').text((d) => d3.format(',')(d)).attr('y', (d) => y(d) + 4);
+  let lw = 0; yt.each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
+  m.l = lw + 8;
+  const x = d3.scaleBand(rows.map((d) => d.date), [m.l, W - m.r]).padding(0.22);
+  svg.insert('g', ':first-child').selectAll('line').data(y.ticks(4)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--cds-chart-grid)');
+  const tip = sxTip(el);
+  const fd = d3.utcFormat('%-d'), parse = d3.utcParse('%Y-%m-%d');
+  svg.append('g').selectAll('rect').data(rows).join('rect')
+    .attr('x', (d) => x(d.date)).attr('width', x.bandwidth()).attr('rx', 2)
+    .attr('y', (d) => y(d.median_steps)).attr('height', (d) => y(0) - y(d.median_steps))
+    .style('fill', (d) => (d.wk ? 'var(--color-warn)' : sxColor(0)))
+    .on('pointermove', (ev, d) => tip.show(ev, [[`${d.dow} ${fd(parse(d.date))} พ.ย.`, null], ['ค่ากลาง', sxFmt(d.median_steps) + ' ก้าว'], ['ค่าเฉลี่ย', sxFmt(d.mean_steps) + ' ก้าว'], ['ผ่านเป้า', sxFmt(d.hit_pct, 'pct')], ['ผู้บันทึก', sxFmt(d.people) + ' คน']]))
+    .on('pointerleave', () => tip.hide());
+  const showPct = x.bandwidth() >= 26;
+  if (showPct) svg.append('g').selectAll('text').data(rows).join('text').attr('class', 'val').attr('text-anchor', 'middle')
+    .attr('x', (d) => x(d.date) + x.bandwidth() / 2).attr('y', (d) => y(d.median_steps) - 5).text((d) => Math.round(d.hit_pct) + '%');
+  svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(7000)).attr('y2', y(7000)).style('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1.5).attr('stroke-dasharray', '5 4');
+  const step = x.bandwidth() < 18 ? 2 : 1;
+  svg.append('g').selectAll('text').data(rows.filter((d, i) => i % step === 0)).join('text').attr('text-anchor', 'middle')
+    .attr('x', (d) => x(d.date) + x.bandwidth() / 2).attr('y', H - m.b + 16).text((d) => fd(parse(d.date)));
+  svg.append('g').selectAll('text').data(rows.filter((d, i) => i % step === 0)).join('text').attr('text-anchor', 'middle')
+    .attr('x', (d) => x(d.date) + x.bandwidth() / 2).attr('y', H - m.b + 31).text((d) => d.dow);
+});
+
+dash.draw('weekday', (el) => {
+  const r = dash.data('weekday');
+  if (!sxState(el, r)) return;
+  sxHBar(el, r.data, { label: 'day', value: 'hit_pct', max: 100, ref: null, aria: 'แผนภูมิแท่ง % วันที่ผ่านเป้า แยกตามวันในสัปดาห์',
+    fmt: (v) => sxFmt(v, 'pct'), color: (d) => (d.day === 'ส.' || d.day === 'อา.' ? 'var(--color-warn)' : sxColor(0)),
+    tip: (d) => [[d.day, null], ['ผ่านเป้า', sxFmt(d.hit_pct, 'pct')], ['ค่ากลาง', sxFmt(d.median_steps) + ' ก้าว'], ['คน-วัน', sxFmt(d.person_days)]] });
+});
+
+dash.draw('gap', (el) => {
+  const r = dash.data('gap');
+  if (!sxState(el, r)) return;
+  sxHBar(el, r.data.map((d) => ({ ...d, lab: d.gap + ' ก้าว' })), { label: 'lab', value: 'share_pct', aria: 'แผนภูมิแท่งสัดส่วนวันที่ไม่ผ่าน แยกตามจำนวนก้าวที่ขาด',
+    fmt: (v) => sxFmt(v, 'pct'), color: (d, i) => (d.gap === '≤1,000' || d.gap === '1,001–2,000' ? 'var(--color-ok)' : 'var(--cds-chart-muted)'),
+    tip: (d) => [[`ขาด ${d.gap} ก้าว`, null], ['สัดส่วน', sxFmt(d.share_pct, 'pct')], ['จำนวนวัน', sxFmt(d.days)], ['ต้องเดินเพิ่ม', d.walk_minutes + ' นาที']] });
+});
+
+dash.draw('sources', (el) => {
+  const r = dash.data('sources');
+  if (!sxState(el, r)) return;
+  sxHBar(el, r.data.map((d) => ({ ...d, lab: `${d.source} (${d.kind})` })), { label: 'lab', value: 'hit_pct', max: 100, aria: 'แผนภูมิแท่ง % วันที่ผ่านเป้า แยกตามแหล่งข้อมูล',
+    fmt: (v) => sxFmt(v, 'pct'), color: (d) => (d.kind === 'นาฬิกา' ? sxColor(0) : d.kind === 'โทรศัพท์' ? sxColor(1) : 'var(--cds-chart-muted)'),
+    tip: (d) => [[d.source, null], ['ผ่านเป้า', sxFmt(d.hit_pct, 'pct')], ['ก้าวเฉลี่ย', sxFmt(d.mean_steps)], ['คน-วัน', sxFmt(d.person_days)]] });
+});
+</script>
+
+<script>
+window.sxTd = function (tr, text, cls) { const td = document.createElement('td'); if (cls) td.className = cls; td.textContent = text; tr.appendChild(td); return td; };
+window.sxMeter = function (td, pct, color) { const m = document.createElement('span'); m.className = 'sx-meter'; const i = document.createElement('i'); i.style.width = Math.min(100, +pct) + '%'; i.style.background = color; m.appendChild(i); td.appendChild(m); };
+const segColor = { A: 'var(--color-ok)', B: 'var(--color-ok)', C: 'var(--color-warn)', D1: 'var(--color-warn)', D2: 'var(--color-bad)', E: 'var(--color-fg-muted)' };
+window.sxSegColor = segColor;
+dash.draw('segments', (tb) => {
+  const r = dash.data('segments');
+  tb.replaceChildren();
+  if (r.status !== 'ok') return;
+  r.data.forEach((d) => {
+    const tr = document.createElement('tr');
+    const c = sxTd(tr, ''); const chip = document.createElement('span'); chip.className = 'sx-chip'; chip.textContent = d.segment; chip.style.color = sxSegColor[d.segment] || 'inherit'; c.appendChild(chip);
+    sxTd(tr, d.description); sxTd(tr, sxFmt(d.people), 'n'); sxTd(tr, sxFmt(d.share_pct, 'pct'), 'n'); sxTd(tr, sxFmt(d.avg_steps), 'n');
+    const h = sxTd(tr, sxFmt(d.hit_days_pct, 'pct'), 'n'); sxMeter(h, d.hit_days_pct, sxSegColor[d.segment]);
+    sxTd(tr, sxFmt(d.weekday_hit_pct, 'pct'), 'n'); sxTd(tr, sxFmt(d.weekend_hit_pct, 'pct'), 'n'); sxTd(tr, d.action);
+    tb.appendChild(tr);
+  });
+});
+dash.draw('groups', (tb) => {
+  const r = dash.data('groups');
+  tb.replaceChildren();
+  if (r.status !== 'ok') return;
+  const best = d3.max(r.data, (d) => +d.hit_pct), worst = d3.min(r.data, (d) => +d.hit_pct);
+  r.data.forEach((d) => {
+    const tr = document.createElement('tr');
+    sxTd(tr, d.short).title = d.group; sxTd(tr, sxFmt(d.people), 'n'); sxTd(tr, sxFmt(d.avg_steps), 'n');
+    const h = sxTd(tr, sxFmt(d.hit_pct, 'pct'), 'n'); if (+d.hit_pct === best) h.classList.add('sx-ok'); if (+d.hit_pct === worst) h.classList.add('sx-bad');
+    sxTd(tr, d3.format('.1f')(+d.avg_days), 'n'); sxTd(tr, sxFmt(d.all18), 'n');
+    tb.appendChild(tr);
+  });
+});
+dash.draw('profile', (tb) => {
+  const r = dash.data('profile');
+  tb.replaceChildren();
+  if (r.status !== 'ok') return;
+  r.data.forEach((d) => {
+    const tr = document.createElement('tr');
+    sxTd(tr, d.value); sxTd(tr, sxFmt(d.people), 'n'); sxTd(tr, sxFmt(d.avg_steps), 'n');
+    const h = sxTd(tr, sxFmt(d.hit_days_pct, 'pct'), 'n'); sxMeter(h, d.hit_days_pct, sxColor(0));
+    tb.appendChild(tr);
+  });
+});
+</script>
+
+<p class="sx-note" style="margin-top:32px">ที่มา: Step.xlsx (1–18 พ.ย. 2026) · จัดทำ 19 พ.ย. 2026</p>
+</div>
+<script>dash._run(); document.fonts && document.fonts.ready.then(()=>dash._run());</script>
+</body></html>
