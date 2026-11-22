@@ -1,0 +1,35 @@
+name: Prepare data
+
+# Runs whenever a CSV is added or changed in data/.
+# Trims extra columns and non-step rows, then rebuilds data/manifest.json
+# so index.html opens the newest file automatically.
+on:
+  push:
+    branches: [main]
+    paths: ["data/**.csv"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Trim CSV files and rebuild manifest
+        run: python tools/prepare_csv.py
+      - name: Commit changes
+        run: |
+          if [ -n "$(git status --porcelain data)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data
+            git commit -m "Update data manifest [skip ci]"
+            git push
+          fi

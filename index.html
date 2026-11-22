@@ -1,595 +1,703 @@
 <!doctype html>
-<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ก้าวสู่ 7,000</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Serif+Thai:wght@400;600&display=swap">
-<style>
-:root{--color-fg:#1d2329;--color-fg-muted:#5d6872;--color-bg:#f6f8f7;--color-panel:#ffffff;--color-border-line:#dfe4e2;
---color-ok:#1d8a5a;--color-warn:#c27a12;--color-bad:#c2412d;
---sx-c0:#2f6fb3;--sx-c1:#7a9cc6;--cds-chart-muted:#b9c2c8;--cds-chart-grid:#e6eaea;--cds-chart-reference:#3b4650;--cds-text-secondary:#5d6872;
---cds-surface-popover:#ffffff;--cds-border:#d5dbd9;--cds-shadow-popover:0 4px 16px rgba(0,0,0,.12);
---font-anthropic-sans:"IBM Plex Sans Thai",system-ui,"Segoe UI",Tahoma,sans-serif;--font-anthropic-serif:"Noto Serif Thai",Georgia,serif;
---cds-font-size-caption:.8rem;--cds-font-size-body:.95rem;--cds-font-size-heading:1.15rem;--cds-font-size-title:2rem;--cds-font-weight-medium:600;
---cds-gap-xs:4px;--cds-gap-sm:8px;--cds-gap-md:14px;--cds-gap-lg:22px;--cds-gap-xl:36px;--cds-pad-lg:18px;--cds-radius:10px;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--color-fg:#e7ecea;--color-fg-muted:#9aa6ad;--color-bg:#131819;--color-panel:#1b2224;--color-border-line:#2c3538;
---color-ok:#4cc38a;--color-warn:#e9a23b;--color-bad:#ef6f5a;--sx-c0:#6aa5e6;--sx-c1:#9db8d8;--cds-chart-muted:#56616a;--cds-chart-grid:#283033;--cds-chart-reference:#c9d2d6;--cds-text-secondary:#9aa6ad;
---cds-surface-popover:#222a2d;--cds-border:#38433f;--cds-shadow-popover:0 4px 16px rgba(0,0,0,.5);color-scheme:dark}}
-html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
-.wrap{max-width:1180px;margin:0 auto;padding-block:32px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-@media print{.sx-tt{display:none}}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-<script>
-window.SX_DATA = {"kpi": [{"people": "326", "person_days": "3715", "hit_pct": "50.2", "all18_people": "18", "all18_pct": "5.5", "mean_steps": "7950", "median_steps": "7020", "avg_over7k_people": "136", "logged18_people": "68", "logged18_pct": "20.9", "weekday_hit_pct": "52.8", "weekend_hit_pct": "42.6", "weekday_median": "7209", "weekend_median": "5891", "first_half_hit_pct": "48.2", "second_half_hit_pct": "51.9", "under500_days": "138"}], "daily": [{"date": "2026-11-01", "dow": "อา.", "weekend": "True", "people": "124", "mean_steps": "6866.0", "median_steps": "5591.0", "hit_pct": "38.7"}, {"date": "2026-11-02", "dow": "จ.", "weekend": "False", "people": "166", "mean_steps": "8236.0", "median_steps": "7328.0", "hit_pct": "53.0"}, {"date": "2026-11-03", "dow": "อ.", "weekend": "False", "people": "184", "mean_steps": "7766.0", "median_steps": "6979.0", "hit_pct": "49.5"}, {"date": "2026-11-04", "dow": "พ.", "weekend": "False", "people": "195", "mean_steps": "7523.0", "median_steps": "6893.0", "hit_pct": "49.2"}, {"date": "2026-11-05", "dow": "พฤ.", "weekend": "False", "people": "200", "mean_steps": "8061.0", "median_steps": "7128.0", "hit_pct": "52.5"}, {"date": "2026-11-06", "dow": "ศ.", "weekend": "False", "people": "201", "mean_steps": "7464.0", "median_steps": "6635.0", "hit_pct": "47.3"}, {"date": "2026-11-07", "dow": "ส.", "weekend": "True", "people": "188", "mean_steps": "7292.0", "median_steps": "6136.0", "hit_pct": "43.1"}, {"date": "2026-11-08", "dow": "อา.", "weekend": "True", "people": "192", "mean_steps": "7258.0", "median_steps": "5584.0", "hit_pct": "41.1"}, {"date": "2026-11-09", "dow": "จ.", "weekend": "False", "people": "231", "mean_steps": "8496.0", "median_steps": "7416.0", "hit_pct": "55.4"}, {"date": "2026-11-10", "dow": "อ.", "weekend": "False", "people": "244", "mean_steps": "8241.0", "median_steps": "7692.0", "hit_pct": "54.9"}, {"date": "2026-11-11", "dow": "พ.", "weekend": "False", "people": "251", "mean_steps": "7861.0", "median_steps": "6829.0", "hit_pct": "49.4"}, {"date": "2026-11-12", "dow": "พฤ.", "weekend": "False", "people": "240", "mean_steps": "8465.0", "median_steps": "7646.0", "hit_pct": "58.8"}, {"date": "2026-11-13", "dow": "ศ.", "weekend": "False", "people": "219", "mean_steps": "8380.0", "median_steps": "7598.0", "hit_pct": "58.0"}, {"date": "2026-11-14", "dow": "ส.", "weekend": "True", "people": "211", "mean_steps": "7592.0", "median_steps": "6449.0", "hit_pct": "46.0"}, {"date": "2026-11-15", "dow": "อา.", "weekend": "True", "people": "216", "mean_steps": "7588.0", "median_steps": "5474.0", "hit_pct": "42.6"}, {"date": "2026-11-16", "dow": "จ.", "weekend": "False", "people": "240", "mean_steps": "8274.0", "median_steps": "6780.0", "hit_pct": "48.8"}, {"date": "2026-11-17", "dow": "อ.", "weekend": "False", "people": "227", "mean_steps": "8659.0", "median_steps": "7460.0", "hit_pct": "54.6"}, {"date": "2026-11-18", "dow": "พ.", "weekend": "False", "people": "186", "mean_steps": "8259.0", "median_steps": "7256.0", "hit_pct": "53.2"}], "weekday": [{"day": "จ.", "person_days": "637", "mean_steps": "8345.0", "median_steps": "7146.0", "hit_pct": "52.3"}, {"day": "อ.", "person_days": "655", "mean_steps": "8253.0", "median_steps": "7433.0", "hit_pct": "53.3"}, {"day": "พ.", "person_days": "632", "mean_steps": "7874.0", "median_steps": "7019.0", "hit_pct": "50.5"}, {"day": "พฤ.", "person_days": "440", "mean_steps": "8281.0", "median_steps": "7404.0", "hit_pct": "55.9"}, {"day": "ศ.", "person_days": "420", "mean_steps": "7942.0", "median_steps": "7198.0", "hit_pct": "52.9"}, {"day": "ส.", "person_days": "399", "mean_steps": "7451.0", "median_steps": "6221.0", "hit_pct": "44.6"}, {"day": "อา.", "person_days": "532", "mean_steps": "7300.0", "median_steps": "5534.0", "hit_pct": "41.2"}], "segments": [{"segment": "A", "description": "ผ่านครบ 18 วัน", "people": "18", "share_pct": "5.5", "avg_steps": "17311.0", "hit_days_pct": "100.0", "avg_days": "18.0", "weekday_hit_pct": "100.0", "weekend_hit_pct": "100.0", "action": "ให้เป็นทูต/หัวหน้าทีมย่อย"}, {"segment": "B", "description": "ผ่าน 80% ของวันขึ้นไป", "people": "30", "share_pct": "9.2", "avg_steps": "11800.0", "hit_days_pct": "92.3", "avg_days": "16.7", "weekday_hit_pct": "95.7", "weekend_hit_pct": "82.0", "action": "วางแผนกิจกรรมเสาร์-อาทิตย์"}, {"segment": "C", "description": "เฉลี่ยผ่าน แต่ทำได้บางวัน", "people": "62", "share_pct": "19.0", "avg_steps": "8649.0", "hit_days_pct": "60.5", "avg_days": "14.8", "weekday_hit_pct": "64.7", "weekend_hit_pct": "50.8", "action": "ตั้งขั้นต่ำรายวัน แทนการดูค่าเฉลี่ย"}, {"segment": "D1", "description": "เฉลี่ย 5,000–7,000", "people": "61", "share_pct": "18.7", "avg_steps": "5966.0", "hit_days_pct": "36.3", "avg_days": "14.6", "weekday_hit_pct": "41.4", "weekend_hit_pct": "21.3", "action": "เดินเพิ่มวันละ 1,000–2,000 ก้าว"}, {"segment": "D2", "description": "เฉลี่ยต่ำกว่า 5,000", "people": "47", "share_pct": "14.4", "avg_steps": "3709.0", "hit_days_pct": "12.0", "avg_days": "13.4", "weekday_hit_pct": "14.9", "weekend_hit_pct": "6.0", "action": "เป้าขั้นบันได 5k→6k→7k"}, {"segment": "E", "description": "บันทึกไม่ถึง 9 วัน", "people": "108", "share_pct": "33.1", "avg_steps": "4978.0", "hit_days_pct": "24.0", "avg_days": "4.2", "weekday_hit_pct": "26.1", "weekend_hit_pct": "25.6", "action": "แก้การซิงก์/แจ้งเตือนบันทึกก่อน"}], "groups": [{"short": "M-MAT", "group": "1) M-MAT Material Solution", "people": "56", "avg_steps": "7367.0", "hit_pct": "54.6", "avg_days": "11.4", "all18": "3"}, {"short": "M-HEALTH", "group": "2) M-HEALTH Medical & Health", "people": "58", "avg_steps": "7242.0", "hit_pct": "50.5", "avg_days": "11.3", "all18": "2"}, {"short": "M-MOVE", "group": "3) M-MOVE Modern Transport", "people": "71", "avg_steps": "6931.0", "hit_pct": "48.9", "avg_days": "11.6", "all18": "6"}, {"short": "M-MAN", "group": "4) M-MAN Modern Manufacturing", "people": "76", "avg_steps": "7094.0", "hit_pct": "49.9", "avg_days": "12.1", "all18": "5"}, {"short": "M-GREEN", "group": "5) M-GREEN Net Zero & Sustainability", "people": "65", "avg_steps": "6368.0", "hit_pct": "47.9", "avg_days": "10.4", "all18": "2"}], "sources": [{"source": "Manual", "kind": "กรอกเอง", "person_days": "439", "mean_steps": "9960.0", "hit_pct": "77.4"}, {"source": "Garmin", "kind": "นาฬิกา", "person_days": "432", "mean_steps": "11861.0", "hit_pct": "72.2"}, {"source": "ThaiSookWatch", "kind": "นาฬิกา", "person_days": "223", "mean_steps": "10138.0", "hit_pct": "72.2"}, {"source": "ThaiSookSteps", "kind": "โทรศัพท์", "person_days": "186", "mean_steps": "7689.0", "hit_pct": "43.5"}, {"source": "HealthFit", "kind": "โทรศัพท์", "person_days": "2435", "mean_steps": "6713.0", "hit_pct": "39.9"}], "gap": [{"gap": "≤1,000", "days": "297", "share_pct": "16.1", "walk_minutes": "≤10"}, {"gap": "1,001–2,000", "days": "344", "share_pct": "18.6", "walk_minutes": "10–20"}, {"gap": "2,001–3,000", "days": "295", "share_pct": "16.0", "walk_minutes": "20–30"}, {"gap": "3,001–5,000", "days": "526", "share_pct": "28.4", "walk_minutes": "30–50"}, {"gap": "5,001–7,000", "days": "387", "share_pct": "20.9", "walk_minutes": "50–70"}], "profile": [{"dimension": "เพศ", "value": "หญิง", "people": "195", "avg_steps": "6682", "hit_days_pct": "39.9"}, {"dimension": "เพศ", "value": "ชาย", "people": "131", "avg_steps": "7441", "hit_days_pct": "45.1"}, {"dimension": "BMI", "value": "BMI <18.5", "people": "14", "avg_steps": "4970", "hit_days_pct": "26.6"}, {"dimension": "BMI", "value": "BMI 18.5–22.9", "people": "127", "avg_steps": "7200", "hit_days_pct": "43.8"}, {"dimension": "BMI", "value": "BMI 23–24.9", "people": "61", "avg_steps": "7627", "hit_days_pct": "44.2"}, {"dimension": "BMI", "value": "BMI 25–29.9", "people": "76", "avg_steps": "6698", "hit_days_pct": "40.7"}, {"dimension": "BMI", "value": "BMI ≥30", "people": "48", "avg_steps": "6656", "hit_days_pct": "41.1"}], "rw_summary": [{"tickets_total": "1866", "people_with_ticket": "255", "people_with_ticket_pct": "78.2", "teams": "48", "team_size_min": "6", "team_size_max": "7", "team_score_best": "46.4", "team_score_median": "30.1", "team_score_worst": "19.3", "teams_with_full_day": "0", "streak7_people": "62", "streak14_people": "33", "improved_eligible": "208", "improved_20_people": "47", "improved_any_people": "97", "gold_w1": "21", "gold_w2": "42"}], "rw_tickets": [{"tickets": "0 ใบ", "people": "71", "share_pct": "21.8"}, {"tickets": "1–4 ใบ", "people": "102", "share_pct": "31.3"}, {"tickets": "5–9 ใบ", "people": "72", "share_pct": "22.1"}, {"tickets": "10–14 ใบ", "people": "39", "share_pct": "12.0"}, {"tickets": "15–18 ใบ", "people": "42", "share_pct": "12.9"}], "rw_badges": [{"week": "สัปดาห์ 1 (1–7 พ.ย.)", "gold": "21", "silver": "19", "bronze": "22", "none": "264", "any_badge": "62", "any_pct": "19.0"}, {"week": "สัปดาห์ 2 (8–14 พ.ย.)", "gold": "42", "silver": "20", "bronze": "22", "none": "242", "any_badge": "84", "any_pct": "25.8"}], "rw_streaks": [{"streak": "0 วัน", "people": "71", "share_pct": "21.8"}, {"streak": "1–2 วัน", "people": "110", "share_pct": "33.7"}, {"streak": "3–6 วัน", "people": "83", "share_pct": "25.5"}, {"streak": "7–13 วัน", "people": "29", "share_pct": "8.9"}, {"streak": "14–18 วัน", "people": "33", "share_pct": "10.1"}], "rw_teams": [{"team": "ทีม 09", "members": "6", "leader_seg": "A", "score": "46.4", "plain_pct": "45.4", "weekend_pct": "50.0", "full_days": "0", "nonlog_members": "2", "rank": "1"}, {"team": "ทีม 01", "members": "6", "leader_seg": "B", "score": "40.6", "plain_pct": "43.5", "weekend_pct": "30.0", "full_days": "0", "nonlog_members": "2", "rank": "2"}, {"team": "ทีม 04", "members": "6", "leader_seg": "A", "score": "39.9", "plain_pct": "40.7", "weekend_pct": "36.7", "full_days": "0", "nonlog_members": "2", "rank": "3"}, {"team": "ทีม 03", "members": "6", "leader_seg": "A", "score": "39.9", "plain_pct": "41.7", "weekend_pct": "33.3", "full_days": "0", "nonlog_members": "2", "rank": "4"}, {"team": "ทีม 05", "members": "6", "leader_seg": "A", "score": "39.1", "plain_pct": "40.7", "weekend_pct": "33.3", "full_days": "0", "nonlog_members": "2", "rank": "5"}, {"team": "ทีม 18", "members": "7", "leader_seg": "A", "score": "39.1", "plain_pct": "40.5", "weekend_pct": "34.3", "full_days": "0", "nonlog_members": "3", "rank": "6"}, {"team": "ทีม 14", "members": "7", "leader_seg": "B", "score": "37.3", "plain_pct": "38.1", "weekend_pct": "34.3", "full_days": "0", "nonlog_members": "3", "rank": "7"}, {"team": "ทีม 21", "members": "7", "leader_seg": "A", "score": "36.6", "plain_pct": "37.3", "weekend_pct": "34.3", "full_days": "0", "nonlog_members": "3", "rank": "8"}, {"team": "ทีม 07", "members": "6", "leader_seg": "A", "score": "36.2", "plain_pct": "38.9", "weekend_pct": "26.7", "full_days": "0", "nonlog_members": "2", "rank": "9"}, {"team": "ทีม 06", "members": "6", "leader_seg": "A", "score": "36.2", "plain_pct": "38.0", "weekend_pct": "30.0", "full_days": "0", "nonlog_members": "2", "rank": "10"}, {"team": "ทีม 15", "members": "7", "leader_seg": "A", "score": "36.0", "plain_pct": "38.1", "weekend_pct": "28.6", "full_days": "0", "nonlog_members": "3", "rank": "11"}, {"team": "ทีม 08", "members": "6", "leader_seg": "A", "score": "34.8", "plain_pct": "37.0", "weekend_pct": "26.7", "full_days": "0", "nonlog_members": "2", "rank": "12"}, {"team": "ทีม 12", "members": "7", "leader_seg": "A", "score": "34.2", "plain_pct": "34.9", "weekend_pct": "31.4", "full_days": "0", "nonlog_members": "3", "rank": "13"}, {"team": "ทีม 19", "members": "7", "leader_seg": "A", "score": "32.9", "plain_pct": "37.3", "weekend_pct": "17.1", "full_days": "0", "nonlog_members": "3", "rank": "14"}, {"team": "ทีม 33", "members": "7", "leader_seg": "B", "score": "32.9", "plain_pct": "34.1", "weekend_pct": "28.6", "full_days": "0", "nonlog_members": "2", "rank": "15"}, {"team": "ทีม 02", "members": "6", "leader_seg": "A", "score": "32.6", "plain_pct": "37.0", "weekend_pct": "16.7", "full_days": "0", "nonlog_members": "2", "rank": "16"}, {"team": "ทีม 20", "members": "7", "leader_seg": "B", "score": "32.3", "plain_pct": "34.1", "weekend_pct": "25.7", "full_days": "0", "nonlog_members": "3", "rank": "17"}, {"team": "ทีม 10", "members": "6", "leader_seg": "A", "score": "31.9", "plain_pct": "34.3", "weekend_pct": "23.3", "full_days": "0", "nonlog_members": "2", "rank": "18"}, {"team": "ทีม 23", "members": "7", "leader_seg": "A", "score": "31.7", "plain_pct": "33.3", "weekend_pct": "25.7", "full_days": "0", "nonlog_members": "2", "rank": "19"}, {"team": "ทีม 13", "members": "7", "leader_seg": "A", "score": "31.1", "plain_pct": "31.7", "weekend_pct": "28.6", "full_days": "0", "nonlog_members": "3", "rank": "20"}, {"team": "ทีม 25", "members": "7", "leader_seg": "B", "score": "31.1", "plain_pct": "31.0", "weekend_pct": "31.4", "full_days": "0", "nonlog_members": "2", "rank": "21"}, {"team": "ทีม 17", "members": "7", "leader_seg": "A", "score": "31.1", "plain_pct": "31.7", "weekend_pct": "28.6", "full_days": "0", "nonlog_members": "3", "rank": "22"}, {"team": "ทีม 41", "members": "7", "leader_seg": "B", "score": "30.4", "plain_pct": "29.4", "weekend_pct": "34.3", "full_days": "0", "nonlog_members": "2", "rank": "23"}, {"team": "ทีม 22", "members": "7", "leader_seg": "A", "score": "30.4", "plain_pct": "31.7", "weekend_pct": "25.7", "full_days": "0", "nonlog_members": "3", "rank": "24"}, {"team": "ทีม 26", "members": "7", "leader_seg": "B", "score": "29.8", "plain_pct": "29.4", "weekend_pct": "31.4", "full_days": "0", "nonlog_members": "2", "rank": "25"}, {"team": "ทีม 11", "members": "7", "leader_seg": "B", "score": "29.8", "plain_pct": "32.5", "weekend_pct": "20.0", "full_days": "0", "nonlog_members": "3", "rank": "26"}, {"team": "ทีม 37", "members": "7", "leader_seg": "B", "score": "29.8", "plain_pct": "31.7", "weekend_pct": "22.9", "full_days": "0", "nonlog_members": "2", "rank": "27"}, {"team": "ทีม 39", "members": "7", "leader_seg": "B", "score": "28.6", "plain_pct": "27.8", "weekend_pct": "31.4", "full_days": "0", "nonlog_members": "2", "rank": "28"}, {"team": "ทีม 40", "members": "7", "leader_seg": "B", "score": "28.0", "plain_pct": "30.2", "weekend_pct": "20.0", "full_days": "0", "nonlog_members": "2", "rank": "29"}, {"team": "ทีม 43", "members": "7", "leader_seg": "B", "score": "27.3", "plain_pct": "28.6", "weekend_pct": "22.9", "full_days": "0", "nonlog_members": "2", "rank": "30"}, {"team": "ทีม 34", "members": "7", "leader_seg": "B", "score": "27.3", "plain_pct": "29.4", "weekend_pct": "20.0", "full_days": "0", "nonlog_members": "2", "rank": "31"}, {"team": "ทีม 30", "members": "7", "leader_seg": "B", "score": "27.3", "plain_pct": "29.4", "weekend_pct": "20.0", "full_days": "0", "nonlog_members": "2", "rank": "32"}, {"team": "ทีม 47", "members": "7", "leader_seg": "B", "score": "27.3", "plain_pct": "26.2", "weekend_pct": "31.4", "full_days": "0", "nonlog_members": "2", "rank": "33"}, {"team": "ทีม 32", "members": "7", "leader_seg": "B", "score": "26.7", "plain_pct": "29.4", "weekend_pct": "17.1", "full_days": "0", "nonlog_members": "2", "rank": "34"}, {"team": "ทีม 24", "members": "7", "leader_seg": "B", "score": "26.1", "plain_pct": "27.8", "weekend_pct": "20.0", "full_days": "0", "nonlog_members": "2", "rank": "35"}, {"team": "ทีม 36", "members": "7", "leader_seg": "B", "score": "26.1", "plain_pct": "27.8", "weekend_pct": "20.0", "full_days": "0", "nonlog_members": "2", "rank": "36"}, {"team": "ทีม 27", "members": "7", "leader_seg": "B", "score": "25.5", "plain_pct": "27.0", "weekend_pct": "20.0", "full_days": "0", "nonlog_members": "2", "rank": "37"}, {"team": "ทีม 42", "members": "7", "leader_seg": "B", "score": "25.5", "plain_pct": "28.6", "weekend_pct": "14.3", "full_days": "0", "nonlog_members": "2", "rank": "38"}, {"team": "ทีม 31", "members": "7", "leader_seg": "B", "score": "25.5", "plain_pct": "29.4", "weekend_pct": "11.4", "full_days": "0", "nonlog_members": "2", "rank": "39"}, {"team": "ทีม 44", "members": "7", "leader_seg": "B", "score": "24.8", "plain_pct": "26.2", "weekend_pct": "20.0", "full_days": "0", "nonlog_members": "2", "rank": "40"}, {"team": "ทีม 29", "members": "7", "leader_seg": "B", "score": "24.8", "plain_pct": "26.2", "weekend_pct": "20.0", "full_days": "0", "nonlog_members": "2", "rank": "41"}, {"team": "ทีม 28", "members": "7", "leader_seg": "B", "score": "24.2", "plain_pct": "27.0", "weekend_pct": "14.3", "full_days": "0", "nonlog_members": "2", "rank": "42"}, {"team": "ทีม 45", "members": "7", "leader_seg": "B", "score": "23.6", "plain_pct": "25.4", "weekend_pct": "17.1", "full_days": "0", "nonlog_members": "2", "rank": "43"}, {"team": "ทีม 16", "members": "7", "leader_seg": "B", "score": "23.0", "plain_pct": "25.4", "weekend_pct": "14.3", "full_days": "0", "nonlog_members": "3", "rank": "44"}, {"team": "ทีม 48", "members": "7", "leader_seg": "B", "score": "23.0", "plain_pct": "23.0", "weekend_pct": "22.9", "full_days": "0", "nonlog_members": "2", "rank": "45"}, {"team": "ทีม 35", "members": "7", "leader_seg": "B", "score": "22.4", "plain_pct": "26.2", "weekend_pct": "8.6", "full_days": "0", "nonlog_members": "2", "rank": "46"}, {"team": "ทีม 38", "members": "7", "leader_seg": "B", "score": "19.3", "plain_pct": "21.4", "weekend_pct": "11.4", "full_days": "0", "nonlog_members": "2", "rank": "47"}, {"team": "ทีม 46", "members": "7", "leader_seg": "B", "score": "19.3", "plain_pct": "21.4", "weekend_pct": "11.4", "full_days": "0", "nonlog_members": "2", "rank": "48"}], "dist": [{"bin": "0–1k", "lo": "0", "hi": "1000", "people": "4", "share_pct": "1.2", "band": "low"}, {"bin": "1–2k", "lo": "1000", "hi": "2000", "people": "12", "share_pct": "3.7", "band": "low"}, {"bin": "2–3k", "lo": "2000", "hi": "3000", "people": "22", "share_pct": "6.7", "band": "low"}, {"bin": "3–4k", "lo": "3000", "hi": "4000", "people": "36", "share_pct": "11.0", "band": "low"}, {"bin": "4–5k", "lo": "4000", "hi": "5000", "people": "28", "share_pct": "8.6", "band": "low"}, {"bin": "5–6k", "lo": "5000", "hi": "6000", "people": "45", "share_pct": "13.8", "band": "near"}, {"bin": "6–7k", "lo": "6000", "hi": "7000", "people": "43", "share_pct": "13.2", "band": "near"}, {"bin": "7–8k", "lo": "7000", "hi": "8000", "people": "41", "share_pct": "12.6", "band": "pass"}, {"bin": "8–9k", "lo": "8000", "hi": "9000", "people": "27", "share_pct": "8.3", "band": "pass"}, {"bin": "9–10k", "lo": "9000", "hi": "10000", "people": "16", "share_pct": "4.9", "band": "pass"}, {"bin": "10–11k", "lo": "10000", "hi": "11000", "people": "13", "share_pct": "4.0", "band": "pass"}, {"bin": "11–12k", "lo": "11000", "hi": "12000", "people": "7", "share_pct": "2.1", "band": "pass"}, {"bin": "12–13k", "lo": "12000", "hi": "13000", "people": "7", "share_pct": "2.1", "band": "pass"}, {"bin": "13–14k", "lo": "13000", "hi": "14000", "people": "5", "share_pct": "1.5", "band": "pass"}, {"bin": "14–15k", "lo": "14000", "hi": "15000", "people": "8", "share_pct": "2.5", "band": "pass"}, {"bin": "15k+", "lo": "15000", "hi": "", "people": "12", "share_pct": "3.7", "band": "pass"}], "dist_summary": [{"people": "326", "median_mean": "6360", "mean_mean": "6987", "pass_people": "136", "near_people": "88", "low_people": "102", "pass_pct": "41.7", "near_pct": "27.0", "low_pct": "31.3", "p25": "4263", "p75": "8459"}], "dept_dist": [{"dept": "M-HEALTH", "people": "58", "p10": "2668", "q1": "3865", "median": "6684", "q3": "8737", "p90": "12744", "pass_pct": "48.3", "near_pct": "15.5", "low_pct": "36.2", "consistent_pct": "15.5"}, {"dept": "M-MAT", "people": "56", "p10": "2506", "q1": "3814", "median": "6547", "q3": "9599", "p90": "13269", "pass_pct": "46.4", "near_pct": "25.0", "low_pct": "28.6", "consistent_pct": "19.6"}, {"dept": "M-MAN", "people": "76", "p10": "2831", "q1": "4666", "median": "6314", "q3": "8700", "p90": "11329", "pass_pct": "43.4", "near_pct": "30.3", "low_pct": "26.3", "consistent_pct": "14.5"}, {"dept": "M-GREEN", "people": "65", "p10": "2855", "q1": "4644", "median": "6157", "q3": "7493", "p90": "10932", "pass_pct": "30.8", "near_pct": "38.5", "low_pct": "30.8", "consistent_pct": "9.2"}, {"dept": "M-MOVE", "people": "71", "p10": "3193", "q1": "4530", "median": "6078", "q3": "8434", "p90": "10656", "pass_pct": "40.8", "near_pct": "23.9", "low_pct": "35.2", "consistent_pct": "15.5"}], "person_pts": [{"dept": "M-MOVE", "avg_steps": "6750", "hit_pct": "41.7", "days": "12", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "10150", "hit_pct": "77.8", "days": "9", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "8180", "hit_pct": "60.0", "days": "10", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "6500", "hit_pct": "50.0", "days": "14", "seg": "D1"}, {"dept": "M-MOVE", "avg_steps": "3560", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "4130", "hit_pct": "11.1", "days": "18", "seg": "D2"}, {"dept": "M-GREEN", "avg_steps": "5780", "hit_pct": "25.0", "days": "4", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "2760", "hit_pct": "0.0", "days": "10", "seg": "D2"}, {"dept": "M-MAT", "avg_steps": "6430", "hit_pct": "46.7", "days": "15", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "9600", "hit_pct": "88.2", "days": "17", "seg": "B"}, {"dept": "M-MOVE", "avg_steps": "8770", "hit_pct": "80.0", "days": "15", "seg": "B"}, {"dept": "M-GREEN", "avg_steps": "4170", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "7470", "hit_pct": "69.2", "days": "13", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "17320", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-HEALTH", "avg_steps": "9910", "hit_pct": "91.7", "days": "12", "seg": "B"}, {"dept": "M-GREEN", "avg_steps": "6000", "hit_pct": "17.6", "days": "17", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "5560", "hit_pct": "27.8", "days": "18", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "3400", "hit_pct": "6.2", "days": "16", "seg": "D2"}, {"dept": "M-MAT", "avg_steps": "3290", "hit_pct": "0.0", "days": "14", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "5290", "hit_pct": "22.2", "days": "18", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "7420", "hit_pct": "50.0", "days": "14", "seg": "C"}, {"dept": "M-MAT", "avg_steps": "8150", "hit_pct": "100.0", "days": "2", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "11780", "hit_pct": "94.4", "days": "18", "seg": "B"}, {"dept": "M-MAT", "avg_steps": "3040", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "2540", "hit_pct": "0.0", "days": "9", "seg": "D2"}, {"dept": "M-GREEN", "avg_steps": "14400", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MOVE", "avg_steps": "5210", "hit_pct": "20.0", "days": "5", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "13140", "hit_pct": "94.1", "days": "17", "seg": "B"}, {"dept": "M-GREEN", "avg_steps": "7200", "hit_pct": "66.7", "days": "18", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "3460", "hit_pct": "20.0", "days": "5", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "6350", "hit_pct": "28.6", "days": "7", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "12010", "hit_pct": "88.2", "days": "17", "seg": "B"}, {"dept": "M-MAT", "avg_steps": "10100", "hit_pct": "70.6", "days": "17", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "8490", "hit_pct": "76.9", "days": "13", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "3830", "hit_pct": "13.3", "days": "15", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "3790", "hit_pct": "0.0", "days": "13", "seg": "D2"}, {"dept": "M-MAT", "avg_steps": "2970", "hit_pct": "0.0", "days": "6", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "4040", "hit_pct": "14.3", "days": "7", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "5060", "hit_pct": "23.5", "days": "17", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "2700", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "9660", "hit_pct": "88.9", "days": "18", "seg": "B"}, {"dept": "M-GREEN", "avg_steps": "4140", "hit_pct": "0.0", "days": "6", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "7570", "hit_pct": "50.0", "days": "10", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "10190", "hit_pct": "77.8", "days": "18", "seg": "C"}, {"dept": "M-GREEN", "avg_steps": "6930", "hit_pct": "64.7", "days": "17", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "3090", "hit_pct": "12.5", "days": "8", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "10620", "hit_pct": "52.9", "days": "17", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "4110", "hit_pct": "6.7", "days": "15", "seg": "D2"}, {"dept": "M-GREEN", "avg_steps": "10450", "hit_pct": "75.0", "days": "4", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "5510", "hit_pct": "30.0", "days": "10", "seg": "D1"}, {"dept": "M-MOVE", "avg_steps": "7020", "hit_pct": "33.3", "days": "3", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "3190", "hit_pct": "0.0", "days": "2", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "2460", "hit_pct": "0.0", "days": "11", "seg": "D2"}, {"dept": "M-MAT", "avg_steps": "14090", "hit_pct": "88.9", "days": "18", "seg": "B"}, {"dept": "M-MAN", "avg_steps": "8510", "hit_pct": "75.0", "days": "16", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "8930", "hit_pct": "55.6", "days": "18", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "5550", "hit_pct": "25.0", "days": "8", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "21340", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MAN", "avg_steps": "2860", "hit_pct": "0.0", "days": "6", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "7580", "hit_pct": "42.9", "days": "14", "seg": "C"}, {"dept": "M-GREEN", "avg_steps": "2790", "hit_pct": "0.0", "days": "5", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "2950", "hit_pct": "0.0", "days": "2", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "6770", "hit_pct": "35.7", "days": "14", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "11250", "hit_pct": "94.4", "days": "18", "seg": "B"}, {"dept": "M-MAN", "avg_steps": "5870", "hit_pct": "43.8", "days": "16", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "8740", "hit_pct": "83.3", "days": "6", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "4890", "hit_pct": "21.4", "days": "14", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "10720", "hit_pct": "88.9", "days": "18", "seg": "B"}, {"dept": "M-MAN", "avg_steps": "2630", "hit_pct": "25.0", "days": "4", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "5610", "hit_pct": "22.2", "days": "18", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "14820", "hit_pct": "100.0", "days": "15", "seg": "B"}, {"dept": "M-GREEN", "avg_steps": "5880", "hit_pct": "36.4", "days": "11", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "5790", "hit_pct": "47.1", "days": "17", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "3450", "hit_pct": "7.7", "days": "13", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "5880", "hit_pct": "38.9", "days": "18", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "9040", "hit_pct": "76.9", "days": "13", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "4880", "hit_pct": "8.3", "days": "12", "seg": "D2"}, {"dept": "M-GREEN", "avg_steps": "3400", "hit_pct": "0.0", "days": "4", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "19500", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-HEALTH", "avg_steps": "2680", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "4530", "hit_pct": "16.7", "days": "12", "seg": "D2"}, {"dept": "M-MAT", "avg_steps": "7130", "hit_pct": "50.0", "days": "14", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "5290", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "1500", "hit_pct": "0.0", "days": "11", "seg": "D2"}, {"dept": "M-GREEN", "avg_steps": "4660", "hit_pct": "36.4", "days": "11", "seg": "D2"}, {"dept": "M-MAT", "avg_steps": "1760", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "10620", "hit_pct": "83.3", "days": "18", "seg": "B"}, {"dept": "M-GREEN", "avg_steps": "6360", "hit_pct": "50.0", "days": "2", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "1670", "hit_pct": "0.0", "days": "5", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "7680", "hit_pct": "46.7", "days": "15", "seg": "C"}, {"dept": "M-GREEN", "avg_steps": "9190", "hit_pct": "75.0", "days": "4", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "8390", "hit_pct": "61.1", "days": "18", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "7120", "hit_pct": "66.7", "days": "6", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "4700", "hit_pct": "35.7", "days": "14", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "4610", "hit_pct": "31.2", "days": "16", "seg": "D2"}, {"dept": "M-HEALTH", "avg_steps": "4880", "hit_pct": "41.2", "days": "17", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "17760", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-HEALTH", "avg_steps": "4260", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "7150", "hit_pct": "33.3", "days": "9", "seg": "C"}, {"dept": "M-MAT", "avg_steps": "5490", "hit_pct": "33.3", "days": "12", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "13820", "hit_pct": "100.0", "days": "1", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "5700", "hit_pct": "20.0", "days": "5", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "12570", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-HEALTH", "avg_steps": "7380", "hit_pct": "60.0", "days": "15", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "2860", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "18730", "hit_pct": "100.0", "days": "17", "seg": "B"}, {"dept": "M-HEALTH", "avg_steps": "1320", "hit_pct": "0.0", "days": "4", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "6310", "hit_pct": "31.2", "days": "16", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "5280", "hit_pct": "43.8", "days": "16", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "7100", "hit_pct": "54.5", "days": "11", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "3710", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "7490", "hit_pct": "66.7", "days": "3", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "4480", "hit_pct": "27.8", "days": "18", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "4090", "hit_pct": "0.0", "days": "10", "seg": "D2"}, {"dept": "M-MAT", "avg_steps": "15950", "hit_pct": "100.0", "days": "17", "seg": "B"}, {"dept": "M-MAN", "avg_steps": "12790", "hit_pct": "61.1", "days": "18", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "5550", "hit_pct": "44.4", "days": "9", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "1490", "hit_pct": "0.0", "days": "2", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "5530", "hit_pct": "23.5", "days": "17", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "8040", "hit_pct": "66.7", "days": "3", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "5350", "hit_pct": "35.7", "days": "14", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "8730", "hit_pct": "64.7", "days": "17", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "3060", "hit_pct": "0.0", "days": "9", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "6730", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "5750", "hit_pct": "21.4", "days": "14", "seg": "D1"}, {"dept": "M-MOVE", "avg_steps": "5860", "hit_pct": "26.7", "days": "15", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "7060", "hit_pct": "35.7", "days": "14", "seg": "C"}, {"dept": "M-MAT", "avg_steps": "5030", "hit_pct": "20.0", "days": "10", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "5310", "hit_pct": "25.0", "days": "12", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "1370", "hit_pct": "0.0", "days": "7", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "5140", "hit_pct": "30.0", "days": "10", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "7460", "hit_pct": "50.0", "days": "4", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "7570", "hit_pct": "66.7", "days": "3", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "14050", "hit_pct": "94.4", "days": "18", "seg": "B"}, {"dept": "M-MOVE", "avg_steps": "3110", "hit_pct": "0.0", "days": "5", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "12280", "hit_pct": "100.0", "days": "17", "seg": "B"}, {"dept": "M-MAT", "avg_steps": "3160", "hit_pct": "0.0", "days": "7", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "5030", "hit_pct": "12.5", "days": "16", "seg": "D1"}, {"dept": "M-MOVE", "avg_steps": "8980", "hit_pct": "92.9", "days": "14", "seg": "B"}, {"dept": "M-HEALTH", "avg_steps": "7380", "hit_pct": "50.0", "days": "10", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "6780", "hit_pct": "50.0", "days": "6", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "9250", "hit_pct": "85.7", "days": "7", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "3620", "hit_pct": "0.0", "days": "10", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "6080", "hit_pct": "41.2", "days": "17", "seg": "D1"}, {"dept": "M-MOVE", "avg_steps": "8460", "hit_pct": "55.6", "days": "18", "seg": "C"}, {"dept": "M-MAT", "avg_steps": "6560", "hit_pct": "50.0", "days": "2", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "3500", "hit_pct": "0.0", "days": "4", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "6590", "hit_pct": "41.2", "days": "17", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "3730", "hit_pct": "0.0", "days": "12", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "10540", "hit_pct": "94.1", "days": "17", "seg": "B"}, {"dept": "M-GREEN", "avg_steps": "6390", "hit_pct": "35.3", "days": "17", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "6440", "hit_pct": "35.3", "days": "17", "seg": "D1"}, {"dept": "M-MOVE", "avg_steps": "4770", "hit_pct": "30.8", "days": "13", "seg": "D2"}, {"dept": "M-MAT", "avg_steps": "7520", "hit_pct": "54.5", "days": "11", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "6030", "hit_pct": "36.4", "days": "11", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "9690", "hit_pct": "94.1", "days": "17", "seg": "B"}, {"dept": "M-MAT", "avg_steps": "7670", "hit_pct": "35.7", "days": "14", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "10360", "hit_pct": "66.7", "days": "18", "seg": "C"}, {"dept": "M-MAT", "avg_steps": "3900", "hit_pct": "0.0", "days": "6", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "7330", "hit_pct": "71.4", "days": "7", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "7240", "hit_pct": "66.7", "days": "18", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "8520", "hit_pct": "68.8", "days": "16", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "7520", "hit_pct": "66.7", "days": "9", "seg": "C"}, {"dept": "M-GREEN", "avg_steps": "3820", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "6750", "hit_pct": "45.5", "days": "11", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "7760", "hit_pct": "61.1", "days": "18", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "14670", "hit_pct": "77.8", "days": "9", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "7500", "hit_pct": "71.4", "days": "7", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "5610", "hit_pct": "11.1", "days": "9", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "6970", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "2030", "hit_pct": "0.0", "days": "9", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "21950", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MAT", "avg_steps": "3340", "hit_pct": "0.0", "days": "8", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "5800", "hit_pct": "27.3", "days": "11", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "1210", "hit_pct": "0.0", "days": "4", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "2380", "hit_pct": "0.0", "days": "7", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "8740", "hit_pct": "66.7", "days": "18", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "6180", "hit_pct": "46.2", "days": "13", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "6870", "hit_pct": "76.5", "days": "17", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "4520", "hit_pct": "12.5", "days": "8", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "1590", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "4320", "hit_pct": "8.3", "days": "12", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "5440", "hit_pct": "27.8", "days": "18", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "11460", "hit_pct": "77.8", "days": "18", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "7740", "hit_pct": "33.3", "days": "3", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "5250", "hit_pct": "25.0", "days": "8", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "6360", "hit_pct": "25.0", "days": "16", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "16770", "hit_pct": "72.2", "days": "18", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "2920", "hit_pct": "16.7", "days": "6", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "6360", "hit_pct": "45.5", "days": "11", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "6160", "hit_pct": "44.4", "days": "9", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "9570", "hit_pct": "94.4", "days": "18", "seg": "B"}, {"dept": "M-GREEN", "avg_steps": "2760", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "3410", "hit_pct": "0.0", "days": "4", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "2030", "hit_pct": "0.0", "days": "10", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "10900", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-GREEN", "avg_steps": "4640", "hit_pct": "28.6", "days": "14", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "4530", "hit_pct": "22.2", "days": "9", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "11000", "hit_pct": "88.9", "days": "18", "seg": "B"}, {"dept": "M-HEALTH", "avg_steps": "6280", "hit_pct": "46.7", "days": "15", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "9380", "hit_pct": "70.6", "days": "17", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "2630", "hit_pct": "0.0", "days": "17", "seg": "D2"}, {"dept": "M-HEALTH", "avg_steps": "8150", "hit_pct": "53.8", "days": "13", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "6770", "hit_pct": "25.0", "days": "8", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "12650", "hit_pct": "93.8", "days": "16", "seg": "B"}, {"dept": "M-MAN", "avg_steps": "11190", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-HEALTH", "avg_steps": "6080", "hit_pct": "37.5", "days": "16", "seg": "D1"}, {"dept": "M-MOVE", "avg_steps": "7150", "hit_pct": "31.2", "days": "16", "seg": "C"}, {"dept": "M-MAT", "avg_steps": "24650", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MAT", "avg_steps": "12670", "hit_pct": "80.0", "days": "5", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "6300", "hit_pct": "33.3", "days": "3", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "5180", "hit_pct": "28.6", "days": "14", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "26490", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-HEALTH", "avg_steps": "650", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "8420", "hit_pct": "66.7", "days": "9", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "8440", "hit_pct": "50.0", "days": "18", "seg": "C"}, {"dept": "M-GREEN", "avg_steps": "5210", "hit_pct": "33.3", "days": "6", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "8150", "hit_pct": "70.6", "days": "17", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "7790", "hit_pct": "40.0", "days": "5", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "6880", "hit_pct": "75.0", "days": "4", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "6080", "hit_pct": "28.6", "days": "7", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "6490", "hit_pct": "41.7", "days": "12", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "8080", "hit_pct": "60.0", "days": "10", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "7250", "hit_pct": "60.0", "days": "15", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "7700", "hit_pct": "44.4", "days": "9", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "7310", "hit_pct": "33.3", "days": "3", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "5040", "hit_pct": "25.0", "days": "4", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "4980", "hit_pct": "20.0", "days": "15", "seg": "D2"}, {"dept": "M-GREEN", "avg_steps": "8510", "hit_pct": "55.6", "days": "18", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "10660", "hit_pct": "72.7", "days": "11", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "14520", "hit_pct": "88.2", "days": "17", "seg": "B"}, {"dept": "M-MAN", "avg_steps": "3560", "hit_pct": "5.6", "days": "18", "seg": "D2"}, {"dept": "M-GREEN", "avg_steps": "6100", "hit_pct": "0.0", "days": "2", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "3270", "hit_pct": "0.0", "days": "4", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "9230", "hit_pct": "50.0", "days": "4", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "7340", "hit_pct": "50.0", "days": "4", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "7310", "hit_pct": "62.5", "days": "8", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "6800", "hit_pct": "57.1", "days": "7", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "7260", "hit_pct": "61.1", "days": "18", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "5210", "hit_pct": "22.2", "days": "9", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "14420", "hit_pct": "100.0", "days": "10", "seg": "B"}, {"dept": "M-MOVE", "avg_steps": "900", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "10040", "hit_pct": "94.1", "days": "17", "seg": "B"}, {"dept": "M-MAN", "avg_steps": "4570", "hit_pct": "25.0", "days": "16", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "1700", "hit_pct": "0.0", "days": "16", "seg": "D2"}, {"dept": "M-GREEN", "avg_steps": "8610", "hit_pct": "77.8", "days": "18", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "3060", "hit_pct": "0.0", "days": "5", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "6530", "hit_pct": "27.8", "days": "18", "seg": "D1"}, {"dept": "M-MOVE", "avg_steps": "8460", "hit_pct": "80.0", "days": "5", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "5630", "hit_pct": "50.0", "days": "6", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "6680", "hit_pct": "50.0", "days": "16", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "5360", "hit_pct": "35.3", "days": "17", "seg": "D1"}, {"dept": "M-GREEN", "avg_steps": "3020", "hit_pct": "14.3", "days": "14", "seg": "D2"}, {"dept": "M-HEALTH", "avg_steps": "4900", "hit_pct": "22.2", "days": "18", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "25120", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MOVE", "avg_steps": "8810", "hit_pct": "77.8", "days": "18", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "7210", "hit_pct": "61.1", "days": "18", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "5850", "hit_pct": "44.4", "days": "9", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "8400", "hit_pct": "42.9", "days": "14", "seg": "C"}, {"dept": "M-GREEN", "avg_steps": "12290", "hit_pct": "66.7", "days": "18", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "7430", "hit_pct": "46.2", "days": "13", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "6800", "hit_pct": "33.3", "days": "3", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "400", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "9360", "hit_pct": "76.9", "days": "13", "seg": "C"}, {"dept": "M-GREEN", "avg_steps": "4770", "hit_pct": "44.4", "days": "9", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "3200", "hit_pct": "0.0", "days": "18", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "3650", "hit_pct": "0.0", "days": "8", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "3860", "hit_pct": "0.0", "days": "4", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "8770", "hit_pct": "66.7", "days": "3", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "2810", "hit_pct": "0.0", "days": "10", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "5170", "hit_pct": "33.3", "days": "9", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "10", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "6140", "hit_pct": "38.9", "days": "18", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "9940", "hit_pct": "60.0", "days": "5", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "6370", "hit_pct": "61.5", "days": "13", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "7280", "hit_pct": "50.0", "days": "18", "seg": "C"}, {"dept": "M-MAN", "avg_steps": "11660", "hit_pct": "94.4", "days": "18", "seg": "B"}, {"dept": "M-MOVE", "avg_steps": "4260", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "13990", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MOVE", "avg_steps": "7260", "hit_pct": "38.9", "days": "18", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "5260", "hit_pct": "22.2", "days": "18", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "3360", "hit_pct": "0.0", "days": "9", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "3270", "hit_pct": "5.9", "days": "17", "seg": "D2"}, {"dept": "M-GREEN", "avg_steps": "4720", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "7700", "hit_pct": "72.2", "days": "18", "seg": "C"}, {"dept": "M-GREEN", "avg_steps": "5320", "hit_pct": "0.0", "days": "4", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "1650", "hit_pct": "0.0", "days": "4", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "6860", "hit_pct": "53.3", "days": "15", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "14090", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-GREEN", "avg_steps": "6720", "hit_pct": "33.3", "days": "18", "seg": "D1"}, {"dept": "M-MOVE", "avg_steps": "7720", "hit_pct": "100.0", "days": "1", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "8250", "hit_pct": "42.9", "days": "7", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "13790", "hit_pct": "100.0", "days": "17", "seg": "B"}, {"dept": "M-MAN", "avg_steps": "26810", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MOVE", "avg_steps": "3970", "hit_pct": "5.9", "days": "17", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "3220", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "7280", "hit_pct": "50.0", "days": "10", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "9430", "hit_pct": "75.0", "days": "16", "seg": "C"}, {"dept": "M-MOVE", "avg_steps": "4850", "hit_pct": "26.7", "days": "15", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "1160", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "10780", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MAT", "avg_steps": "7710", "hit_pct": "64.7", "days": "17", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "11490", "hit_pct": "82.4", "days": "17", "seg": "B"}, {"dept": "M-MAT", "avg_steps": "4270", "hit_pct": "14.3", "days": "7", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "3380", "hit_pct": "5.9", "days": "17", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "9330", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MAT", "avg_steps": "13400", "hit_pct": "100.0", "days": "18", "seg": "A"}, {"dept": "M-MAT", "avg_steps": "3540", "hit_pct": "15.4", "days": "13", "seg": "D2"}, {"dept": "M-MAN", "avg_steps": "6320", "hit_pct": "38.9", "days": "18", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "9390", "hit_pct": "66.7", "days": "12", "seg": "C"}, {"dept": "M-HEALTH", "avg_steps": "3870", "hit_pct": "18.2", "days": "11", "seg": "D2"}, {"dept": "M-MOVE", "avg_steps": "5620", "hit_pct": "50.0", "days": "2", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "2480", "hit_pct": "0.0", "days": "1", "seg": "E"}, {"dept": "M-MOVE", "avg_steps": "8430", "hit_pct": "88.9", "days": "18", "seg": "B"}, {"dept": "M-GREEN", "avg_steps": "2210", "hit_pct": "0.0", "days": "12", "seg": "D2"}, {"dept": "M-MAT", "avg_steps": "9830", "hit_pct": "87.5", "days": "16", "seg": "B"}, {"dept": "M-HEALTH", "avg_steps": "6070", "hit_pct": "27.8", "days": "18", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "6790", "hit_pct": "43.8", "days": "16", "seg": "D1"}, {"dept": "M-MAT", "avg_steps": "2310", "hit_pct": "0.0", "days": "2", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "5710", "hit_pct": "29.4", "days": "17", "seg": "D1"}, {"dept": "M-HEALTH", "avg_steps": "5490", "hit_pct": "25.0", "days": "4", "seg": "E"}, {"dept": "M-MAT", "avg_steps": "5740", "hit_pct": "14.3", "days": "7", "seg": "E"}, {"dept": "M-HEALTH", "avg_steps": "5500", "hit_pct": "25.0", "days": "8", "seg": "E"}, {"dept": "M-MAN", "avg_steps": "2760", "hit_pct": "0.0", "days": "3", "seg": "E"}, {"dept": "M-GREEN", "avg_steps": "6340", "hit_pct": "61.1", "days": "18", "seg": "D1"}, {"dept": "M-MAN", "avg_steps": "1800", "hit_pct": "0.0", "days": "7", "seg": "E"}], "scatter_summary": [{"people": "326", "consistent": "55", "avg_only": "81", "below": "190", "irregular": "108", "over20k": "6"}]};
-(function(){
-  const draws={}, calcs={};
-  window.dash={
-    colors:['var(--sx-c0)','var(--sx-c1)'],
-    data(id){ if(calcs[id]) return {status:'ok',data:calcs[id]()}; const d=SX_DATA[id]; return d?{status:'ok',data:d}:{status:'missing',data:[]}; },
-    calc(id,o){ calcs[id]=()=>o.fn(...o.inputs.map(i=>SX_DATA[i])); },
-    draw(name,fn){ draws[name]=fn; },
-    _run(){ for(const n in draws){ document.querySelectorAll('[data-draw="'+n+'"]').forEach(el=>draws[n](el)); } }
-  };
-  let t; window.addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(()=>dash._run(),150);});
-})();
-</script>
-</head><body><div class="wrap">
 <style>
-.sx{display:flex;flex-direction:column;gap:var(--cds-gap-xl);font-family:var(--font-anthropic-sans);color:var(--color-fg)}
-.sx h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0;text-wrap:balance}
-.sx h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0;text-wrap:balance}
-.sx p{margin:0;line-height:1.6}
-.sx-sub{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
-.sx-lead{font-size:var(--cds-font-size-body);max-width:70ch}
-.sx-lead b{font-variant-numeric:tabular-nums}
-.sx-head{display:flex;flex-direction:column;gap:var(--cds-gap-sm)}
-.sx-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:var(--cds-gap-md)}
-.sx-card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);display:flex;flex-direction:column;gap:var(--cds-gap-xs);min-width:0}
-.sx-tile .v{font-family:var(--font-anthropic-serif);font-weight:400;font-size:2.1rem;line-height:1.1;font-variant-numeric:tabular-nums}
-.sx-tile .l{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
-.sx-tile .c{font-size:var(--cds-font-size-caption)}
-.sx-bad{color:var(--color-bad)}.sx-warn{color:var(--color-warn)}.sx-ok{color:var(--color-ok)}
-.sx-sec{display:flex;flex-direction:column;gap:var(--cds-gap-md)}
-.sx-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:var(--cds-gap-lg)}
-.sx-chart{position:relative;min-height:220px;width:100%}
-.sx-chart svg{display:block;width:100%;overflow:visible}
-.sx-chart text{fill:var(--cds-text-secondary);font-size:var(--cds-font-size-caption);font-family:var(--font-anthropic-sans)}
-.sx-chart .val{fill:var(--color-fg);font-variant-numeric:tabular-nums}
-.sx-tt{position:absolute;pointer-events:none;background:var(--cds-surface-popover);border:1px solid var(--cds-border);box-shadow:var(--cds-shadow-popover);border-radius:var(--cds-radius);padding:6px 10px;font-size:var(--cds-font-size-caption);line-height:1.5;white-space:nowrap;z-index:5}
-.sx-tt b{font-variant-numeric:tabular-nums}
-.sx-legend{display:flex;flex-wrap:wrap;gap:var(--cds-gap-md);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
-.sx-legend span{display:inline-flex;align-items:center;gap:6px}
-.sx-sw{width:10px;height:10px;border-radius:2px;display:inline-block}
-.sx-tw{overflow-x:auto}
-.sx table{border-collapse:collapse;width:100%;font-size:var(--cds-font-size-body)}
-.sx th{text-align:left;font-weight:var(--cds-font-weight-medium);color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);padding:8px 10px;border-bottom:1px solid var(--color-border-line);white-space:nowrap}
-.sx td{padding:8px 10px;border-bottom:1px solid var(--color-border-line);vertical-align:top}
-.sx td.n,.sx th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.sx-chip{display:inline-block;min-width:2.2em;text-align:center;padding:2px 8px;border-radius:999px;font-weight:var(--cds-font-weight-medium);font-size:var(--cds-font-size-caption);border:1px solid currentColor}
-.sx-meter{display:inline-block;width:60px;height:6px;border-radius:3px;background:var(--cds-chart-grid);vertical-align:middle;margin-left:6px;overflow:hidden}
-.sx-meter i{display:block;height:100%}
-.sx-plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--cds-gap-md)}
-.sx-plan h3{margin:0;font-size:var(--cds-font-size-body);font-weight:var(--cds-font-weight-medium)}
-.sx-plan ul{margin:0;padding-left:1.2em;line-height:1.6;font-size:var(--cds-font-size-body)}
-.sx-plan .who{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
-.sx-big{font-family:var(--font-anthropic-serif);font-size:1.6rem;font-variant-numeric:tabular-nums}
-.sx-note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);line-height:1.6}
-.sx details summary{cursor:pointer;font-weight:var(--cds-font-weight-medium)}
+:root{--bg:#f6f5f2;--card:#fff;--fg:#1d1d1b;--muted:#6b6a64;--line:#e4e2dc;--grid:#ecebe6;--accent:#2f6fd6;--ok:#1e8a5a;--warn:#cf7a1e;--mute:#b6b9bf;--bad:#c2453d;--ref:#55554f;--wk:#cf7a1e;--hover:#f0efea;--shadow:0 1px 2px rgba(0,0,0,.05)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1a19;--card:#242422;--fg:#ecebe6;--muted:#a3a29b;--line:#3a3a36;--grid:#30302d;--accent:#6c9cf0;--ok:#3fb27f;--warn:#e3964a;--mute:#5e6168;--bad:#e06a62;--ref:#b5b4ad;--wk:#e3964a;--hover:#2e2e2b;--shadow:none}}
+:root[data-theme="dark"]{--bg:#1a1a19;--card:#242422;--fg:#ecebe6;--muted:#a3a29b;--line:#3a3a36;--grid:#30302d;--accent:#6c9cf0;--ok:#3fb27f;--warn:#e3964a;--mute:#5e6168;--bad:#e06a62;--ref:#b5b4ad;--wk:#e3964a;--hover:#2e2e2b;--shadow:none}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Sarabun",system-ui,sans-serif;font-size:15px;line-height:1.55}
+.wrap{max-width:1200px;margin:0 auto;padding:24px 16px 80px;display:flex;flex-direction:column;gap:20px}
+h1{font-size:28px;font-weight:600;margin:0}
+h2{font-size:17px;font-weight:600;margin:0 0 4px}
+.note{color:var(--muted);font-size:13px;margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+.bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end}
+.bar label{display:flex;flex-direction:column;font-size:12px;color:var(--muted);gap:4px}
+input,select,button{font:inherit;font-size:14px;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+button{cursor:pointer}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button:hover{filter:brightness(.97)}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:28px 16px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.drop.over{border-color:var(--accent);background:var(--hover)}
+.drop b{font-size:17px}
+.status{font-size:13px;color:var(--muted)}
+.status.err{color:var(--bad)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.tile{display:flex;flex-direction:column;gap:2px}
+.tile .l{font-size:12px;color:var(--muted)}
+.tile .v{font-size:28px;font-weight:600;font-variant-numeric:tabular-nums}
+.tile .c{font-size:12px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin:6px 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+.chart{position:relative;width:100%;min-height:120px}
+.chart svg{display:block;width:100%;overflow:visible}
+.chart text{fill:var(--muted);font-size:12px;font-family:inherit}
+.chart text.val{fill:var(--fg);font-variant-numeric:tabular-nums}
+.chart .hit{cursor:pointer}
+.chart .hit:hover{opacity:.8}
+.chart .sel{stroke:var(--fg);stroke-width:2px}
+.hint{font-size:12px;color:var(--accent);margin:2px 0 6px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{font-weight:500;color:var(--muted);font-size:12px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--hover)}
+tr.click.on td{background:var(--hover);font-weight:500}
+#tip{position:fixed;pointer-events:none;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;box-shadow:0 4px 14px rgba(0,0,0,.12);display:none;max-width:260px}
+#tip b{display:block;margin-bottom:2px}
+#tip .r{display:flex;justify-content:space-between;gap:14px;color:var(--muted)}
+#tip .r span:last-child{color:var(--fg);font-variant-numeric:tabular-nums}
+#drawer{position:fixed;top:0;right:0;height:100vh;width:min(720px,100vw);background:var(--card);border-left:1px solid var(--line);box-shadow:-8px 0 24px rgba(0,0,0,.12);z-index:40;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .2s ease}
+#drawer.open{transform:none}
+#drawer header{display:flex;justify-content:space-between;gap:12px;padding:16px 16px 8px;border-bottom:1px solid var(--line)}
+#drawer h3{margin:0;font-size:17px;font-weight:600}
+.dtools{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);font-size:13px}
+.dtools input[type=search]{flex:1;min-width:160px}
+.dtools label{display:inline-flex;gap:6px;align-items:center;color:var(--muted)}
+.dbody{overflow:auto;flex:1;padding:0 16px 16px}
+.dbody th{position:sticky;top:0;background:var(--card);cursor:pointer;user-select:none}
+.dbody td.name{color:var(--accent);cursor:pointer}
+.dbody td.ok{color:var(--ok);font-weight:500}
+.dbody td.no{color:var(--bad)}
+#dMore{margin:12px auto 0;display:block}
+@media (max-width:640px){#drawer{top:auto;bottom:0;height:85vh;width:100vw;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(100%)}.tile .v{font-size:24px}h1{font-size:23px}}
+.hidden{display:none!important}
 </style>
-
-<div class="sx" data-read lang="th">
-  <header class="sx-head" id="top">
+</head>
+<body>
+<div class="wrap">
+  <div>
     <h1>ก้าวสู่ 7,000</h1>
-    <p class="sx-sub">ข้อมูลจำนวนก้าว 1–18 พ.ย. 2026 · <span data-draw="n" data-source="kpi" data-field="people" data-row="0" data-fmt="int">—</span> คน · <span data-draw="n" data-source="kpi" data-field="person_days" data-row="0" data-fmt="int">—</span> คน-วัน · เป้าหมาย 7,000 ก้าวขึ้นไปทุกวัน</p>
-    <p class="sx-lead">ครึ่งหนึ่งของวันที่บันทึกยังไม่ถึงเป้า (ผ่าน <b data-draw="n" data-source="kpi" data-field="hit_pct" data-row="0" data-fmt="pct">—</b>) และมีเพียง <b data-draw="n" data-source="kpi" data-field="all18_people" data-row="0" data-fmt="int">—</b> คนที่ผ่านครบทั้ง 18 วัน ตัวฉุดหลักคือการบันทึกไม่ต่อเนื่อง วันเสาร์-อาทิตย์ (ผ่าน <b data-draw="n" data-source="kpi" data-field="weekend_hit_pct" data-row="0" data-fmt="pct">—</b>) และวันที่ขาดเพียงเล็กน้อย</p>
-  </header>
-
-  <section class="sx-tiles" id="kpis">
-    <div class="sx-card sx-tile"><span class="l">วันที่เดินถึง 7,000 ก้าว</span><span class="v" data-draw="n" data-source="kpi" data-field="hit_pct" data-row="0" data-fmt="pct">—</span><span class="c sx-warn">ครึ่งแรก <span data-draw="n" data-source="kpi" data-field="first_half_hit_pct" data-row="0" data-fmt="pct">—</span> → ครึ่งหลัง <span data-draw="n" data-source="kpi" data-field="second_half_hit_pct" data-row="0" data-fmt="pct">—</span></span></div>
-    <div class="sx-card sx-tile"><span class="l">คนที่ผ่านครบ 18 วัน</span><span class="v" data-draw="n" data-source="kpi" data-field="all18_people" data-row="0" data-fmt="int">—</span><span class="c sx-bad"><span data-draw="n" data-source="kpi" data-field="all18_pct" data-row="0" data-fmt="pct">—</span> ของผู้เข้าร่วม</span></div>
-    <div class="sx-card sx-tile"><span class="l">คนที่บันทึกครบ 18 วัน</span><span class="v" data-draw="n" data-source="kpi" data-field="logged18_pct" data-row="0" data-fmt="pct">—</span><span class="c sx-bad"><span data-draw="n" data-source="kpi" data-field="logged18_people" data-row="0" data-fmt="int">—</span> คน · วันที่ต่ำกว่า 500 ก้าว <span data-draw="n" data-source="kpi" data-field="under500_days" data-row="0" data-fmt="int">—</span> วัน</span></div>
-    <div class="sx-card sx-tile"><span class="l">ผ่านเป้า วันธรรมดา / เสาร์-อาทิตย์</span><span class="v"><span data-draw="n" data-source="kpi" data-field="weekday_hit_pct" data-row="0" data-fmt="pct0">—</span> / <span data-draw="n" data-source="kpi" data-field="weekend_hit_pct" data-row="0" data-fmt="pct0">—</span></span><span class="c sx-warn">ค่ากลาง <span data-draw="n" data-source="kpi" data-field="weekday_median" data-row="0" data-fmt="int">—</span> / <span data-draw="n" data-source="kpi" data-field="weekend_median" data-row="0" data-fmt="int">—</span> ก้าว</span></div>
-  </section>
-
-  <section class="sx-sec" id="daily-sec">
-    <h2>ค่ากลางจำนวนก้าวรายวัน เทียบเป้า 7,000</h2>
-    <div class="sx-legend"><span><i class="sx-sw sx-c0"></i>วันธรรมดา</span><span><i class="sx-sw" style="background:var(--color-warn)"></i>เสาร์-อาทิตย์</span><span>เส้นประ = เป้า 7,000 ก้าว · ตัวเลขบนแท่ง = % คนที่ผ่านในวันนั้น</span></div>
-    <div class="sx-chart" id="daily-chart" data-draw="daily" data-source="daily"></div>
-  </section>
-
-  <section class="sx-sec" id="dist-sec">
-    <h2>การกระจายของจำนวนก้าวรายคน (ค่าเฉลี่ยต่อวันของแต่ละคน)</h2>
-    <p class="sx-note">ค่ากลางของคนทั้งหมดอยู่ที่ <b data-draw="n" data-source="dist_summary" data-field="median_mean" data-row="0" data-fmt="int">—</b> ก้าว ครึ่งกลางของคนอยู่ระหว่าง <b data-draw="n" data-source="dist_summary" data-field="p25" data-row="0" data-fmt="int">—</b>–<b data-draw="n" data-source="dist_summary" data-field="p75" data-row="0" data-fmt="int">—</b> ก้าว · กลุ่ม 5,000–7,000 ก้าว (<b data-draw="n" data-source="dist_summary" data-field="near_people" data-row="0" data-fmt="int">—</b> คน) ขาดอีกไม่ถึง 2,000 ก้าว จึงเป็นกลุ่มที่ดันให้ผ่านได้เร็วที่สุด</p>
-    <div class="sx-legend"><span><i class="sx-sw" style="background:var(--color-ok)"></i>เฉลี่ย ≥7,000: <span data-draw="n" data-source="dist_summary" data-field="pass_people" data-row="0" data-fmt="int">—</span> คน · <span data-draw="n" data-source="dist_summary" data-field="pass_pct" data-row="0" data-fmt="pct">—</span></span><span><i class="sx-sw" style="background:var(--color-warn)"></i>5,000–6,999: <span data-draw="n" data-source="dist_summary" data-field="near_people" data-row="0" data-fmt="int">—</span> คน · <span data-draw="n" data-source="dist_summary" data-field="near_pct" data-row="0" data-fmt="pct">—</span></span><span><i class="sx-sw" style="background:var(--cds-chart-muted)"></i>ต่ำกว่า 5,000: <span data-draw="n" data-source="dist_summary" data-field="low_people" data-row="0" data-fmt="int">—</span> คน · <span data-draw="n" data-source="dist_summary" data-field="low_pct" data-row="0" data-fmt="pct">—</span></span></div>
-    <div class="sx-chart" id="dist-chart" data-draw="dist" data-source="dist"></div>
-  </section>
-
-  <section class="sx-sec" id="dept-dist-sec">
-    <h2>การกระจายของจำนวนก้าวรายคน แยกตามฝ่าย</h2>
-    <p class="sx-note">จุดแต่ละจุดคือ 1 คน (ค่าเฉลี่ยก้าวต่อวัน) · กล่อง = คนครึ่งกลาง (25–75%) · ขีดในกล่อง = ค่ากลาง · เส้นปลาย = 10–90% · เรียงฝ่ายจากค่ากลางสูงไปต่ำ · ตัวเลขด้านขวา = % คนในฝ่ายที่เฉลี่ยผ่าน 7,000</p>
-    <div class="sx-legend"><span><i class="sx-sw" style="background:var(--color-ok)"></i>เฉลี่ย ≥7,000</span><span><i class="sx-sw" style="background:var(--color-warn)"></i>5,000–6,999</span><span><i class="sx-sw" style="background:var(--cds-chart-muted)"></i>ต่ำกว่า 5,000</span><span>เส้นประ = เป้า 7,000 ก้าว</span></div>
-    <div class="sx-chart" id="dept-dist-chart" data-draw="deptDist" data-source="dept_dist"></div>
-  </section>
-
-  <section class="sx-sec" id="scatter-sec">
-    <h2>ก้าวเฉลี่ย เทียบความสม่ำเสมอ (รายคน)</h2>
-    <p class="sx-note">มีเพียง <b data-draw="n" data-source="scatter_summary" data-field="consistent" data-row="0" data-fmt="int">—</b> คนที่อยู่มุมขวาบน (เฉลี่ยผ่าน และผ่าน ≥80% ของวันที่บันทึก) อีก <b data-draw="n" data-source="scatter_summary" data-field="avg_only" data-row="0" data-fmt="int">—</b> คนเฉลี่ยผ่านแต่ทำได้ไม่สม่ำเสมอ กลุ่มนี้ไม่ต้องเดินเพิ่ม แค่ต้องกระจายก้าวให้ครบทุกวัน · จุดกลวง = บันทึกไม่ถึง 9 วัน (<b data-draw="n" data-source="scatter_summary" data-field="irregular" data-row="0" data-fmt="int">—</b> คน) · ค่าเฉลี่ยเกิน 20,000 แสดงที่ขอบขวา (<b data-draw="n" data-source="scatter_summary" data-field="over20k" data-row="0" data-fmt="int">—</b> คน)</p>
-    <div class="sx-chart" id="scatter-chart" data-draw="scatter" data-source="person_pts"></div>
-  </section>
-
-  <div class="sx-grid2">
-    <section class="sx-sec" id="weekday-sec">
-      <h2>% วันที่ผ่านเป้า แยกตามวันในสัปดาห์</h2>
-      <div class="sx-chart" id="weekday-chart" data-draw="weekday" data-source="weekday"></div>
-    </section>
-    <section class="sx-sec" id="gap-sec">
-      <h2>วันที่ไม่ผ่าน ขาดไปกี่ก้าว</h2>
-      <div class="sx-chart" id="gap-chart" data-draw="gap" data-source="gap"></div>
-      <div class="sx-card"><span class="sx-note">ถ้าปิดช่องว่างที่ขาดไม่เกิน 2,000 ก้าว (เดินเพิ่ม 10–20 นาที) สัดส่วนวันที่ผ่านจะเพิ่มจาก <span data-draw="n" data-source="kpi" data-field="hit_pct" data-row="0" data-fmt="pct">—</span> เป็น</span><span class="sx-big sx-ok" data-draw="n" data-source="projection" data-fmt="pct">—</span></div>
-    </section>
+    <p class="note">เปิดหน้าแล้วแสดงไฟล์ CSV ล่าสุดในระบบให้อัตโนมัติ คำนวณเฉพาะแถวที่ activityType = steps · อัปโหลดไฟล์ของตัวเองเพื่อดูแทนได้ ไฟล์ที่อัปโหลดจะถูกประมวลผลในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ถูกส่งออกไปที่ใด · <a href="summary.html" style="color:var(--accent)">ดูรายงานสรุปและระบบรางวัล (1–18 พ.ย.)</a></p>
   </div>
 
-  <section class="sx-sec" id="segments-sec">
-    <h2>แบ่งกลุ่มผู้เข้าร่วม และสิ่งที่ควรทำกับแต่ละกลุ่ม</h2>
-    <p class="sx-note">% วันที่ผ่าน คิดจากวันที่แต่ละคนบันทึก แล้วเฉลี่ยทั้งกลุ่ม</p>
-    <div class="sx-tw">
-      <table id="segments-table" data-source="segments" data-row-key="segment">
-        <thead><tr><th data-field="segment">กลุ่ม</th><th data-field="description">ลักษณะ</th><th class="n" data-field="people">คน</th><th class="n" data-field="share_pct">สัดส่วน</th><th class="n" data-field="avg_steps">ก้าวเฉลี่ย</th><th class="n" data-field="hit_days_pct">% วันที่ผ่าน</th><th class="n" data-field="weekday_hit_pct">วันธรรมดา</th><th class="n" data-field="weekend_hit_pct">ส.-อา.</th><th data-field="action">แนวทาง</th></tr></thead>
-        <tbody data-draw="segments"></tbody>
-      </table>
+  <div class="card">
+    <div class="drop" id="drop">
+      <b>ลากไฟล์ CSV มาวางที่นี่</b>
+      <span class="note">หรือ</span>
+      <button class="primary" id="pick">เลือกไฟล์ CSV</button>
+      <input type="file" id="file" accept=".csv,text/csv" class="hidden">
+      <span class="status" id="status">ต้องมีคอลัมน์ date, time, firstname, lastname, groupName, activityType, steps</span>
     </div>
-  </section>
-
-  <div class="sx-grid2">
-    <section class="sx-sec" id="sources-sec">
-      <h2>% วันที่ผ่านเป้า แยกตามแหล่งข้อมูล</h2>
-      <div class="sx-chart" id="sources-chart" data-draw="sources" data-source="sources"></div>
-      <p class="sx-note">นาฬิกานับก้าวได้ครบกว่าโทรศัพท์ที่นับเฉพาะตอนพกติดตัว ส่วน Manual เป็นตัวเลขที่ผู้ใช้กรอกเอง ควรสุ่มตรวจ</p>
-    </section>
-    <section class="sx-sec" id="groups-sec">
-      <h2>เทียบรายฝ่าย</h2>
-      <div class="sx-tw">
-        <table id="groups-table" data-source="groups" data-row-key="short">
-          <thead><tr><th data-field="short">ฝ่าย</th><th class="n" data-field="people">คน</th><th class="n" data-field="avg_steps">ก้าวเฉลี่ย</th><th class="n" data-field="hit_pct">% วันที่ผ่าน</th><th class="n" data-field="avg_days">วันที่บันทึกเฉลี่ย</th><th class="n" data-field="all18">ผ่านครบ 18 วัน</th></tr></thead>
-          <tbody data-draw="groups"></tbody>
-        </table>
-      </div>
-      <h2>เพศและ BMI</h2>
-      <div class="sx-tw">
-        <table id="profile-table" data-source="profile" data-row-key="value">
-          <thead><tr><th data-field="value">กลุ่ม</th><th class="n" data-field="people">คน</th><th class="n" data-field="avg_steps">ก้าวเฉลี่ย</th><th class="n" data-field="hit_days_pct">% วันที่ผ่าน</th></tr></thead>
-          <tbody data-draw="profile"></tbody>
-        </table>
-      </div>
-    </section>
+    <div class="bar hidden" id="filters" style="margin-top:14px">
+      <label id="fFileWrap" class="hidden">ไฟล์ข้อมูลในระบบ<select id="fFile" style="max-width:260px"></select></label>
+      <label>ฝ่าย<select id="fGroup"></select></label>
+      <label>ตั้งแต่วันที่<input type="date" id="fFrom"></label>
+      <label>ถึงวันที่<input type="date" id="fTo"></label>
+      <label>เป้าหมาย (ก้าว/วัน)<input type="number" id="fTarget" value="7000" step="500" min="1000" style="width:110px"></label>
+      <label>ค้นหาชื่อ<input type="search" id="fName" list="names" placeholder="พิมพ์ชื่อแล้วกด Enter" style="width:220px"></label>
+      <datalist id="names"></datalist>
+    </div>
   </div>
 
-  <section class="sx-sec" id="rewards">
-    <h2>ระบบรางวัล: จำลองจากข้อมูลจริง 1–18 พ.ย.</h2>
-    <p class="sx-lead">ถ้าใช้ตั๋วจับรางวัล (เดินถึง 7,000 ก้าว 1 วัน = 1 ใบ) จะมีคนได้ลุ้นรางวัล <b data-draw="n" data-source="rw_summary" data-field="people_with_ticket_pct" data-row="0" data-fmt="pct">—</b> ของผู้เข้าร่วม ขณะที่การแข่งแบบทีมยังไม่มีทีมใดมี "วันทีมครบ" เลย (<b data-draw="n" data-source="rw_summary" data-field="teams_with_full_day" data-row="0" data-fmt="int">—</b> ทีม) เพราะทุกทีมมีสมาชิกที่บันทึกไม่สม่ำเสมอ รางวัลแบบทีมจึงช่วยกดดันเรื่องการบันทึกได้ตรงจุด</p>
+  <div id="dash" class="hidden" style="display:flex;flex-direction:column;gap:20px">
+    <p class="note" id="lead"></p>
+    <div class="tiles" id="tiles"></div>
 
-    <div class="sx-tiles" id="rw-kpis">
-      <div class="sx-card sx-tile"><span class="l">ตั๋วจับรางวัลทั้งหมด</span><span class="v" data-draw="n" data-source="rw_summary" data-field="tickets_total" data-row="0" data-fmt="int">—</span><span class="c">แจกให้ <span data-draw="n" data-source="rw_summary" data-field="people_with_ticket" data-row="0" data-fmt="int">—</span> คน</span></div>
-      <div class="sx-card sx-tile"><span class="l">เหรียญทอง (ผ่านครบ 7 วันในสัปดาห์)</span><span class="v"><span data-draw="n" data-source="rw_summary" data-field="gold_w1" data-row="0" data-fmt="int">—</span> → <span data-draw="n" data-source="rw_summary" data-field="gold_w2" data-row="0" data-fmt="int">—</span></span><span class="c sx-ok">สัปดาห์ 1 → สัปดาห์ 2</span></div>
-      <div class="sx-card sx-tile"><span class="l">ผ่านติดต่อกัน 14 วันขึ้นไป</span><span class="v" data-draw="n" data-source="rw_summary" data-field="streak14_people" data-row="0" data-fmt="int">—</span><span class="c">7 วันขึ้นไป <span data-draw="n" data-source="rw_summary" data-field="streak7_people" data-row="0" data-fmt="int">—</span> คน</span></div>
-      <div class="sx-card sx-tile"><span class="l">พัฒนาการดีเด่น (% วันที่ผ่านเพิ่ม ≥20 จุด)</span><span class="v" data-draw="n" data-source="rw_summary" data-field="improved_20_people" data-row="0" data-fmt="int">—</span><span class="c">จากผู้มีสิทธิ์ <span data-draw="n" data-source="rw_summary" data-field="improved_eligible" data-row="0" data-fmt="int">—</span> คน</span></div>
+    <section class="card">
+      <h2>ค่ากลางจำนวนก้าวรายวัน เทียบเป้า</h2>
+      <div class="legend"><span><i class="sw" style="background:var(--accent)"></i>วันธรรมดา</span><span><i class="sw" style="background:var(--wk)"></i>เสาร์-อาทิตย์</span><span>ตัวเลขบนแท่ง = % คนที่ผ่านในวันนั้น</span></div>
+      <p class="hint">คลิกแท่งเพื่อดูรายชื่อของวันนั้น</p>
+      <div class="chart" id="cDaily"></div>
+    </section>
+
+    <div class="grid2">
+      <section class="card">
+        <h2>% วันที่ผ่านเป้า แยกตามวันในสัปดาห์</h2>
+        <p class="hint">คลิกแถวเพื่อดูรายชื่อ</p>
+        <div class="chart" id="cWeekday"></div>
+      </section>
+      <section class="card">
+        <h2>วันที่ไม่ผ่าน ขาดไปกี่ก้าว</h2>
+        <p class="hint">คลิกแถวเพื่อดูรายชื่อวันที่ไม่ผ่านในช่วงนั้น</p>
+        <div class="chart" id="cGap"></div>
+      </section>
     </div>
 
-    <div class="sx-grid2">
-      <div class="sx-sec" id="rw-tickets-sec">
-        <h2>จำนวนตั๋วที่แต่ละคนจะได้</h2>
-        <div class="sx-chart" id="rw-tickets-chart" data-draw="rwTickets" data-source="rw_tickets"></div>
-      </div>
-      <div class="sx-sec" id="rw-streaks-sec">
-        <h2>สถิติผ่านติดต่อกันยาวที่สุดของแต่ละคน</h2>
-        <div class="sx-chart" id="rw-streaks-chart" data-draw="rwStreaks" data-source="rw_streaks"></div>
-      </div>
-    </div>
+    <section class="card">
+      <h2>การกระจายของจำนวนก้าวรายคน (ค่าเฉลี่ยต่อวัน)</h2>
+      <div class="legend" id="lgDist"></div>
+      <p class="hint">คลิกแท่งเพื่อดูรายชื่อคนในช่วงนั้น</p>
+      <div class="chart" id="cDist"></div>
+    </section>
 
-    <div class="sx-sec" id="rw-badges-sec">
-      <h2>เหรียญรายสัปดาห์ (สัปดาห์เต็ม อา.–ส.)</h2>
-      <div class="sx-tw">
-        <table id="rw-badges-table" data-source="rw_badges" data-row-key="week">
-          <thead><tr><th data-field="week">สัปดาห์</th><th class="n" data-field="gold">ทอง (7 วัน)</th><th class="n" data-field="silver">เงิน (6 วัน)</th><th class="n" data-field="bronze">ทองแดง (5 วัน)</th><th class="n" data-field="any_badge">ได้เหรียญ</th><th class="n" data-field="any_pct">% ผู้เข้าร่วม</th></tr></thead>
-          <tbody data-draw="rwBadges"></tbody>
-        </table>
-      </div>
-    </div>
+    <section class="card">
+      <h2>การกระจายรายคน แยกตามฝ่าย</h2>
+      <p class="note">จุด = 1 คน · กล่อง = คนครึ่งกลาง (25–75%) · ขีดดำ = ค่ากลาง · เส้นปลาย = 10–90% · ตัวเลขขวา = % คนที่เฉลี่ยผ่านเป้า</p>
+      <p class="hint">คลิกชื่อฝ่ายหรือกล่องเพื่อดูทั้งฝ่าย · คลิกจุดเพื่อดูรายบุคคล</p>
+      <div class="chart" id="cDept"></div>
+    </section>
 
-    <div class="sx-sec" id="rw-teams-sec">
-      <h2>คะแนนทีมย่อย <span data-draw="n" data-source="rw_summary" data-field="teams" data-row="0" data-fmt="int">—</span> ทีม (คละกลุ่ม หัวหน้าทีมจากกลุ่ม A/B)</h2>
-      <p class="sx-note">คะแนนทีม = % สมาชิกที่ผ่าน 7,000 ก้าวในแต่ละวัน เฉลี่ยทั้งช่วง โดยวันเสาร์-อาทิตย์นับสองเท่า ใครไม่บันทึกนับเป็น 0 · ทีมที่ดีที่สุด <b data-draw="n" data-source="rw_summary" data-field="team_score_best" data-row="0" data-fmt="pct">—</b> ค่ากลาง <b data-draw="n" data-source="rw_summary" data-field="team_score_median" data-row="0" data-fmt="pct">—</b> ต่ำสุด <b data-draw="n" data-source="rw_summary" data-field="team_score_worst" data-row="0" data-fmt="pct">—</b></p>
-      <div class="sx-chart" id="rw-teams-chart" data-draw="rwTeams" data-source="rw_teams"></div>
-    </div>
+    <section class="card">
+      <h2>ก้าวเฉลี่ย เทียบความสม่ำเสมอ (รายคน)</h2>
+      <p class="note" id="scNote"></p>
+      <div class="legend" id="lgScatter"></div>
+      <p class="hint">คลิกจุดเพื่อดูรายบุคคล</p>
+      <div class="chart" id="cScatter"></div>
+    </section>
 
-    <div class="sx-plan" id="rw-rules">
-      <div class="sx-card"><h3>รายบุคคล (งบ 50%)</h3><span class="who">ให้รางวัลความสม่ำเสมอ ไม่ใช่ก้าวมากที่สุด</span><ul><li>ตั๋วจับรางวัล: ผ่าน 1 วัน = 1 ใบ จับทุกเดือน</li><li>เหรียญทองแดง 5 วัน · เงิน 6 วัน · ทอง 7 วันต่อสัปดาห์</li><li>ยกย่องเมื่อผ่านติดต่อกัน 14, 30, 60 วัน</li></ul></div>
-      <div class="sx-card"><h3>รายกลุ่ม (งบ 40%)</h3><span class="who">ทีมย่อย 6–7 คน คละกลุ่ม</span><ul><li>คะแนน = % สมาชิกที่ผ่านในแต่ละวัน</li><li>เสาร์-อาทิตย์คะแนนคูณสอง</li><li>โบนัส "วันทีมครบ" เมื่อทุกคนผ่าน</li><li>นับก้าวเข้าคะแนนทีมสูงสุด 15,000 ก้าวต่อวัน</li></ul></div>
-      <div class="sx-card"><h3>พัฒนาการดีเด่น (งบ 10%)</h3><span class="who">เปิดโอกาสให้กลุ่ม D2 และ E</span><ul><li>% วันที่ผ่านเพิ่มขึ้นอย่างน้อย 20 จุด เทียบช่วงก่อนหน้า</li><li>ต้องบันทึกอย่างน้อย 3 วันในแต่ละช่วง</li><li>ข้อมูลกรอกเอง (Manual) ต้องแนบภาพหน้าจอยืนยัน</li></ul></div>
+    <div class="grid2">
+      <section class="card">
+        <h2>แบ่งกลุ่มผู้เข้าร่วม</h2>
+        <p class="hint">คลิกแถวเพื่อดูรายชื่อในกลุ่ม</p>
+        <div class="tw"><table id="tSeg"><thead><tr><th>กลุ่ม</th><th>เกณฑ์</th><th class="n">คน</th><th class="n">ก้าวเฉลี่ย</th><th class="n">% วันที่ผ่าน</th></tr></thead><tbody></tbody></table></div>
+      </section>
+      <section class="card">
+        <h2>% วันที่ผ่านเป้า แยกตามแหล่งข้อมูล</h2>
+        <p class="hint">คลิกแถวเพื่อดูรายชื่อ</p>
+        <div class="chart" id="cSource"></div>
+      </section>
     </div>
-  </section>
-
-  <section class="sx-sec" id="plan">
-    <h2>แผนให้ทุกคนเดิน 7,000 ก้าวขึ้นไปทุกวัน</h2>
-    <div class="sx-plan">
-      <div class="sx-card"><h3>1. แก้การบันทึกก่อน</h3><span class="who">กลุ่ม E และวันที่ต่ำกว่า 500 ก้าว</span><ul><li>ตั้งค่าซิงก์อัตโนมัติให้ทุกคน และสอนวิธีแก้เมื่อซิงก์ไม่ขึ้น</li><li>แจ้งเตือนตอนเย็นเมื่อยังไม่มีข้อมูลของวันนั้น</li><li>สนับสนุนสายรัดนับก้าว เพราะผู้ใช้นาฬิกาผ่านเป้ามากกว่าเกือบเท่าตัว</li></ul></div>
-      <div class="sx-card"><h3>2. เดินในเวลางาน</h3><span class="who">ทุกกลุ่ม ได้ประมาณ 3,000 ก้าว</span><ul><li>เดินช่วงพัก 10 นาที ตอน 10:00 และ 15:00</li><li>ประชุมแบบเดิน ใช้บันได เดินหลังอาหารกลางวัน</li><li>แจ้งเตือนเมื่อนั่งนานเกิน 60 นาที</li></ul></div>
-      <div class="sx-card"><h3>3. ปิดช่องโหว่เสาร์-อาทิตย์</h3><span class="who">กลุ่ม B, C, D1</span><ul><li>นัดเดินเป็นทีม หรือ virtual walk ช่วงสุดสัปดาห์</li><li>คะแนนคูณสองเมื่อผ่านเป้าวันเสาร์และอาทิตย์</li><li>ข้อความเตือนเช้าวันเสาร์พร้อมเส้นทางเดินแนะนำ</li></ul></div>
-      <div class="sx-card"><h3>4. ปิดส่วนที่ขาดตอนเย็น</h3><span class="who">กลุ่ม C, D1</span><ul><li>แจ้งเตือน 18:00 ว่า "เหลืออีก X ก้าว ≈ Y นาที"</li><li>เดิน 1,000 ก้าวใช้เวลาประมาณ 10 นาที</li></ul></div>
-      <div class="sx-card"><h3>5. เป้าแบบขั้นบันได</h3><span class="who">กลุ่ม D2 และกลุ่ม BMI สูงหรือต่ำ</span><ul><li>สัปดาห์ 1–2: 5,000 · สัปดาห์ 3–4: 6,000 · สัปดาห์ 5 ขึ้นไป: 7,000 ก้าว</li><li>ผู้มีปัญหาข้อเข่าหรือโรคประจำตัว ควรปรึกษาแพทย์ก่อน</li></ul></div>
-      <div class="sx-card"><h3>6. ปรับตัวชี้วัดและรางวัล</h3><span class="who">ผู้จัดโครงการ</span><ul><li>วัดผลจากจำนวนวันที่ผ่านและสถิติผ่านติดต่อกัน แทนค่าเฉลี่ย</li><li>จัดอันดับฝ่ายด้วย % สมาชิกที่ผ่านในแต่ละวัน</li><li>ให้กลุ่ม A และ B เป็นหัวหน้าทีมย่อย ทีมละ 5–6 คน</li></ul></div>
-    </div>
-  </section>
-
-  <section class="sx-sec" id="targets">
-    <h2>เป้าหมายติดตามรายสัปดาห์</h2>
-    <div class="sx-tw">
-      <table>
-        <thead><tr><th>ตัวชี้วัด</th><th class="n">ปัจจุบัน</th><th class="n">เป้า 4 สัปดาห์</th><th class="n">เป้า 8 สัปดาห์</th></tr></thead>
-        <tbody>
-          <tr><td>คนที่บันทึกครบทุกวัน</td><td class="n"><span data-draw="n" data-source="kpi" data-field="logged18_pct" data-row="0" data-fmt="pct0">—</span></td><td class="n">60%</td><td class="n">90%</td></tr>
-          <tr><td>วันที่ผ่าน 7,000 ก้าว</td><td class="n"><span data-draw="n" data-source="kpi" data-field="hit_pct" data-row="0" data-fmt="pct0">—</span></td><td class="n">65%</td><td class="n">80%</td></tr>
-          <tr><td>วันเสาร์-อาทิตย์ที่ผ่าน</td><td class="n"><span data-draw="n" data-source="kpi" data-field="weekend_hit_pct" data-row="0" data-fmt="pct0">—</span></td><td class="n">55%</td><td class="n">75%</td></tr>
-          <tr><td>คนที่ผ่านครบทุกวัน</td><td class="n"><span data-draw="n" data-source="kpi" data-field="all18_pct" data-row="0" data-fmt="pct">—</span></td><td class="n">20%</td><td class="n">50%</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <details id="notes">
-    <summary>วิธีคำนวณและข้อควรระวัง</summary>
-    <div class="sx-note">
-      <p>ตัดบัญชีแอดมินออก และรวมรายการซ้ำ (คนเดียวกัน วันเดียวกัน จากต่างแหล่ง ซึ่งจำนวนก้าวเท่ากัน) เหลือ 1 รายการต่อคนต่อวัน ระบุตัวบุคคลด้วยชื่อ นามสกุล และฝ่าย</p>
-      <p>"ผ่านครบ 18 วัน" นับวันที่ไม่ได้บันทึกเป็นไม่ผ่าน แบ่งกลุ่ม: A ผ่านครบ 18 วัน · E บันทึกไม่ถึง 9 วัน · B ผ่าน ≥80% ของวันที่บันทึก · C ค่าเฉลี่ย ≥7,000 · D1 ค่าเฉลี่ย 5,000–6,999 · D2 ค่าเฉลี่ยต่ำกว่า 5,000</p>
-      <p>มี 14 วันที่บันทึกเกิน 30,000 ก้าว (สูงสุด 65,970) ควรสุ่มตรวจสอบ BMI ใช้เกณฑ์เอเชีย จากน้ำหนักตั้งต้น ไฟล์นี้เป็นข้อมูลสรุป ไม่มีรายชื่อบุคคล</p>
-    </div>
-  </details>
+  </div>
 </div>
 
+<aside id="drawer" aria-label="รายชื่อตามที่เลือก">
+  <header>
+    <div><h3 id="dTitle"></h3><p class="note" id="dSub"></p></div>
+    <button id="dClose" aria-label="ปิด">ปิด ✕</button>
+  </header>
+  <div class="dtools">
+    <input type="search" id="dSearch" placeholder="กรองชื่อหรือฝ่าย">
+    <label><input type="checkbox" id="dDupes">รวมแถวที่บันทึกซ้ำในวันเดียวกัน</label>
+    <button id="dDl">ดาวน์โหลด CSV</button>
+  </div>
+  <div class="dbody">
+    <p class="note" id="dCount" style="margin:8px 0"></p>
+    <table><thead><tr>
+      <th data-k="key">date</th><th data-k="time">time</th><th data-k="name">ชื่อ-นามสกุล</th><th data-k="group">groupName</th><th data-k="at">activityType</th><th data-k="steps" class="n">steps</th>
+    </tr></thead><tbody id="dRows"></tbody></table>
+    <button id="dMore" class="hidden">แสดงเพิ่ม</button>
+  </div>
+</aside>
+<div id="tip"></div>
+
 <script>
-window.sxFmt = function (v, f) {
-  if (v == null || v === '' || isNaN(+v)) return '—';
-  v = +v;
-  if (f === 'pct') return v.toFixed(1) + '%';
-  if (f === 'pct0') return Math.round(v) + '%';
-  return d3.format(',')(Math.round(v));
-};
-window.sxColor = function (i) { return dash.colors[i % dash.colors.length]; };
-document.querySelectorAll('.sx-c0').forEach((e) => { e.style.background = dash.colors[0]; });
-dash.calc('projection', {
-  inputs: ['kpi', 'gap'],
-  title: 'คาดการณ์ % วันที่ผ่าน ถ้าปิดช่องว่าง ≤2,000 ก้าว',
-  description: 'สัดส่วนวันที่ผ่านปัจจุบัน บวกวันที่ไม่ผ่านแต่ขาดไม่เกิน 2,000 ก้าว',
-  fn: (kpi, gap) => {
-    const hit = +kpi[0].hit_pct;
-    const near = gap.filter((r) => r.gap === '≤1,000' || r.gap === '1,001–2,000').reduce((a, r) => a + +r.share_pct, 0);
-    return Math.round((hit + (100 - hit) * near / 100) * 10) / 10;
+const $ = (id) => document.getElementById(id);
+const fmt = d3.format(',');
+const f0 = (v) => fmt(Math.round(v));
+const pct = (v) => (isFinite(v) ? v.toFixed(1) : '0.0') + '%';
+const TH_DOW = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+const TH_MON = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+const DEPT_COLORS = ['#2f6fd6', '#e0832a', '#1d9a7f', '#c8457f', '#8a63d2', '#6b8e23', '#b8860b', '#4682b4'];
+const S = { raw: [], group: 'all', from: null, to: null, target: 7000, M: null, sel: null, dupes: false, q: '', sortK: 'key', sortDir: 1, limit: 300 };
+
+const dowOf = (k) => new Date(k + 'T00:00:00Z').getUTCDay();
+const thDate = (k) => { const [y, m, d] = k.split('-'); return `${+d} ${TH_MON[+m - 1]} ${y}`; };
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+// ---------- loading ----------
+function decode(buf) {
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(buf); } catch (e) { return new TextDecoder('windows-874').decode(buf); }
+}
+function parseDate(s) {
+  s = (s || '').trim(); let m, y, mo, d;
+  if ((m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/))) { d = +m[1]; mo = +m[2]; y = +m[3]; }
+  else if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) { y = +m[1]; mo = +m[2]; d = +m[3]; }
+  else return null;
+  if (y > 2400) y -= 543;
+  if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+  return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+function setStatus(msg, err) { const s = $('status'); s.textContent = msg; s.classList.toggle('err', !!err); }
+
+function loadText(text, fname) {
+  text = text.replace(/^﻿/, '');
+  let rows;
+  try { rows = d3.csvParse(text, (r) => { const o = {}; for (const k in r) o[k.replace(/^﻿/, '').trim()] = r[k]; return o; }); }
+  catch (e) { setStatus('อ่านไฟล์ไม่ได้: ' + e.message, true); return; }
+  const cols = (rows.columns || []).map((c) => c.replace(/^﻿/, '').trim());
+  const need = ['date', 'firstname', 'lastname', 'groupName', 'activityType', 'steps'];
+  const miss = need.filter((c) => !cols.includes(c));
+  if (miss.length) { setStatus('ไฟล์นี้ไม่มีคอลัมน์: ' + miss.join(', '), true); return; }
+  let nStep = 0, nAdmin = 0, nBad = 0;
+  const out = [];
+  for (const r of rows) {
+    const at = (r.activityType || '').trim();
+    if (!/^steps?$/i.test(at)) continue;
+    nStep++;
+    const g = (r.groupName || '').replace(/\s+/g, ' ').trim();
+    if (/แอดมิน|admin/i.test(g)) { nAdmin++; continue; }
+    const key = parseDate(r.date);
+    const st = +String(r.steps ?? '').replace(/,/g, '');
+    if (!key || r.steps === '' || !isFinite(st)) { nBad++; continue; }
+    const first = (r.firstname || '').trim(), last = (r.lastname || '').trim();
+    out.push({ date: (r.date || '').trim(), time: (r.time || '').trim(), key, first, last, name: (first + ' ' + last).trim(),
+      group: g, short: (g.match(/M-[A-Z]+/) || [g || 'ไม่ระบุ'])[0], gid: (r.groupId || g).trim(), at, steps: st,
+      source: (r.source || '').trim() || 'ไม่ระบุ' });
   }
-});
-dash.draw('n', (el) => {
-  const r = dash.data(el.dataset.source);
-  if (r.status !== 'ok') { el.textContent = '—'; return; }
-  let v = r.data;
-  if (Array.isArray(v)) { const row = v[+(el.dataset.row || 0)]; v = row ? row[el.dataset.field] : null; }
-  el.textContent = sxFmt(v, el.dataset.fmt);
-});
-</script>
+  if (!out.length) { setStatus(`ไม่พบแถวที่ activityType = steps ในไฟล์ ${fname} (ทั้งหมด ${fmt(rows.length)} แถว)`, true); return; }
+  S.raw = out;
+  // auto date range: trim edge days with fewer than half the usual number of people
+  const cnt = d3.rollup(out, (v) => new Set(v.map((d) => d.first + '|' + d.last + '|' + d.gid)).size, (d) => d.key);
+  const keys = [...cnt.keys()].sort();
+  const med = d3.median(keys, (k) => cnt.get(k));
+  let i = 0, j = keys.length - 1;
+  while (i < j && cnt.get(keys[i]) < med * 0.5) i++;
+  while (j > i && cnt.get(keys[j]) < med * 0.5) j--;
+  S.from = keys[i]; S.to = keys[j];
+  for (const id of ['fFrom', 'fTo']) { $(id).min = keys[0]; $(id).max = keys[keys.length - 1]; }
+  $('fFrom').value = S.from; $('fTo').value = S.to;
+  const groups = [...new Set(out.map((d) => d.short))].sort();
+  $('fGroup').replaceChildren(new Option('ทุกฝ่าย', 'all'), ...groups.map((g) => new Option(g, g)));
+  S.group = 'all'; $('fGroup').value = 'all';
+  const trimmed = keys.length - (j - i + 1);
+  setStatus(`โหลด ${fname} แล้ว · ทั้งหมด ${fmt(rows.length)} แถว · activityType = steps ${fmt(nStep)} แถว` +
+    (nAdmin ? ` · ตัดบัญชีแอดมิน ${fmt(nAdmin)} แถว` : '') + (nBad ? ` · ข้อมูลไม่สมบูรณ์ ${fmt(nBad)} แถว` : '') +
+    (trimmed ? ` · ตั้งช่วงวันอัตโนมัติโดยตัดวันต้น/ท้ายที่มีคนบันทึกน้อยกว่าครึ่งหนึ่ง ${trimmed} วัน` : ''));
+  $('filters').classList.remove('hidden'); $('dash').classList.remove('hidden');
+  closeDrawer();
+  update();
+}
+async function loadFile(f) {
+  if (!f) return;
+  setStatus('กำลังอ่านไฟล์ ' + f.name + ' …');
+  const buf = await f.arrayBuffer();
+  loadText(decode(buf), f.name);
+}
 
-<script>
-// shared helpers for charts
-window.sxTip = function (box) {
-  const tt = document.createElement('div'); tt.className = 'sx-tt'; tt.hidden = true; box.appendChild(tt);
-  return {
-    show(ev, lines) {
-      tt.replaceChildren();
-      lines.forEach(([k, v], i) => { const d = document.createElement('div'); if (v == null) { const b = document.createElement('b'); b.textContent = k; d.appendChild(b); } else { d.append(k + ' '); const b = document.createElement('b'); b.textContent = v; d.appendChild(b); } tt.appendChild(d); });
-      tt.hidden = false;
-      const br = box.getBoundingClientRect();
-      let x = ev.clientX - br.left + 12, y = ev.clientY - br.top - 10;
-      const w = tt.offsetWidth; if (x + w > br.width) x = Math.max(0, ev.clientX - br.left - w - 12);
-      tt.style.left = x + 'px'; tt.style.top = Math.max(0, y) + 'px';
-    },
-    hide() { tt.hidden = true; }
-  };
-};
-window.sxState = function (el, r) {
-  if (r.status === 'ok') return true;
-  el.replaceChildren();
-  const p = document.createElement('p'); p.className = 'sx-note';
-  p.textContent = r.status === 'error' || r.status === 'missing' ? 'โหลดข้อมูลไม่สำเร็จ' : '—';
-  el.appendChild(p); return false;
-};
-// horizontal bars: rows, label key, value key, formatter, color fn, tooltip fn, max
-window.sxHBar = function (el, rows, o) {
-  el.replaceChildren();
-  const W = Math.max(280, el.clientWidth || 400), rh = 30, H = rows.length * rh + 8;
-  const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).attr('role', 'img').attr('aria-label', o.aria);
-  const lab = svg.append('g').selectAll('text').data(rows).join('text').text((d) => d[o.label]).attr('y', (d, i) => i * rh + rh / 2 + 4).attr('x', 0);
-  let lw = 0; lab.each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
-  const left = lw + 10, right = 64;
-  const x = d3.scaleLinear([0, o.max || d3.max(rows, (d) => +d[o.value])], [left, W - right]);
-  const tip = sxTip(el);
-  svg.append('g').selectAll('rect').data(rows).join('rect')
-    .attr('x', left).attr('y', (d, i) => i * rh + 6).attr('height', rh - 12).attr('rx', 3)
-    .attr('width', (d) => Math.max(1, x(+d[o.value]) - left))
-    .style('fill', o.color)
-    .on('pointermove', (ev, d) => tip.show(ev, o.tip(d))).on('pointerleave', () => tip.hide());
-  svg.append('g').selectAll('text').data(rows).join('text').attr('class', 'val')
-    .attr('x', (d) => x(+d[o.value]) + 6).attr('y', (d, i) => i * rh + rh / 2 + 4).text((d) => o.fmt(d[o.value]));
-  if (o.ref != null) {
-    svg.append('line').attr('x1', x(o.ref)).attr('x2', x(o.ref)).attr('y1', 0).attr('y2', H).style('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
+// ---------- model ----------
+function compute() {
+  const T = S.target, lowT = Math.max(0, T - 2000);
+  const rows = S.raw.filter((d) => d.key >= S.from && d.key <= S.to && (S.group === 'all' || d.short === S.group));
+  const dates = [];
+  for (let t = Date.parse(S.from + 'T00:00:00Z'); t <= Date.parse(S.to + 'T00:00:00Z'); t += 864e5) dates.push(new Date(t).toISOString().slice(0, 10));
+  const ND = dates.length;
+  const pm = new Map();
+  for (const r of rows) {
+    const pid = r.first + '|' + r.last + '|' + r.gid, k = pid + '#' + r.key;
+    let p = pm.get(k);
+    if (!p) { p = { pid, key: r.key, all: [], row: r }; pm.set(k, p); }
+    p.all.push(r);
+    // keep the highest value; on a tie prefer the row whose source is known
+    if (r.steps > p.row.steps || (r.steps === p.row.steps && p.row.source === 'ไม่ระบุ' && r.source !== 'ไม่ระบุ')) p.row = r;
   }
-};
-</script>
+  const pds = [...pm.values()];
+  const persons = new Map();
+  for (const p of pds) {
+    p.steps = p.row.steps; p.hit = p.steps >= T; p.dow = dowOf(p.key); p.wk = p.dow === 0 || p.dow === 6; p.source = p.row.source;
+    let q = persons.get(p.pid);
+    if (!q) { q = { pid: p.pid, name: p.row.name, group: p.row.group, short: p.row.short, pds: [] }; persons.set(p.pid, q); }
+    q.pds.push(p); p.person = q;
+  }
+  const P = [...persons.values()];
+  for (const q of P) {
+    q.days = q.pds.length; q.hitdays = q.pds.filter((p) => p.hit).length; q.mean = d3.mean(q.pds, (p) => p.steps); q.hitrate = q.hitdays / q.days;
+    q.seg = q.days === ND && q.hitdays === ND ? 'A' : q.days < ND / 2 ? 'E' : q.hitrate >= 0.8 ? 'B' : q.mean >= T ? 'C' : q.mean >= lowT ? 'D1' : 'D2';
+  }
+  return { T, lowT, ND, dates, pds, P };
+}
+const personPds = (list) => list.flatMap((q) => q.pds);
 
-<script>
-dash.draw('daily', (el) => {
-  const r = dash.data('daily');
-  if (!sxState(el, r)) return;
+function update() {
+  S.M = compute();
+  $('names').replaceChildren(...S.M.P.map((q) => new Option(q.name + ' · ' + q.short, q.name)));
+  renderAll();
+  if (S.sel) closeDrawer();
+}
+
+// ---------- tooltip ----------
+const tip = $('tip');
+function tipShow(ev, title, rows) {
+  tip.replaceChildren();
+  const b = document.createElement('b'); b.textContent = title; tip.append(b);
+  for (const [k, v] of rows) { const r = document.createElement('div'); r.className = 'r'; const a = document.createElement('span'); a.textContent = k; const c = document.createElement('span'); c.textContent = v; r.append(a, c); tip.append(r); }
+  tip.style.display = 'block';
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 14;
+  if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tip.style.left = Math.max(8, x) + 'px'; tip.style.top = Math.max(8, y) + 'px';
+}
+const tipHide = () => (tip.style.display = 'none');
+function markSel(node) { d3.selectAll('.chart .sel').classed('sel', false); document.querySelectorAll('tr.click.on').forEach((t) => t.classList.remove('on')); if (node) d3.select(node).classed('sel', true); }
+
+// ---------- chart helpers ----------
+function svgFor(el, H, aria) {
   el.replaceChildren();
-  const rows = r.data.map((d) => ({ ...d, median_steps: +d.median_steps, hit_pct: +d.hit_pct, mean_steps: +d.mean_steps, people: +d.people, wk: d.weekend === 'True' || d.weekend === 'true' }));
-  const W = Math.max(300, el.clientWidth || 600), H = 280, m = { t: 22, r: 8, b: 40, l: 8 };
-  const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).attr('role', 'img').attr('aria-label', 'แผนภูมิแท่งค่ากลางจำนวนก้าวรายวัน 1 ถึง 18 พฤศจิกายน เทียบเป้า 7,000 ก้าว');
-  const y = d3.scaleLinear([0, Math.max(9000, d3.max(rows, (d) => d.median_steps))], [H - m.b, m.t]).nice();
-  const yt = svg.append('g').selectAll('text').data(y.ticks(4)).join('text').text((d) => d3.format(',')(d)).attr('y', (d) => y(d) + 4);
-  let lw = 0; yt.each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
-  m.l = lw + 8;
-  const x = d3.scaleBand(rows.map((d) => d.date), [m.l, W - m.r]).padding(0.22);
-  svg.insert('g', ':first-child').selectAll('line').data(y.ticks(4)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--cds-chart-grid)');
-  const tip = sxTip(el);
-  const fd = d3.utcFormat('%-d'), parse = d3.utcParse('%Y-%m-%d');
-  svg.append('g').selectAll('rect').data(rows).join('rect')
-    .attr('x', (d) => x(d.date)).attr('width', x.bandwidth()).attr('rx', 2)
-    .attr('y', (d) => y(d.median_steps)).attr('height', (d) => y(0) - y(d.median_steps))
-    .style('fill', (d) => (d.wk ? 'var(--color-warn)' : sxColor(0)))
-    .on('pointermove', (ev, d) => tip.show(ev, [[`${d.dow} ${fd(parse(d.date))} พ.ย.`, null], ['ค่ากลาง', sxFmt(d.median_steps) + ' ก้าว'], ['ค่าเฉลี่ย', sxFmt(d.mean_steps) + ' ก้าว'], ['ผ่านเป้า', sxFmt(d.hit_pct, 'pct')], ['ผู้บันทึก', sxFmt(d.people) + ' คน']]))
-    .on('pointerleave', () => tip.hide());
-  const showPct = x.bandwidth() >= 26;
-  if (showPct) svg.append('g').selectAll('text').data(rows).join('text').attr('class', 'val').attr('text-anchor', 'middle')
-    .attr('x', (d) => x(d.date) + x.bandwidth() / 2).attr('y', (d) => y(d.median_steps) - 5).text((d) => Math.round(d.hit_pct) + '%');
-  svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(7000)).attr('y2', y(7000)).style('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1.5).attr('stroke-dasharray', '5 4');
-  const step = x.bandwidth() < 18 ? 2 : 1;
-  svg.append('g').selectAll('text').data(rows.filter((d, i) => i % step === 0)).join('text').attr('text-anchor', 'middle')
-    .attr('x', (d) => x(d.date) + x.bandwidth() / 2).attr('y', H - m.b + 16).text((d) => fd(parse(d.date)));
-  svg.append('g').selectAll('text').data(rows.filter((d, i) => i % step === 0)).join('text').attr('text-anchor', 'middle')
-    .attr('x', (d) => x(d.date) + x.bandwidth() / 2).attr('y', H - m.b + 31).text((d) => d.dow);
-});
+  const W = Math.max(300, el.clientWidth || 600);
+  const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).attr('role', 'img').attr('aria-label', aria);
+  return { svg, W };
+}
+function measure(sel) { let w = 0; sel.each(function () { w = Math.max(w, this.getComputedTextLength()); }); return w; }
 
-dash.draw('weekday', (el) => {
-  const r = dash.data('weekday');
-  if (!sxState(el, r)) return;
-  sxHBar(el, r.data, { label: 'day', value: 'hit_pct', max: 100, ref: null, aria: 'แผนภูมิแท่ง % วันที่ผ่านเป้า แยกตามวันในสัปดาห์',
-    fmt: (v) => sxFmt(v, 'pct'), color: (d) => (d.day === 'ส.' || d.day === 'อา.' ? 'var(--color-warn)' : sxColor(0)),
-    tip: (d) => [[d.day, null], ['ผ่านเป้า', sxFmt(d.hit_pct, 'pct')], ['ค่ากลาง', sxFmt(d.median_steps) + ' ก้าว'], ['คน-วัน', sxFmt(d.person_days)]] });
-});
+// horizontal bars: items {label, value(0-100 or count), text, color, onClick, tip}
+function hbar(el, items, opt) {
+  const RH = 30, H = items.length * RH + 6;
+  const { svg, W } = svgFor(el, H, opt.aria);
+  const labs = svg.append('g').selectAll('text').data(items).join('text').text((d) => d.label).attr('y', (d, i) => i * RH + RH / 2 + 4);
+  const lw = measure(labs) + 10;
+  const vals = svg.append('g').selectAll('text').data(items).join('text').attr('class', 'val').text((d) => d.text);
+  const vw = measure(vals) + 8;
+  const max = opt.max || d3.max(items, (d) => d.value) || 1;
+  const x = d3.scaleLinear([0, max], [lw, W - vw]);
+  svg.append('g').selectAll('rect').data(items).join('rect').attr('class', 'hit')
+    .attr('x', lw).attr('y', (d, i) => i * RH + 6).attr('height', RH - 12).attr('rx', 3)
+    .attr('width', (d) => Math.max(2, x(d.value) - lw)).style('fill', (d) => d.color)
+    .on('pointermove', (ev, d) => tipShow(ev, d.label, d.tip)).on('pointerleave', tipHide)
+    .on('click', function (ev, d) { markSel(this); d.onClick(); });
+  vals.attr('x', (d) => Math.max(lw + 2, x(d.value)) + 6).attr('y', (d, i) => i * RH + RH / 2 + 4);
+}
 
-dash.draw('gap', (el) => {
-  const r = dash.data('gap');
-  if (!sxState(el, r)) return;
-  sxHBar(el, r.data.map((d) => ({ ...d, lab: d.gap + ' ก้าว' })), { label: 'lab', value: 'share_pct', aria: 'แผนภูมิแท่งสัดส่วนวันที่ไม่ผ่าน แยกตามจำนวนก้าวที่ขาด',
-    fmt: (v) => sxFmt(v, 'pct'), color: (d, i) => (d.gap === '≤1,000' || d.gap === '1,001–2,000' ? 'var(--color-ok)' : 'var(--cds-chart-muted)'),
-    tip: (d) => [[`ขาด ${d.gap} ก้าว`, null], ['สัดส่วน', sxFmt(d.share_pct, 'pct')], ['จำนวนวัน', sxFmt(d.days)], ['ต้องเดินเพิ่ม', d.walk_minutes + ' นาที']] });
-});
+// ---------- renderers ----------
+function renderAll() {
+  const M = S.M;
+  renderTiles(M); chDaily(M); chWeekday(M); chGap(M); chDist(M); chDept(M); chScatter(M); tSeg(M); chSource(M);
+}
 
-dash.draw('sources', (el) => {
-  const r = dash.data('sources');
-  if (!sxState(el, r)) return;
-  sxHBar(el, r.data.map((d) => ({ ...d, lab: `${d.source} (${d.kind})` })), { label: 'lab', value: 'hit_pct', max: 100, aria: 'แผนภูมิแท่ง % วันที่ผ่านเป้า แยกตามแหล่งข้อมูล',
-    fmt: (v) => sxFmt(v, 'pct'), color: (d) => (d.kind === 'นาฬิกา' ? sxColor(0) : d.kind === 'โทรศัพท์' ? sxColor(1) : 'var(--cds-chart-muted)'),
-    tip: (d) => [[d.source, null], ['ผ่านเป้า', sxFmt(d.hit_pct, 'pct')], ['ก้าวเฉลี่ย', sxFmt(d.mean_steps)], ['คน-วัน', sxFmt(d.person_days)]] });
-});
-</script>
+function renderTiles(M) {
+  const hit = M.pds.filter((p) => p.hit).length / (M.pds.length || 1) * 100;
+  const all = M.P.filter((q) => q.seg === 'A').length;
+  const logged = M.P.filter((q) => q.days === M.ND).length;
+  const avgOk = M.P.filter((q) => q.mean >= M.T).length;
+  const med = d3.median(M.pds, (p) => p.steps) || 0;
+  const tiles = [
+    ['วันที่เดินถึงเป้า', pct(hit), `จาก ${fmt(M.pds.length)} คน-วัน`, () => select('ทุกวันที่ผ่านเป้า', '', M.pds.filter((p) => p.hit))],
+    ['คนที่ผ่านครบทุกวัน', fmt(all), `จาก ${fmt(M.P.length)} คน · ${M.ND} วัน`, () => select('คนที่ผ่านครบทุกวัน', `${all} คน`, personPds(M.P.filter((q) => q.seg === 'A')))],
+    ['คนที่บันทึกครบทุกวัน', pct(logged / (M.P.length || 1) * 100), `${fmt(logged)} คน`, () => select('คนที่บันทึกครบทุกวัน', `${logged} คน`, personPds(M.P.filter((q) => q.days === M.ND)))],
+    ['คนที่เฉลี่ยผ่านเป้า', fmt(avgOk), pct(avgOk / (M.P.length || 1) * 100) + ' ของผู้เข้าร่วม', () => select('คนที่เฉลี่ยผ่านเป้า', `${avgOk} คน`, personPds(M.P.filter((q) => q.mean >= M.T)))],
+    ['ค่ากลางก้าวต่อวัน', f0(med), `เป้า ${fmt(M.T)} ก้าว`, null],
+  ];
+  $('tiles').replaceChildren(...tiles.map(([l, v, c, fn]) => {
+    const d = document.createElement('div'); d.className = 'card tile';
+    d.innerHTML = '<span class="l"></span><span class="v"></span><span class="c"></span>';
+    d.children[0].textContent = l; d.children[1].textContent = v; d.children[2].textContent = c;
+    if (fn) { d.style.cursor = 'pointer'; d.title = 'คลิกเพื่อดูรายชื่อ'; d.onclick = () => { markSel(null); fn(); }; }
+    return d;
+  }));
+  const wk = M.pds.filter((p) => p.wk), wd = M.pds.filter((p) => !p.wk);
+  const r = (a) => a.filter((p) => p.hit).length / (a.length || 1) * 100;
+  $('lead').textContent = `${thDate(S.from)} – ${thDate(S.to)} (${M.ND} วัน) · ${S.group === 'all' ? 'ทุกฝ่าย' : S.group} · ${fmt(M.P.length)} คน · วันธรรมดาผ่าน ${pct(r(wd))} · เสาร์-อาทิตย์ผ่าน ${pct(r(wk))}`;
+}
 
-<script>
-window.sxTd = function (tr, text, cls) { const td = document.createElement('td'); if (cls) td.className = cls; td.textContent = text; tr.appendChild(td); return td; };
-window.sxMeter = function (td, pct, color) { const m = document.createElement('span'); m.className = 'sx-meter'; const i = document.createElement('i'); i.style.width = Math.min(100, +pct) + '%'; i.style.background = color; m.appendChild(i); td.appendChild(m); };
-const segColor = { A: 'var(--color-ok)', B: 'var(--color-ok)', C: 'var(--color-warn)', D1: 'var(--color-warn)', D2: 'var(--color-bad)', E: 'var(--color-fg-muted)' };
-window.sxSegColor = segColor;
-dash.draw('segments', (tb) => {
-  const r = dash.data('segments');
-  tb.replaceChildren();
-  if (r.status !== 'ok') return;
-  r.data.forEach((d) => {
-    const tr = document.createElement('tr');
-    const c = sxTd(tr, ''); const chip = document.createElement('span'); chip.className = 'sx-chip'; chip.textContent = d.segment; chip.style.color = sxSegColor[d.segment] || 'inherit'; c.appendChild(chip);
-    sxTd(tr, d.description); sxTd(tr, sxFmt(d.people), 'n'); sxTd(tr, sxFmt(d.share_pct, 'pct'), 'n'); sxTd(tr, sxFmt(d.avg_steps), 'n');
-    const h = sxTd(tr, sxFmt(d.hit_days_pct, 'pct'), 'n'); sxMeter(h, d.hit_days_pct, sxSegColor[d.segment]);
-    sxTd(tr, sxFmt(d.weekday_hit_pct, 'pct'), 'n'); sxTd(tr, sxFmt(d.weekend_hit_pct, 'pct'), 'n'); sxTd(tr, d.action);
-    tb.appendChild(tr);
-  });
-});
-dash.draw('groups', (tb) => {
-  const r = dash.data('groups');
-  tb.replaceChildren();
-  if (r.status !== 'ok') return;
-  const best = d3.max(r.data, (d) => +d.hit_pct), worst = d3.min(r.data, (d) => +d.hit_pct);
-  r.data.forEach((d) => {
-    const tr = document.createElement('tr');
-    sxTd(tr, d.short).title = d.group; sxTd(tr, sxFmt(d.people), 'n'); sxTd(tr, sxFmt(d.avg_steps), 'n');
-    const h = sxTd(tr, sxFmt(d.hit_pct, 'pct'), 'n'); if (+d.hit_pct === best) h.classList.add('sx-ok'); if (+d.hit_pct === worst) h.classList.add('sx-bad');
-    sxTd(tr, d3.format('.1f')(+d.avg_days), 'n'); sxTd(tr, sxFmt(d.all18), 'n');
-    tb.appendChild(tr);
-  });
-});
-dash.draw('profile', (tb) => {
-  const r = dash.data('profile');
-  tb.replaceChildren();
-  if (r.status !== 'ok') return;
-  r.data.forEach((d) => {
-    const tr = document.createElement('tr');
-    sxTd(tr, d.value); sxTd(tr, sxFmt(d.people), 'n'); sxTd(tr, sxFmt(d.avg_steps), 'n');
-    const h = sxTd(tr, sxFmt(d.hit_days_pct, 'pct'), 'n'); sxMeter(h, d.hit_days_pct, sxColor(0));
-    tb.appendChild(tr);
-  });
-});
-</script>
+function chDaily(M) {
+  const el = $('cDaily');
+  const by = d3.group(M.pds, (p) => p.key);
+  const data = M.dates.map((k) => { const v = by.get(k) || []; return { k, v, n: v.length, med: v.length ? d3.median(v, (p) => p.steps) : 0, hit: v.filter((p) => p.hit).length / (v.length || 1) * 100, dow: dowOf(k) }; });
+  const H = 280, m = { t: 22, r: 8, b: 30, l: 8 };
+  const { svg, W } = svgFor(el, H, 'แผนภูมิแท่งค่ากลางจำนวนก้าวรายวัน เทียบเป้า');
+  const y = d3.scaleLinear([0, Math.max(M.T * 1.3, d3.max(data, (d) => d.med) || 0)], [H - m.b, m.t]).nice();
+  const yt = svg.append('g').selectAll('text').data(y.ticks(4)).join('text').text((d) => fmt(d)).attr('y', (d) => y(d) + 4);
+  m.l = measure(yt) + 8;
+  svg.insert('g', ':first-child').selectAll('line').data(y.ticks(4)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--grid)');
+  const x = d3.scaleBand(data.map((d) => d.k), [m.l, W - m.r]).padding(0.2);
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('class', 'hit')
+    .attr('x', (d) => x(d.k)).attr('width', x.bandwidth()).attr('y', (d) => y(d.med)).attr('height', (d) => y(0) - y(d.med)).attr('rx', 2)
+    .style('fill', (d) => (d.dow === 0 || d.dow === 6 ? 'var(--wk)' : 'var(--accent)'))
+    .on('pointermove', (ev, d) => tipShow(ev, `${TH_DOW[d.dow]} ${thDate(d.k)}`, [['คนที่บันทึก', fmt(d.n)], ['ค่ากลาง', f0(d.med) + ' ก้าว'], ['% ผ่านเป้า', pct(d.hit)]]))
+    .on('pointerleave', tipHide)
+    .on('click', function (ev, d) { markSel(this); select(`${TH_DOW[d.dow]} ${thDate(d.k)}`, `${fmt(d.n)} คน · ผ่านเป้า ${pct(d.hit)}`, d.v); });
+  if (x.bandwidth() >= 24) svg.append('g').selectAll('text').data(data.filter((d) => d.n)).join('text').attr('class', 'val').attr('text-anchor', 'middle')
+    .attr('x', (d) => x(d.k) + x.bandwidth() / 2).attr('y', (d) => y(d.med) - 5).style('font-size', '11px').text((d) => Math.round(d.hit) + '%');
+  const step = x.bandwidth() >= 18 ? 1 : 2;
+  svg.append('g').selectAll('text').data(data.filter((d, i) => i % step === 0)).join('text').attr('text-anchor', 'middle')
+    .attr('x', (d) => x(d.k) + x.bandwidth() / 2).attr('y', H - m.b + 16).text((d) => +d.k.slice(8));
+  svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(M.T)).attr('y2', y(M.T)).style('stroke', 'var(--ref)').attr('stroke-dasharray', '5 4');
+  svg.append('text').attr('x', W - m.r).attr('y', y(M.T) - 5).attr('text-anchor', 'end').text('เป้า ' + fmt(M.T));
+}
 
-<script>
-dash.draw('rwTickets', (el) => {
-  const r = dash.data('rw_tickets');
-  if (!sxState(el, r)) return;
-  sxHBar(el, r.data, { label: 'tickets', value: 'people', aria: 'แผนภูมิแท่งจำนวนคนตามจำนวนตั๋วที่ได้',
-    fmt: (v) => sxFmt(v) + ' คน', color: (d) => (d.tickets === '0 ใบ' ? 'var(--color-bad)' : sxColor(0)),
-    tip: (d) => [[d.tickets, null], ['จำนวนคน', sxFmt(d.people)], ['สัดส่วน', sxFmt(d.share_pct, 'pct')]] });
-});
-dash.draw('rwStreaks', (el) => {
-  const r = dash.data('rw_streaks');
-  if (!sxState(el, r)) return;
-  sxHBar(el, r.data, { label: 'streak', value: 'people', aria: 'แผนภูมิแท่งจำนวนคนตามสถิติผ่านติดต่อกันยาวที่สุด',
-    fmt: (v) => sxFmt(v) + ' คน', color: (d) => (d.streak === '7–13 วัน' || d.streak === '14–18 วัน' ? 'var(--color-ok)' : 'var(--cds-chart-muted)'),
-    tip: (d) => [[d.streak, null], ['จำนวนคน', sxFmt(d.people)], ['สัดส่วน', sxFmt(d.share_pct, 'pct')]] });
-});
-dash.draw('rwBadges', (tb) => {
-  const r = dash.data('rw_badges');
-  tb.replaceChildren();
-  if (r.status !== 'ok') return;
-  r.data.forEach((d) => {
-    const tr = document.createElement('tr');
-    sxTd(tr, d.week); sxTd(tr, sxFmt(d.gold), 'n'); sxTd(tr, sxFmt(d.silver), 'n'); sxTd(tr, sxFmt(d.bronze), 'n');
-    sxTd(tr, sxFmt(d.any_badge), 'n');
-    const h = sxTd(tr, sxFmt(d.any_pct, 'pct'), 'n'); sxMeter(h, d.any_pct, 'var(--color-ok)');
-    tb.appendChild(tr);
-  });
-});
-dash.draw('rwTeams', (el) => {
-  const r = dash.data('rw_teams');
-  if (!sxState(el, r)) return;
-  el.replaceChildren();
-  const rows = r.data.map((d) => ({ ...d, score: +d.score })).sort((a, b) => b.score - a.score);
-  const W = Math.max(300, el.clientWidth || 600), H = 240, m = { t: 14, r: 8, b: 26, l: 8 };
-  const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).attr('role', 'img').attr('aria-label', 'แผนภูมิแท่งคะแนนทีมย่อยทั้งหมด เรียงจากมากไปน้อย');
-  const y = d3.scaleLinear([0, 100], [H - m.b, m.t]);
-  const ticks = [0, 25, 50, 75, 100];
-  const yt = svg.append('g').selectAll('text').data(ticks).join('text').text((d) => d + '%').attr('y', (d) => y(d) + 4);
-  let lw = 0; yt.each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
-  m.l = lw + 8;
-  svg.insert('g', ':first-child').selectAll('line').data(ticks).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--cds-chart-grid)');
-  const x = d3.scaleBand(rows.map((d) => d.team), [m.l, W - m.r]).padding(0.18);
-  const med = d3.median(rows, (d) => d.score);
-  const tip = sxTip(el);
-  svg.append('g').selectAll('rect').data(rows).join('rect')
-    .attr('x', (d) => x(d.team)).attr('width', x.bandwidth()).attr('rx', 1.5)
-    .attr('y', (d) => y(d.score)).attr('height', (d) => y(0) - y(d.score))
-    .style('fill', (d, i) => (i < 3 ? 'var(--color-ok)' : d.score < med ? 'var(--cds-chart-muted)' : sxColor(0)))
-    .on('pointermove', (ev, d) => tip.show(ev, [[`${d.team} · อันดับ ${d.rank}`, null], ['คะแนนทีม', sxFmt(d.score, 'pct')], ['ไม่คูณวันหยุด', sxFmt(d.plain_pct, 'pct')], ['เสาร์-อาทิตย์', sxFmt(d.weekend_pct, 'pct')], ['สมาชิก', d.members + ' คน (หัวหน้ากลุ่ม ' + d.leader_seg + ')'], ['บันทึกไม่ถึง 9 วัน', d.nonlog_members + ' คน']]))
-    .on('pointerleave', () => tip.hide());
-  svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(med)).attr('y2', y(med)).style('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '5 4');
-  svg.append('text').attr('x', W - m.r).attr('y', y(med) - 5).attr('text-anchor', 'end').text('ค่ากลาง ' + sxFmt(med, 'pct'));
-  svg.append('text').attr('x', m.l).attr('y', H - 6).text('← ทีมคะแนนสูง (สีเขียว = 3 อันดับแรก)');
-  svg.append('text').attr('x', W - m.r).attr('y', H - 6).attr('text-anchor', 'end').text('ทีมคะแนนต่ำ →');
-});
-</script>
-<script>
-dash.draw('dist', (el) => {
-  const r = dash.data('dist');
-  if (!sxState(el, r)) return;
-  el.replaceChildren();
-  const rows = r.data.map((d) => ({ ...d, people: +d.people, share_pct: +d.share_pct, lo: +d.lo }));
-  const W = Math.max(300, el.clientWidth || 600), H = 280, m = { t: 22, r: 8, b: 40, l: 8 };
-  const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).attr('role', 'img').attr('aria-label', 'ฮิสโทแกรมจำนวนคนตามค่าเฉลี่ยก้าวต่อวัน ช่วงละ 1,000 ก้าว พร้อมเส้นเป้า 7,000 ก้าว');
-  const y = d3.scaleLinear([0, d3.max(rows, (d) => d.people)], [H - m.b, m.t]).nice();
-  const yt = svg.append('g').selectAll('text').data(y.ticks(4)).join('text').text((d) => d3.format(',')(d)).attr('y', (d) => y(d) + 4);
-  let lw = 0; yt.each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
-  m.l = lw + 8;
-  svg.insert('g', ':first-child').selectAll('line').data(y.ticks(4)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--cds-chart-grid)');
-  const x = d3.scaleBand(rows.map((d) => d.bin), [m.l, W - m.r]).paddingInner(0.08);
-  const col = (d) => (d.band === 'pass' ? 'var(--color-ok)' : d.band === 'near' ? 'var(--color-warn)' : 'var(--cds-chart-muted)');
-  const tip = sxTip(el);
-  const rng = (d) => (d.hi === '' ? '15,000 ก้าวขึ้นไป' : `${d3.format(',')(d.lo)}–${d3.format(',')(+d.hi - 1)} ก้าว`);
-  svg.append('g').selectAll('rect').data(rows).join('rect')
-    .attr('x', (d) => x(d.bin)).attr('width', x.bandwidth()).attr('rx', 1.5)
-    .attr('y', (d) => y(d.people)).attr('height', (d) => y(0) - y(d.people)).style('fill', col)
-    .on('pointermove', (ev, d) => tip.show(ev, [[rng(d), null], ['จำนวนคน', sxFmt(d.people)], ['สัดส่วน', sxFmt(d.share_pct, 'pct')]]))
-    .on('pointerleave', () => tip.hide());
-  const showLab = x.bandwidth() >= 22;
-  if (showLab) svg.append('g').selectAll('text').data(rows).join('text').attr('x', (d) => x(d.bin) + x.bandwidth() / 2).attr('y', (d) => y(d.people) - 5).attr('text-anchor', 'middle').text((d) => d.people);
-  const step = x.bandwidth() >= 30 ? 1 : 2;
-  svg.append('g').selectAll('text').data(rows.filter((d, i) => i % step === 0 || d.hi === '')).join('text')
-    .attr('x', (d) => x(d.bin) + x.bandwidth() / 2).attr('y', H - m.b + 16).attr('text-anchor', 'middle').text((d) => (d.hi === '' ? '15k+' : d.lo / 1000 + 'k'));
-  svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', H - 4).attr('text-anchor', 'middle').text('ค่าเฉลี่ยก้าวต่อวันของแต่ละคน (ช่วงละ 1,000 ก้าว)');
-  const x7 = x('7–8k') - (x.step() * x.paddingInner()) / 2;
-  svg.append('line').attr('x1', x7).attr('x2', x7).attr('y1', m.t - 8).attr('y2', H - m.b).style('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '5 4');
-  svg.append('text').attr('x', x7 + 5).attr('y', m.t - 8).text('เป้า 7,000');
-});
-</script>
-<script>
-const sxBand = (v) => (v >= 7000 ? 'var(--color-ok)' : v >= 5000 ? 'var(--color-warn)' : 'var(--cds-chart-muted)');
-dash.draw('deptDist', (el) => {
-  const r = dash.data('dept_dist'), pr = dash.data('person_pts');
-  if (!sxState(el, r) || !sxState(el, pr)) return;
-  el.replaceChildren();
-  const ds = r.data.map((d) => ({ ...d, p10: +d.p10, q1: +d.q1, median: +d.median, q3: +d.q3, p90: +d.p90, pass_pct: +d.pass_pct, people: +d.people }));
-  const pts = pr.data.map((d) => ({ ...d, v: Math.min(+d.avg_steps, 20000) }));
-  const RH = 56, W = Math.max(300, el.clientWidth || 600), m = { t: 8, r: 52, b: 34, l: 8 }, H = m.t + m.b + RH * ds.length;
-  const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).attr('role', 'img').attr('aria-label', 'แผนภาพการกระจายค่าเฉลี่ยก้าวต่อวันรายคน แยกตาม 5 ฝ่าย พร้อมกล่องคนครึ่งกลางและเส้นเป้า 7,000');
-  const lab = svg.append('g').selectAll('text').data(ds).join('text').text((d) => d.dept);
-  let lw = 0; lab.each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
-  m.l = lw + 12;
-  const x = d3.scaleLinear([0, 20000], [m.l, W - m.r]);
-  const y = d3.scaleBand(ds.map((d) => d.dept), [m.t, H - m.b]).padding(0.12);
-  lab.attr('x', 0).attr('y', (d) => y(d.dept) + y.bandwidth() / 2 + 4).style('fill', 'var(--color-fg)');
-  svg.insert('g', ':first-child').selectAll('line').data(x.ticks(5)).join('line').attr('x1', x).attr('x2', x).attr('y1', m.t).attr('y2', H - m.b).style('stroke', 'var(--cds-chart-grid)');
-  svg.append('g').selectAll('text').data(x.ticks(5)).join('text').attr('x', x).attr('y', H - m.b + 16).attr('text-anchor', 'middle').text((d) => (d === 20000 ? '20k+' : d / 1000 + 'k'));
-  svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', H - 2).attr('text-anchor', 'middle').text('ค่าเฉลี่ยก้าวต่อวันของแต่ละคน');
-  const tip = sxTip(el);
-  const g = svg.append('g').selectAll('g').data(ds).join('g').attr('transform', (d) => `translate(0,${y(d.dept)})`);
+function chWeekday(M) {
+  const order = [1, 2, 3, 4, 5, 6, 0];
+  const by = d3.group(M.pds, (p) => p.dow);
+  hbar($('cWeekday'), order.map((d) => {
+    const v = by.get(d) || []; const h = v.filter((p) => p.hit).length / (v.length || 1) * 100;
+    return { label: TH_DOW[d], value: h, text: pct(h), color: d === 0 || d === 6 ? 'var(--wk)' : 'var(--accent)',
+      tip: [['คน-วัน', fmt(v.length)], ['ค่ากลาง', f0(d3.median(v, (p) => p.steps) || 0) + ' ก้าว'], ['% ผ่านเป้า', pct(h)]],
+      onClick: () => select('ทุกวัน' + TH_DOW[d].replace('.', '') + ' ในช่วงที่เลือก', `${fmt(v.length)} คน-วัน · ผ่านเป้า ${pct(h)}`, v) };
+  }), { aria: 'แผนภูมิแท่ง % วันที่ผ่านเป้าแยกตามวันในสัปดาห์', max: 100 });
+}
+
+function chGap(M) {
+  const miss = M.pds.filter((p) => !p.hit);
+  const edges = [0, 1000, 2000, 3000, 5000, M.T].filter((v, i, a) => i === 0 || (v > a[i - 1] && v <= M.T));
+  const bins = edges.slice(1).map((hi, i) => ({ lo: edges[i], hi }));
+  hbar($('cGap'), bins.map((b, i) => {
+    const v = miss.filter((p) => { const g = M.T - p.steps; return i === 0 ? g <= b.hi : g > b.lo && g <= b.hi; });
+    const share = v.length / (miss.length || 1) * 100;
+    const label = i === 0 ? `≤${fmt(b.hi)} ก้าว` : `${fmt(b.lo + 1)}–${fmt(b.hi)} ก้าว`;
+    return { label, value: share, text: `${pct(share)} (${fmt(v.length)})`, color: b.hi <= 2000 ? 'var(--ok)' : 'var(--mute)',
+      tip: [['วันที่ไม่ผ่าน', fmt(v.length)], ['สัดส่วน', pct(share)], ['เดินเพิ่มประมาณ', `${Math.round(b.lo / 100)}–${Math.round(b.hi / 100)} นาที`]],
+      onClick: () => select(`วันที่ไม่ผ่าน ขาด ${label}`, `${fmt(v.length)} คน-วัน`, v) };
+  }), { aria: 'แผนภูมิแท่งวันที่ไม่ผ่านแยกตามจำนวนก้าวที่ขาด' });
+}
+
+const bandColor = (v, M) => (v >= M.T ? 'var(--ok)' : v >= M.lowT ? 'var(--warn)' : 'var(--mute)');
+
+function chDist(M) {
+  const el = $('cDist');
+  const top = 15000;
+  const edges = d3.range(0, top, 1000);
+  const bins = edges.map((lo) => ({ lo, hi: lo + 1000, last: false })).concat([{ lo: top, hi: Infinity, last: true }]);
+  bins.forEach((b) => { b.P = M.P.filter((q) => q.mean >= b.lo && q.mean < b.hi); b.label = b.last ? '15k+' : b.lo / 1000 + 'k'; });
+  const n = (f) => M.P.filter(f).length, N = M.P.length || 1;
+  const a = n((q) => q.mean >= M.T), b2 = n((q) => q.mean >= M.lowT && q.mean < M.T), c = n((q) => q.mean < M.lowT);
+  $('lgDist').innerHTML = '';
+  [[`เฉลี่ย ≥${fmt(M.T)}: ${a} คน · ${pct(a / N * 100)}`, 'var(--ok)'], [`${fmt(M.lowT)}–${fmt(M.T - 1)}: ${b2} คน · ${pct(b2 / N * 100)}`, 'var(--warn)'], [`ต่ำกว่า ${fmt(M.lowT)}: ${c} คน · ${pct(c / N * 100)}`, 'var(--mute)']]
+    .forEach(([t, col]) => { const s = document.createElement('span'); s.innerHTML = `<i class="sw" style="background:${col}"></i>`; s.append(t); $('lgDist').append(s); });
+  const H = 260, m = { t: 22, r: 8, b: 30, l: 8 };
+  const { svg, W } = svgFor(el, H, 'ฮิสโทแกรมจำนวนคนตามค่าเฉลี่ยก้าวต่อวัน');
+  const y = d3.scaleLinear([0, d3.max(bins, (d) => d.P.length) || 1], [H - m.b, m.t]).nice();
+  const yt = svg.append('g').selectAll('text').data(y.ticks(4)).join('text').text((d) => fmt(d)).attr('y', (d) => y(d) + 4);
+  m.l = measure(yt) + 8;
+  svg.insert('g', ':first-child').selectAll('line').data(y.ticks(4)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--grid)');
+  const x = d3.scaleBand(bins.map((d) => d.label), [m.l, W - m.r]).paddingInner(0.08);
+  const rng = (d) => (d.last ? `${fmt(top)} ก้าวขึ้นไป` : `${fmt(d.lo)}–${fmt(d.hi - 1)} ก้าว`);
+  svg.append('g').selectAll('rect').data(bins).join('rect').attr('class', 'hit')
+    .attr('x', (d) => x(d.label)).attr('width', x.bandwidth()).attr('y', (d) => y(d.P.length)).attr('height', (d) => y(0) - y(d.P.length)).attr('rx', 2)
+    .style('fill', (d) => bandColor(d.lo, M))
+    .on('pointermove', (ev, d) => tipShow(ev, rng(d), [['จำนวนคน', fmt(d.P.length)], ['สัดส่วน', pct(d.P.length / N * 100)]]))
+    .on('pointerleave', tipHide)
+    .on('click', function (ev, d) { markSel(this); select(`คนที่เฉลี่ย ${rng(d)}`, `${d.P.length} คน`, personPds(d.P)); });
+  if (x.bandwidth() >= 20) svg.append('g').selectAll('text').data(bins.filter((d) => d.P.length)).join('text').attr('class', 'val').attr('text-anchor', 'middle')
+    .attr('x', (d) => x(d.label) + x.bandwidth() / 2).attr('y', (d) => y(d.P.length) - 5).text((d) => d.P.length);
+  const st = x.bandwidth() >= 28 ? 1 : 2;
+  svg.append('g').selectAll('text').data(bins.filter((d, i) => i % st === 0 || d.last)).join('text').attr('text-anchor', 'middle')
+    .attr('x', (d) => x(d.label) + x.bandwidth() / 2).attr('y', H - m.b + 16).text((d) => d.label);
+  const tb = bins.find((b) => b.lo >= M.T);
+  if (tb) {
+    const xt = x(tb.label) + (M.T - tb.lo) / 1000 * x.step() - (x.step() * x.paddingInner()) / 2;
+    svg.append('line').attr('x1', xt).attr('x2', xt).attr('y1', m.t - 8).attr('y2', H - m.b).style('stroke', 'var(--ref)').attr('stroke-dasharray', '5 4');
+    svg.append('text').attr('x', xt + 5).attr('y', m.t - 8).text('เป้า ' + fmt(M.T));
+  }
+}
+
+function deptColor(M) {
+  const ds = [...new Set(S.raw.map((d) => d.short))].sort();
+  return d3.scaleOrdinal(ds, DEPT_COLORS);
+}
+
+function chDept(M) {
+  const el = $('cDept');
+  const g0 = d3.group(M.P, (q) => q.short);
+  const ds = [...g0].map(([k, v]) => { const s = v.map((q) => q.mean).sort(d3.ascending); return { k, v, p10: d3.quantileSorted(s, 0.1), q1: d3.quantileSorted(s, 0.25), med: d3.quantileSorted(s, 0.5), q3: d3.quantileSorted(s, 0.75), p90: d3.quantileSorted(s, 0.9), pass: v.filter((q) => q.mean >= M.T).length / v.length * 100, cons: v.filter((q) => q.hitrate >= 0.8 && q.days >= M.ND / 2).length / v.length * 100 }; })
+    .sort((a, b) => b.med - a.med);
+  const RH = 56, m = { t: 8, r: 56, b: 34, l: 8 }, H = m.t + m.b + RH * Math.max(1, ds.length);
+  const { svg, W } = svgFor(el, H, 'แผนภาพการกระจายค่าเฉลี่ยก้าวต่อวันรายคนแยกตามฝ่าย');
+  const lab = svg.append('g').selectAll('text').data(ds).join('text').attr('class', 'hit').style('fill', 'var(--fg)').text((d) => d.k);
+  m.l = measure(lab) + 12;
+  const xmax = 20000, x = d3.scaleLinear([0, xmax], [m.l, W - m.r]);
+  const y = d3.scaleBand(ds.map((d) => d.k), [m.t, H - m.b]).padding(0.12);
+  const selDept = (d) => select(`ฝ่าย ${d.k}`, `${d.v.length} คน · ค่ากลาง ${f0(d.med)} ก้าว · เฉลี่ยผ่านเป้า ${pct(d.pass)}`, personPds(d.v));
+  lab.attr('x', 0).attr('y', (d) => y(d.k) + y.bandwidth() / 2 + 4).on('click', (ev, d) => { markSel(null); selDept(d); });
+  svg.insert('g', ':first-child').selectAll('line').data(x.ticks(5)).join('line').attr('x1', x).attr('x2', x).attr('y1', m.t).attr('y2', H - m.b).style('stroke', 'var(--grid)');
+  svg.append('g').selectAll('text').data(x.ticks(5)).join('text').attr('x', x).attr('y', H - m.b + 16).attr('text-anchor', 'middle').text((d) => (d === xmax ? '20k+' : d / 1000 + 'k'));
   const bh = y.bandwidth(), cy = bh / 2;
-  g.append('line').attr('x1', (d) => x(d.p10)).attr('x2', (d) => x(d.p90)).attr('y1', cy).attr('y2', cy).style('stroke', 'var(--cds-text-secondary)');
-  g.append('rect').attr('x', (d) => x(d.q1)).attr('width', (d) => x(d.q3) - x(d.q1)).attr('y', cy - bh * 0.32).attr('height', bh * 0.64).attr('rx', 3)
-    .style('fill', 'none').style('stroke', 'var(--cds-text-secondary)');
+  const g = svg.append('g').selectAll('g').data(ds).join('g').attr('transform', (d) => `translate(0,${y(d.k)})`);
+  g.append('line').attr('x1', (d) => x(d.p10)).attr('x2', (d) => x(d.p90)).attr('y1', cy).attr('y2', cy).style('stroke', 'var(--muted)');
+  const boxTip = (ev, d) => tipShow(ev, `${d.k} · ${d.v.length} คน`, [['ค่ากลาง', f0(d.med) + ' ก้าว'], ['คนครึ่งกลาง', `${f0(d.q1)}–${f0(d.q3)}`], ['10–90%', `${f0(d.p10)}–${f0(d.p90)}`], ['เฉลี่ยผ่านเป้า', pct(d.pass)], ['ผ่าน ≥80% ของวัน', pct(d.cons)]]);
+  g.append('rect').attr('class', 'hit').attr('x', (d) => x(d.q1)).attr('width', (d) => Math.max(2, x(d.q3) - x(d.q1))).attr('y', cy - bh * 0.32).attr('height', bh * 0.64).attr('rx', 3)
+    .style('fill', 'transparent').style('stroke', 'var(--muted)')
+    .on('pointermove', boxTip).on('pointerleave', tipHide).on('click', function (ev, d) { markSel(this); selDept(d); });
   let seed = 42; const rnd = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
-  const byDept = d3.group(pts, (d) => d.dept);
   g.each(function (d) {
-    const ps = byDept.get(d.dept) || [];
-    d3.select(this).append('g').selectAll('circle').data(ps).join('circle')
-      .attr('cx', (p) => x(p.v)).attr('cy', () => cy + (rnd() - 0.5) * bh * 0.55).attr('r', 3)
-      .style('fill', (p) => sxBand(+p.avg_steps)).style('fill-opacity', 0.75)
-      .on('pointermove', (ev, p) => tip.show(ev, [[p.dept, null], ['เฉลี่ยต่อวัน', sxFmt(+p.avg_steps) + ' ก้าว'], ['% วันที่ผ่าน', sxFmt(+p.hit_pct, 'pct')], ['วันที่บันทึก', p.days + ' วัน']]))
-      .on('pointerleave', () => tip.hide());
+    d3.select(this).append('g').selectAll('circle').data(d.v).join('circle').attr('class', 'hit')
+      .attr('cx', (q) => x(Math.min(q.mean, xmax))).attr('cy', () => cy + (rnd() - 0.5) * bh * 0.55).attr('r', 3.2)
+      .style('fill', (q) => bandColor(q.mean, M)).style('fill-opacity', 0.8)
+      .on('pointermove', (ev, q) => tipShow(ev, q.name, [['ฝ่าย', q.short], ['เฉลี่ยต่อวัน', f0(q.mean) + ' ก้าว'], ['% วันที่ผ่าน', pct(q.hitrate * 100)], ['วันที่บันทึก', q.days + ' วัน']]))
+      .on('pointerleave', tipHide)
+      .on('click', function (ev, q) { ev.stopPropagation(); markSel(this); selPerson(q); });
   });
-  g.append('line').attr('x1', (d) => x(d.median)).attr('x2', (d) => x(d.median)).attr('y1', cy - bh * 0.36).attr('y2', cy + bh * 0.36).style('stroke', 'var(--color-fg)').attr('stroke-width', 2.5)
-    .on('pointermove', (ev, d) => tip.show(ev, [[`${d.dept} · ${d.people} คน`, null], ['ค่ากลาง', sxFmt(d.median) + ' ก้าว'], ['คนครึ่งกลาง', `${sxFmt(d.q1)}–${sxFmt(d.q3)}`], ['10–90%', `${sxFmt(d.p10)}–${sxFmt(d.p90)}`], ['เฉลี่ยผ่าน 7,000', sxFmt(d.pass_pct, 'pct')], ['ผ่าน ≥80% ของวัน', sxFmt(+d.consistent_pct, 'pct')]]))
-    .on('pointerleave', () => tip.hide());
-  g.append('text').attr('class', 'val').attr('x', W - 4).attr('y', cy + 4).attr('text-anchor', 'end').text((d) => sxFmt(d.pass_pct, 'pct'));
-  svg.append('line').attr('x1', x(7000)).attr('x2', x(7000)).attr('y1', m.t).attr('y2', H - m.b).style('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '5 4');
-});
-dash.draw('scatter', (el) => {
-  const r = dash.data('person_pts');
-  if (!sxState(el, r)) return;
-  el.replaceChildren();
-  const pts = r.data.map((d) => ({ ...d, s: +d.avg_steps, h: +d.hit_pct, days: +d.days }));
-  const depts = Array.from(new Set(pts.map((d) => d.dept))).sort();
-  const c = d3.scaleOrdinal(depts, ['#2f6fd6', '#e0832a', '#1d9a7f', '#c8457f', '#8a63d2']);
-  const lg = document.createElement('div'); lg.className = 'sx-legend'; lg.style.marginBottom = '8px';
-  depts.forEach((d) => { const s = document.createElement('span'); const i = document.createElement('i'); i.className = 'sx-sw'; i.style.background = c(d); i.style.borderRadius = '50%'; s.append(i, d); lg.append(s); });
-  const s2 = document.createElement('span'); s2.textContent = '○ จุดกลวง = บันทึกไม่ถึง 9 วัน'; lg.append(s2);
-  el.append(lg);
-  const W = Math.max(300, el.clientWidth || 600), H = 360, m = { t: 14, r: 12, b: 40, l: 8 };
-  const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).attr('role', 'img').attr('aria-label', 'แผนภาพกระจายรายคน แกนนอนค่าเฉลี่ยก้าวต่อวัน แกนตั้ง % วันที่ผ่าน 7,000 ก้าว สีตามฝ่าย');
+  g.append('line').attr('x1', (d) => x(d.med)).attr('x2', (d) => x(d.med)).attr('y1', cy - bh * 0.36).attr('y2', cy + bh * 0.36).style('stroke', 'var(--fg)').attr('stroke-width', 2.5).style('pointer-events', 'none');
+  g.append('text').attr('class', 'val').attr('x', W - 4).attr('y', cy + 4).attr('text-anchor', 'end').text((d) => pct(d.pass));
+  svg.append('line').attr('x1', x(M.T)).attr('x2', x(M.T)).attr('y1', m.t).attr('y2', H - m.b).style('stroke', 'var(--ref)').attr('stroke-dasharray', '5 4').style('pointer-events', 'none');
+}
+
+function chScatter(M) {
+  const el = $('cScatter');
+  const c = deptColor(M);
+  const half = M.ND / 2;
+  const top = M.P.filter((q) => q.mean >= M.T && q.hitrate >= 0.8).length, avgOnly = M.P.filter((q) => q.mean >= M.T && q.hitrate < 0.8).length, irr = M.P.filter((q) => q.days < half).length;
+  $('scNote').textContent = `มุมขวาบน (เฉลี่ยผ่าน และผ่าน ≥80% ของวันที่บันทึก) มี ${top} คน · เฉลี่ยผ่านแต่ไม่สม่ำเสมอ ${avgOnly} คน · จุดกลวง = บันทึกไม่ถึงครึ่งของช่วง (${irr} คน) · ค่าเฉลี่ยเกิน 20,000 แสดงที่ขอบขวา`;
+  const depts = [...new Set(M.P.map((q) => q.short))].sort();
+  $('lgScatter').replaceChildren(...depts.map((d) => { const s = document.createElement('span'); s.innerHTML = `<i class="sw" style="border-radius:50%;background:${c(d)}"></i>`; s.append(d); return s; }));
+  const H = 360, m = { t: 14, r: 12, b: 40, l: 8 };
+  const { svg, W } = svgFor(el, H, 'แผนภาพกระจายรายคน แกนนอนค่าเฉลี่ยก้าวต่อวัน แกนตั้ง % วันที่ผ่านเป้า');
   const y = d3.scaleLinear([0, 100], [H - m.b, m.t]);
-  const yt = svg.append('g').selectAll('text').data([0, 20, 40, 60, 80, 100]).join('text').text((d) => d + '%').attr('y', (d) => y(d) + 4);
-  let lw = 0; yt.each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
-  m.l = lw + 8;
-  const x = d3.scaleLinear([0, 20000], [m.l, W - m.r]);
-  svg.insert('g', ':first-child').selectAll('line').data([0, 20, 40, 60, 80, 100]).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--cds-chart-grid)');
-  svg.append('g').selectAll('text').data(x.ticks(5)).join('text').attr('x', x).attr('y', H - m.b + 16).attr('text-anchor', 'middle').text((d) => (d === 20000 ? '20k+' : d / 1000 + 'k'));
-  svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', H - 4).attr('text-anchor', 'middle').text('ค่าเฉลี่ยก้าวต่อวัน → · แกนตั้ง = % วันที่ผ่าน 7,000 (จากวันที่บันทึก)');
-  svg.append('rect').attr('x', x(7000)).attr('y', y(100)).attr('width', x(20000) - x(7000)).attr('height', y(80) - y(100)).style('fill', 'var(--color-ok)').style('opacity', 0.08);
-  [[x(7000), x(7000), y(100), y(0)], [m.l, W - m.r, y(80), y(80)]].forEach(([x1, x2, y1, y2]) => svg.append('line').attr('x1', x1).attr('x2', x2).attr('y1', y1).attr('y2', y2).style('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '5 4'));
+  const yv = [0, 20, 40, 60, 80, 100];
+  const yt = svg.append('g').selectAll('text').data(yv).join('text').text((d) => d + '%').attr('y', (d) => y(d) + 4);
+  m.l = measure(yt) + 8;
+  const xmax = 20000, x = d3.scaleLinear([0, xmax], [m.l, W - m.r]);
+  svg.insert('g', ':first-child').selectAll('line').data(yv).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--grid)');
+  svg.append('g').selectAll('text').data(x.ticks(5)).join('text').attr('x', x).attr('y', H - m.b + 16).attr('text-anchor', 'middle').text((d) => (d === xmax ? '20k+' : d / 1000 + 'k'));
+  svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', H - 4).attr('text-anchor', 'middle').text('ค่าเฉลี่ยก้าวต่อวัน → · แกนตั้ง = % วันที่ผ่านเป้า (จากวันที่บันทึก)');
+  svg.append('rect').attr('x', x(M.T)).attr('y', y(100)).attr('width', Math.max(0, x(xmax) - x(M.T))).attr('height', y(80) - y(100)).style('fill', 'var(--ok)').style('opacity', 0.08);
+  svg.append('line').attr('x1', x(M.T)).attr('x2', x(M.T)).attr('y1', y(100)).attr('y2', y(0)).style('stroke', 'var(--ref)').attr('stroke-dasharray', '5 4');
+  svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(80)).attr('y2', y(80)).style('stroke', 'var(--ref)').attr('stroke-dasharray', '5 4');
   svg.append('text').attr('x', W - m.r - 4).attr('y', y(100) + 14).attr('text-anchor', 'end').text('ผ่านสม่ำเสมอ');
   svg.append('text').attr('x', W - m.r - 4).attr('y', y(0) - 6).attr('text-anchor', 'end').text('เฉลี่ยผ่าน แต่ไม่สม่ำเสมอ');
-  svg.append('text').attr('x', m.l + 4).attr('y', y(80) - 6).text('เป้า 80% ของวัน');
-  const tip = sxTip(el);
-  svg.append('g').selectAll('circle').data(pts).join('circle')
-    .attr('cx', (d) => x(Math.min(d.s, 20000))).attr('cy', (d) => y(d.h)).attr('r', 4)
-    .style('fill', (d) => (d.days < 9 ? 'none' : c(d.dept))).style('fill-opacity', 0.8)
-    .style('stroke', (d) => c(d.dept)).attr('stroke-width', (d) => (d.days < 9 ? 1.4 : 0.6))
-    .on('pointermove', (ev, d) => tip.show(ev, [[d.dept, null], ['เฉลี่ยต่อวัน', sxFmt(d.s) + ' ก้าว'], ['% วันที่ผ่าน', sxFmt(d.h, 'pct')], ['วันที่บันทึก', d.days + ' วัน'], ['กลุ่ม', d.seg]]))
-    .on('pointerleave', () => tip.hide());
-});
-</script>
+  svg.append('text').attr('x', m.l + 4).attr('y', y(80) - 6).text('80% ของวัน');
+  svg.append('g').selectAll('circle').data(M.P).join('circle').attr('class', 'hit')
+    .attr('cx', (q) => x(Math.min(q.mean, xmax))).attr('cy', (q) => y(q.hitrate * 100)).attr('r', 4.2)
+    .style('fill', (q) => (q.days < half ? 'transparent' : c(q.short))).style('fill-opacity', 0.85)
+    .style('stroke', (q) => c(q.short)).attr('stroke-width', (q) => (q.days < half ? 1.5 : 0.6))
+    .on('pointermove', (ev, q) => tipShow(ev, q.name, [['ฝ่าย', q.short], ['เฉลี่ยต่อวัน', f0(q.mean) + ' ก้าว'], ['% วันที่ผ่าน', pct(q.hitrate * 100)], ['วันที่บันทึก', q.days + ' วัน']]))
+    .on('pointerleave', tipHide)
+    .on('click', function (ev, q) { markSel(this); selPerson(q); });
+}
 
-<p class="sx-note" style="margin-top:32px">ที่มา: Step.xlsx (1–18 พ.ย. 2026) · จัดทำ 19 พ.ย. 2026</p>
-</div>
-<script>dash._run(); document.fonts && document.fonts.ready.then(()=>dash._run());</script>
-</body></html>
+function tSeg(M) {
+  const T = M.T, lo = M.lowT;
+  const defs = [['A', `ผ่านครบทุกวัน (${M.ND} วัน)`], ['B', 'ผ่าน ≥80% ของวันที่บันทึก'], ['C', `เฉลี่ย ≥${fmt(T)} แต่ไม่สม่ำเสมอ`], ['D1', `เฉลี่ย ${fmt(lo)}–${fmt(T - 1)}`], ['D2', `เฉลี่ยต่ำกว่า ${fmt(lo)}`], ['E', `บันทึกไม่ถึงครึ่ง (<${Math.ceil(M.ND / 2)} วัน)`]];
+  const tb = $('tSeg').tBodies[0];
+  tb.replaceChildren(...defs.map(([k, desc]) => {
+    const v = M.P.filter((q) => q.seg === k);
+    const tr = document.createElement('tr'); tr.className = 'click'; tr.tabIndex = 0;
+    const cells = [k, desc, fmt(v.length), v.length ? f0(d3.mean(v, (q) => q.mean)) : '–', v.length ? pct(d3.mean(v, (q) => q.hitrate) * 100) : '–'];
+    cells.forEach((t, i) => { const td = document.createElement('td'); td.textContent = t; if (i >= 2) td.className = 'n'; tr.append(td); });
+    const go = () => { markSel(null); tr.classList.add('on'); select(`กลุ่ม ${k}: ${desc}`, `${v.length} คน`, personPds(v)); };
+    tr.onclick = go; tr.onkeydown = (e) => { if (e.key === 'Enter') go(); };
+    return tr;
+  }));
+}
+
+function chSource(M) {
+  const by = d3.group(M.pds, (p) => p.source);
+  const items = [...by].map(([k, v]) => ({ k, v, h: v.filter((p) => p.hit).length / v.length * 100 })).sort((a, b) => b.h - a.h);
+  hbar($('cSource'), items.map((d) => ({ label: d.k, value: d.h, text: `${pct(d.h)} · ${fmt(d.v.length)}`, color: d.k === 'Manual' ? 'var(--warn)' : 'var(--accent)',
+    tip: [['คน-วัน', fmt(d.v.length)], ['ก้าวเฉลี่ย', f0(d3.mean(d.v, (p) => p.steps))], ['% ผ่านเป้า', pct(d.h)]],
+    onClick: () => select(`แหล่งข้อมูล ${d.k}`, `${fmt(d.v.length)} คน-วัน · ผ่านเป้า ${pct(d.h)}`, d.v) })), { aria: 'แผนภูมิแท่ง % วันที่ผ่านเป้าแยกตามแหล่งข้อมูล', max: 100 });
+}
+
+// ---------- drawer ----------
+function selPerson(q) {
+  select(q.name, `${q.short} · บันทึก ${q.days} วัน · ผ่าน ${q.hitdays} วัน (${pct(q.hitrate * 100)}) · เฉลี่ย ${f0(q.mean)} ก้าว/วัน`, q.pds);
+}
+function select(title, sub, pds) {
+  S.sel = { title, sub, pds }; S.q = ''; $('dSearch').value = ''; S.limit = 300;
+  $('dTitle').textContent = title; $('dSub').textContent = sub;
+  $('drawer').classList.add('open');
+  renderDrawer();
+}
+function closeDrawer() { $('drawer').classList.remove('open'); S.sel = null; markSel(null); }
+function drawerRows() {
+  if (!S.sel) return [];
+  let rows = S.dupes ? S.sel.pds.flatMap((p) => p.all) : S.sel.pds.map((p) => p.row);
+  const q = S.q.trim().toLowerCase();
+  if (q) rows = rows.filter((r) => (r.name + ' ' + r.group).toLowerCase().includes(q));
+  const k = S.sortK, dir = S.sortDir;
+  return rows.slice().sort((a, b) => {
+    const va = k === 'key' ? a.key + ' ' + a.time.padStart(8, '0') : a[k], vb = k === 'key' ? b.key + ' ' + b.time.padStart(8, '0') : b[k];
+    const c = typeof va === 'number' ? va - vb : String(va).localeCompare(String(vb), 'th');
+    return c * dir || a.name.localeCompare(b.name, 'th');
+  });
+}
+function renderDrawer() {
+  const rows = drawerRows(), T = S.M.T;
+  const people = new Set(rows.map((r) => r.first + '|' + r.last + '|' + r.gid)).size;
+  $('dCount').textContent = `${fmt(rows.length)} แถว · ${fmt(people)} คน` + (S.dupes ? '' : ' · แสดงแถวที่ใช้คำนวณ (บันทึกซ้ำในวันเดียวใช้ค่าสูงสุด)');
+  const frag = document.createDocumentFragment();
+  for (const r of rows.slice(0, S.limit)) {
+    const tr = document.createElement('tr');
+    const vals = [r.date, r.time, r.name, r.group, r.at, fmt(r.steps)];
+    vals.forEach((v, i) => {
+      const td = document.createElement('td'); td.textContent = v;
+      if (i === 2) { td.className = 'name'; td.title = 'ดูข้อมูลของคนนี้'; td.onclick = () => { const q = S.M.P.find((p) => p.pid === r.first + '|' + r.last + '|' + r.gid); if (q) selPerson(q); }; }
+      if (i === 5) td.className = 'n ' + (r.steps >= T ? 'ok' : 'no');
+      tr.append(td);
+    });
+    frag.append(tr);
+  }
+  $('dRows').replaceChildren(frag);
+  const more = rows.length - S.limit;
+  $('dMore').classList.toggle('hidden', more <= 0);
+  $('dMore').textContent = `แสดงเพิ่ม (เหลืออีก ${fmt(Math.max(0, more))} แถว)`;
+  document.querySelectorAll('.dbody th').forEach((th) => { const on = th.dataset.k === S.sortK; th.textContent = th.textContent.replace(/ [▲▼]$/, '') + (on ? (S.sortDir > 0 ? ' ▲' : ' ▼') : ''); });
+}
+function downloadCsv() {
+  const rows = drawerRows();
+  const esc = (v) => { v = String(v ?? ''); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const lines = [['date', 'time', 'firstname', 'lastname', 'groupName', 'activityType', 'steps'].join(',')]
+    .concat(rows.map((r) => [r.date, r.time, r.first, r.last, r.group, r.at, r.steps].map(esc).join(',')));
+  const blob = new Blob(['﻿' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = (S.sel ? S.sel.title : 'list').replace(/[\\/:*?"<>|]/g, '_').slice(0, 60) + '.csv';
+  document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+// ---------- events ----------
+$('pick').onclick = () => $('file').click();
+$('file').onchange = (e) => loadFile(e.target.files[0]);
+const drop = $('drop');
+['dragenter', 'dragover'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', (e) => loadFile(e.dataTransfer.files[0]));
+$('fGroup').onchange = (e) => { S.group = e.target.value; update(); };
+$('fFrom').onchange = (e) => { if (e.target.value) { S.from = e.target.value; if (S.from > S.to) { S.to = S.from; $('fTo').value = S.to; } update(); } };
+$('fTo').onchange = (e) => { if (e.target.value) { S.to = e.target.value; if (S.to < S.from) { S.from = S.to; $('fFrom').value = S.from; } update(); } };
+$('fTarget').onchange = (e) => { const v = +e.target.value; if (v >= 1000) { S.target = v; update(); } };
+$('fName').addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' || !S.M) return;
+  const t = e.target.value.trim().toLowerCase(); if (!t) return;
+  const hits = S.M.P.filter((q) => q.name.toLowerCase().includes(t));
+  if (hits.length === 1) selPerson(hits[0]);
+  else if (hits.length) select(`ผลค้นหา “${e.target.value.trim()}”`, `${hits.length} คน`, personPds(hits));
+  else select(`ไม่พบ “${e.target.value.trim()}”`, 'ไม่มีชื่อนี้ในช่วงวันและฝ่ายที่เลือก', []);
+});
+$('dClose').onclick = closeDrawer;
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+$('dSearch').oninput = (e) => { S.q = e.target.value; S.limit = 300; renderDrawer(); };
+$('dDupes').onchange = (e) => { S.dupes = e.target.checked; renderDrawer(); };
+$('dMore').onclick = () => { S.limit += 500; renderDrawer(); };
+$('dDl').onclick = downloadCsv;
+document.querySelectorAll('.dbody th').forEach((th) => th.addEventListener('click', () => {
+  const k = th.dataset.k; if (S.sortK === k) S.sortDir *= -1; else { S.sortK = k; S.sortDir = k === 'steps' ? -1 : 1; } renderDrawer();
+}));
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (S.M) renderAll(); }, 150); });
+window.SX_loadText = loadText; // for testing
+
+// ---------- auto-load the newest CSV listed in data/manifest.json ----------
+let MANIFEST = [];
+async function loadFromRepo(name) {
+  const f = MANIFEST.find((x) => x.file === name);
+  setStatus('กำลังโหลดข้อมูล ' + name + ' …');
+  try {
+    const res = await fetch('data/' + encodeURIComponent(name), { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    loadText(decode(await res.arrayBuffer()), name);
+    if (f && !$('status').classList.contains('err')) {
+      const up = new Date(f.updated);
+      const when = isNaN(up) ? '' : ` · อัปเดตไฟล์ ${up.getDate()} ${TH_MON[up.getMonth()]} ${up.getFullYear()} ${String(up.getHours()).padStart(2, '0')}:${String(up.getMinutes()).padStart(2, '0')} น.`;
+      $('status').textContent = (MANIFEST[0].file === name ? 'ข้อมูลล่าสุดในระบบ' : 'ข้อมูลในระบบ') + when + ' · ' + $('status').textContent;
+    }
+  } catch (e) {
+    setStatus('โหลดไฟล์ ' + name + ' ไม่สำเร็จ (' + e.message + ') · อัปโหลดไฟล์เองได้', true);
+  }
+}
+async function autoLoad() {
+  if (location.protocol === 'file:') return;
+  try {
+    const res = await fetch('data/manifest.json', { cache: 'no-store' });
+    if (!res.ok) return;
+    MANIFEST = ((await res.json()).files || []).filter((f) => f && f.file);
+  } catch (e) { return; }
+  if (!MANIFEST.length) return;
+  $('fFile').replaceChildren(...MANIFEST.map((f, i) => new Option(`${i === 0 ? 'ล่าสุด · ' : ''}${f.file}${f.from ? ` (${thDate(f.from)} – ${thDate(f.to)})` : ''}`, f.file)));
+  $('fFileWrap').classList.remove('hidden');
+  $('fFile').onchange = (e) => { if (e.target.value !== '__upload') loadFromRepo(e.target.value); };
+  await loadFromRepo(MANIFEST[0].file);
+}
+// a file the viewer uploads replaces the repo file; show that in the selector so they can switch back
+const _loadFile = loadFile;
+loadFile = async (f) => {
+  if (f && MANIFEST.length) {
+    let o = $('fFile').querySelector('option[value="__upload"]');
+    if (!o) { o = new Option('', '__upload'); $('fFile').prepend(o); }
+    o.textContent = 'ไฟล์ที่อัปโหลดเอง · ' + f.name; $('fFile').value = '__upload';
+  }
+  await _loadFile(f);
+};
+autoLoad();
+</script>
+</body>
+</html>
