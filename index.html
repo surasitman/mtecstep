@@ -74,6 +74,19 @@ tr.click.on td{background:var(--hover);font-weight:500}
 #dMore{margin:12px auto 0;display:block}
 @media (max-width:640px){#drawer{top:auto;bottom:0;height:85vh;width:100vw;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(100%)}.tile .v{font-size:24px}h1{font-size:23px}}
 .hidden{display:none!important}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{border:0;border-bottom:3px solid transparent;border-radius:0;background:none;padding:10px 14px;color:var(--muted);font-weight:500;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+#mission{display:flex}
+.chk{flex-direction:row!important;align-items:center;gap:6px!important;font-size:14px!important;color:var(--fg)!important}
+.badge{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:500}
+.badge.done{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.badge.live{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.badge.fail{background:color-mix(in srgb,var(--mute) 30%,transparent);color:var(--muted)}
+#mTable td.ok{color:var(--ok);font-weight:500}
+#mTable td.no{color:var(--bad)}
+#mTable td.wait{color:var(--muted)}
+#mTable td.name{color:var(--accent);cursor:pointer}
 </style>
 </head>
 <body>
@@ -94,13 +107,19 @@ tr.click.on td{background:var(--hover);font-weight:500}
     <div class="bar hidden" id="filters" style="margin-top:14px">
       <label id="fFileWrap" class="hidden">ไฟล์ข้อมูลในระบบ<select id="fFile" style="max-width:260px"></select></label>
       <label>ฝ่าย<select id="fGroup"></select></label>
-      <label>ตั้งแต่วันที่<input type="date" id="fFrom"></label>
-      <label>ถึงวันที่<input type="date" id="fTo"></label>
-      <label>เป้าหมาย (ก้าว/วัน)<input type="number" id="fTarget" value="7000" step="500" min="1000" style="width:110px"></label>
+      <label class="ov-only">ตั้งแต่วันที่<input type="date" id="fFrom"></label>
+      <label class="ov-only">ถึงวันที่<input type="date" id="fTo"></label>
+      <label class="ov-only">เป้าหมาย (ก้าว/วัน)<input type="number" id="fTarget" value="7000" step="500" min="1000" style="width:110px"></label>
       <label>ค้นหาชื่อ<input type="search" id="fName" list="names" placeholder="พิมพ์ชื่อแล้วกด Enter" style="width:220px"></label>
       <datalist id="names"></datalist>
     </div>
   </div>
+
+  <nav class="tabs hidden" id="tabs" role="tablist" aria-label="มุมมอง">
+    <button role="tab" data-tab="overview">ภาพรวม</button>
+    <button role="tab" data-tab="mission1">Mission#1 · 21–22 พ.ย.</button>
+    <button role="tab" data-tab="mission2">Mission#2 · 23–29 พ.ย.</button>
+  </nav>
 
   <div id="dash" class="hidden" style="display:flex;flex-direction:column;gap:20px">
     <p class="note" id="lead"></p>
@@ -160,6 +179,26 @@ tr.click.on td{background:var(--hover);font-weight:500}
         <div class="chart" id="cSource"></div>
       </section>
     </div>
+  </div>
+
+  <div id="mission" class="hidden" style="flex-direction:column;gap:20px">
+    <section class="card">
+      <h2 id="mTitle"></h2>
+      <p class="note" id="mNote"></p>
+      <div class="tiles" id="mTiles" style="margin-top:12px"></div>
+    </section>
+    <section class="card">
+      <div class="bar" style="align-items:center;margin-bottom:8px">
+        <label class="chk"><input type="checkbox" id="mShowDone" checked>สำเร็จ</label>
+        <label class="chk"><input type="checkbox" id="mShowLive" checked>ยังลุ้นอยู่</label>
+        <label class="chk"><input type="checkbox" id="mShowFail">ไม่ผ่าน</label>
+        <input type="search" id="mSearch" placeholder="ค้นหาชื่อหรือฝ่าย" style="flex:1;min-width:180px">
+        <button id="mDl">ดาวน์โหลด CSV</button>
+      </div>
+      <p class="note" id="mCount"></p>
+      <p class="hint">คลิกชื่อเพื่อดูแถวข้อมูลของคนนั้นในช่วง Mission</p>
+      <div class="tw"><table id="mTable"><thead></thead><tbody></tbody></table></div>
+    </section>
   </div>
 </div>
 
@@ -256,7 +295,7 @@ function loadText(text, fname) {
   setStatus(`โหลด ${fname} แล้ว · ทั้งหมด ${fmt(rows.length)} แถว · activityType = steps ${fmt(nStep)} แถว` +
     (nAdmin ? ` · ตัดบัญชีแอดมิน ${fmt(nAdmin)} แถว` : '') + (nBad ? ` · ข้อมูลไม่สมบูรณ์ ${fmt(nBad)} แถว` : '') +
     (trimmed ? ` · ตั้งช่วงวันอัตโนมัติโดยตัดวันต้น/ท้ายที่มีคนบันทึกน้อยกว่าครึ่งหนึ่ง ${trimmed} วัน` : ''));
-  $('filters').classList.remove('hidden'); $('dash').classList.remove('hidden');
+  $('filters').classList.remove('hidden'); $('tabs').classList.remove('hidden');
   closeDrawer();
   update();
 }
@@ -303,7 +342,7 @@ const personPds = (list) => list.flatMap((q) => q.pds);
 function update() {
   S.M = compute();
   $('names').replaceChildren(...S.M.P.map((q) => new Option(q.name + ' · ' + q.short, q.name)));
-  renderAll();
+  setTab(S.tab);
   if (S.sel) closeDrawer();
 }
 
@@ -655,6 +694,137 @@ document.querySelectorAll('.dbody th').forEach((th) => th.addEventListener('clic
 }));
 let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (S.M) renderAll(); }, 150); });
 window.SX_loadText = loadText; // for testing
+
+// ---------- missions: fixed date ranges, everyone who walked >= 7,000 on every day ----------
+const MISSIONS = {
+  mission1: { name: 'Mission#1', from: '2026-11-21', to: '2026-11-22' },
+  mission2: { name: 'Mission#2', from: '2026-11-23', to: '2026-11-29' },
+};
+const MISSION_T = 7000;
+const STATUS = { done: 'สำเร็จ', live: 'ยังลุ้นอยู่', fail: 'ไม่ผ่าน' };
+S.tab = MISSIONS[location.hash.slice(1)] ? location.hash.slice(1) : 'overview';
+S.MS = null;
+
+function dayList(a, b) { const out = []; for (let t = Date.parse(a + 'T00:00:00Z'); t <= Date.parse(b + 'T00:00:00Z'); t += 864e5) out.push(new Date(t).toISOString().slice(0, 10)); return out; }
+
+function computeMission(ms) {
+  const days = dayList(ms.from, ms.to);
+  const inRange = S.raw.filter((r) => r.key >= ms.from && r.key <= ms.to);
+  const avail = new Set(inRange.map((r) => r.key)); // a day counts as "has data" if anyone logged steps that day
+  const people = new Map();
+  for (const r of inRange) {
+    if (S.group !== 'all' && r.short !== S.group) continue;
+    const pid = r.first + '|' + r.last + '|' + r.gid;
+    let q = people.get(pid);
+    if (!q) { q = { pid, name: r.name, group: r.group, short: r.short, byDay: new Map() }; people.set(pid, q); }
+    let p = q.byDay.get(r.key);
+    if (!p) { p = { pid, key: r.key, all: [], row: r }; q.byDay.set(r.key, p); }
+    p.all.push(r);
+    if (r.steps > p.row.steps || (r.steps === p.row.steps && p.row.source === 'ไม่ระบุ' && r.source !== 'ไม่ระบุ')) p.row = r;
+  }
+  const complete = days.every((k) => avail.has(k));
+  const P = [...people.values()].map((q) => {
+    const passDays = days.filter((k) => q.byDay.get(k) && q.byDay.get(k).row.steps >= MISSION_T).length;
+    const okSoFar = days.filter((k) => avail.has(k)).every((k) => q.byDay.get(k) && q.byDay.get(k).row.steps >= MISSION_T);
+    q.status = !okSoFar ? 'fail' : complete ? 'done' : 'live';
+    q.passDays = passDays;
+    q.total = d3.sum([...q.byDay.values()], (p) => p.row.steps);
+    q.pds = [...q.byDay.values()].sort((a, b) => a.key.localeCompare(b.key));
+    return q;
+  });
+  const rank = { done: 0, live: 1, fail: 2 };
+  P.sort((a, b) => rank[a.status] - rank[b.status] || b.passDays - a.passDays || b.total - a.total || a.name.localeCompare(b.name, 'th'));
+  return { ms, days, avail, complete, P };
+}
+
+function missionRows() {
+  const show = { done: $('mShowDone').checked, live: $('mShowLive').checked, fail: $('mShowFail').checked };
+  const q = $('mSearch').value.trim().toLowerCase();
+  return S.MS.P.filter((p) => show[p.status] && (!q || (p.name + ' ' + p.group).toLowerCase().includes(q)));
+}
+
+function renderMission() {
+  const ms = MISSIONS[S.tab];
+  S.MS = computeMission(ms);
+  const { days, avail, complete, P } = S.MS;
+  const cnt = (s) => P.filter((p) => p.status === s).length;
+  const missing = days.filter((k) => !avail.has(k));
+  $('mTitle').textContent = `${ms.name}: เดิน ≥${fmt(MISSION_T)} ก้าว ทุกวัน ${thDate(ms.from)} – ${thDate(ms.to)}`;
+  $('mNote').textContent = (S.group === 'all' ? 'ทุกฝ่าย' : S.group) + ' · ' + (complete
+    ? 'ข้อมูลครบทุกวันของ Mission แล้ว รายชื่อ "สำเร็จ" คือผู้ผ่านเป้าทุกวัน'
+    : `ยังไม่มีข้อมูลของ ${missing.map((k) => `${+k.slice(8)} ${TH_MON[+k.slice(5, 7) - 1]}`).join(', ')} ในไฟล์ · "ยังลุ้นอยู่" คือคนที่ผ่านเป้าทุกวันที่มีข้อมูลแล้ว`) +
+    ' · วันที่ไม่มีบันทึกของคนนั้นนับเป็นไม่ผ่าน';
+  const tiles = [
+    ['สำเร็จ (ผ่านครบทุกวัน)', fmt(cnt('done')), complete ? 'Mission ครบแล้ว' : 'รอข้อมูลให้ครบก่อน'],
+    ['ยังลุ้นอยู่', fmt(cnt('live')), 'ผ่านทุกวันที่มีข้อมูลแล้ว'],
+    ['ไม่ผ่าน', fmt(cnt('fail')), 'มีวันที่ต่ำกว่าเป้าหรือไม่ได้บันทึก'],
+    ['วันที่มีข้อมูลแล้ว', `${days.length - missing.length}/${days.length}`, `${fmt(P.length)} คนบันทึกในช่วงนี้`],
+  ];
+  $('mTiles').replaceChildren(...tiles.map(([l, v, c]) => {
+    const d = document.createElement('div'); d.className = 'card tile';
+    d.innerHTML = '<span class="l"></span><span class="v"></span><span class="c"></span>';
+    d.children[0].textContent = l; d.children[1].textContent = v; d.children[2].textContent = c; return d;
+  }));
+  const head = document.createElement('tr');
+  ['#', 'ชื่อ-นามสกุล', 'groupName', ...days.map((k) => `${TH_DOW[dowOf(k)]} ${+k.slice(8)}/${+k.slice(5, 7)}`), 'วันที่ผ่าน', 'สถานะ'].forEach((t, i) => {
+    const th = document.createElement('th'); th.textContent = t; if (i === 0 || (i >= 3 && i < 3 + days.length) || i === 3 + days.length) th.className = 'n'; head.append(th);
+  });
+  $('mTable').tHead.replaceChildren(head);
+  renderMissionRows();
+}
+
+function renderMissionRows() {
+  const { days, avail } = S.MS;
+  const rows = missionRows();
+  $('mCount').textContent = `แสดง ${fmt(rows.length)} คน`;
+  const frag = document.createDocumentFragment();
+  rows.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    const td = (t, cls) => { const c = document.createElement('td'); c.textContent = t; if (cls) c.className = cls; tr.append(c); return c; };
+    td(i + 1, 'n');
+    const nm = td(p.name, 'name'); nm.title = 'ดูแถวข้อมูลของคนนี้';
+    nm.onclick = () => select(p.name, `${p.short} · ${S.MS.ms.name} · ผ่าน ${p.passDays}/${days.length} วัน · ${STATUS[p.status]}`, p.pds);
+    td(p.group);
+    for (const k of days) {
+      const d = p.byDay.get(k);
+      if (d) td(fmt(d.row.steps), 'n ' + (d.row.steps >= MISSION_T ? 'ok' : 'no'));
+      else if (avail.has(k)) td('ไม่บันทึก', 'n no');
+      else td('รอข้อมูล', 'n wait');
+    }
+    td(`${p.passDays}/${days.length}`, 'n');
+    const st = td(''); const b = document.createElement('span'); b.className = 'badge ' + p.status; b.textContent = STATUS[p.status]; st.append(b);
+    frag.append(tr);
+  });
+  if (!rows.length) { const tr = document.createElement('tr'); const c = document.createElement('td'); c.colSpan = days.length + 5; c.className = 'note'; c.textContent = S.MS.P.length ? 'ไม่มีรายชื่อตามตัวกรองที่เลือก' : 'ยังไม่มีข้อมูลของช่วง Mission นี้ในไฟล์'; tr.append(c); frag.append(tr); }
+  $('mTable').tBodies[0].replaceChildren(frag);
+}
+
+function missionCsv() {
+  const { ms, days } = S.MS;
+  const esc = (v) => { v = String(v ?? ''); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const lines = [['ชื่อ-นามสกุล', 'groupName', ...days, 'วันที่ผ่าน', 'สถานะ'].join(',')]
+    .concat(missionRows().map((p) => [p.name, p.group, ...days.map((k) => (p.byDay.get(k) ? p.byDay.get(k).row.steps : '')), `${p.passDays}/${days.length}`, STATUS[p.status]].map(esc).join(',')));
+  const blob = new Blob(['﻿' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${ms.name.replace('#', '')}_${ms.from}_${ms.to}.csv`;
+  document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+function setTab(t) {
+  S.tab = MISSIONS[t] ? t : 'overview';
+  document.querySelectorAll('#tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === S.tab)));
+  const ov = S.tab === 'overview';
+  document.querySelectorAll('.ov-only').forEach((el) => el.classList.toggle('hidden', !ov));
+  if (history.replaceState) history.replaceState(null, '', ov ? location.pathname + location.search : '#' + S.tab);
+  if (!S.M) return;
+  $('dash').classList.toggle('hidden', !ov);
+  $('mission').classList.toggle('hidden', ov);
+  if (ov) renderAll(); else renderMission();
+}
+document.querySelectorAll('#tabs button').forEach((b) => (b.onclick = () => { closeDrawer(); setTab(b.dataset.tab); }));
+['mShowDone', 'mShowLive', 'mShowFail'].forEach((id) => ($(id).onchange = renderMissionRows));
+$('mSearch').oninput = renderMissionRows;
+$('mDl').onclick = missionCsv;
+window.addEventListener('hashchange', () => { const t = location.hash.slice(1); if (MISSIONS[t] && t !== S.tab) setTab(t); });
 
 // ---------- auto-load the newest CSV listed in data/manifest.json ----------
 let MANIFEST = [];
