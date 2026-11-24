@@ -79,6 +79,15 @@ tr.click.on td{background:var(--hover);font-weight:500}
 .tabs button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
 #mission{display:flex}
 .panel{display:flex;flex-direction:column;gap:20px}
+.prog{margin-top:12px}
+.prog-top{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin-bottom:6px}
+.prog-bar{position:relative;height:10px;border-radius:99px;background:var(--grid);overflow:hidden}
+.prog-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--accent)}
+#progDone{opacity:.3}
+.howto{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:16px;align-items:center;margin:10px 0}
+@media (max-width:700px){.howto{grid-template-columns:1fr}}
+.howto svg text{fill:var(--muted);font-size:11.5px;font-family:inherit}
+.howto ul{margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:3px}
 .ins{margin:8px 0 4px;padding-left:20px;display:flex;flex-direction:column;gap:4px}
 .ins b{font-weight:600}
 td.best{color:var(--ok);font-weight:600}
@@ -106,6 +115,11 @@ button.link{border:0;background:none;color:var(--accent);padding:0;text-decorati
   <div>
     <h1>ก้าวสู่ 7,000</h1>
     <p class="note">เปิดหน้าแล้วแสดงไฟล์ CSV ล่าสุดในระบบให้อัตโนมัติ คำนวณเฉพาะแถวที่ activityType = steps · อัปโหลดไฟล์ของตัวเองเพื่อดูแทนได้ ไฟล์ที่อัปโหลดจะถูกประมวลผลในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ถูกส่งออกไปที่ใด · <a href="summary.html" style="color:var(--accent)">ดูรายงานสรุปและระบบรางวัล (1–18 พ.ย.)</a></p>
+    <div class="prog" aria-label="ความคืบหน้าของกิจกรรม">
+      <div class="prog-top"><b id="progTxt"></b><span class="note" id="progSub"></span></div>
+      <div class="prog-bar"><i id="progData"></i><i id="progDone"></i></div>
+      <div class="legend" style="margin:4px 0 0"><span><i class="sw" style="background:var(--accent)"></i>มีข้อมูลแล้ว</span><span><i class="sw" style="background:var(--accent);opacity:.3"></i>ผ่านไปแล้วตามปฏิทิน</span></div>
+    </div>
   </div>
 
   <div class="card">
@@ -183,7 +197,26 @@ button.link{border:0;background:none;color:var(--accent);padding:0;text-decorati
 
     <section class="card">
       <h2>การกระจายรายคน แยกตามฝ่าย</h2>
-      <p class="note">จุด = 1 คน · กล่อง = คนครึ่งกลาง (25–75%) · ขีดดำ = ค่ากลาง · เส้นปลาย = 10–90% · ตัวเลขขวา = % คนที่เฉลี่ยผ่านเป้า</p>
+      <p class="note">กราฟนี้ตอบคำถามว่า "คนในแต่ละฝ่ายเดินเฉลี่ยต่อวันกระจายตัวอย่างไร" ไม่ใช่แค่ค่าเฉลี่ยของฝ่าย จึงเห็นว่าฝ่ายไหนมีคนเกาะกลุ่มใกล้เป้า ฝ่ายไหนมีทั้งคนเดินมากและคนเดินน้อยปนกัน</p>
+      <div class="howto">
+        <svg viewBox="0 0 300 92" role="img" aria-label="ตัวอย่างวิธีอ่านกราฟกล่อง">
+          <line x1="20" x2="280" y1="40" y2="40" style="stroke:var(--muted)"></line>
+          <rect x="90" y="24" width="110" height="32" rx="3" style="fill:none;stroke:var(--muted)"></rect>
+          <line x1="140" x2="140" y1="20" y2="60" style="stroke:var(--fg)" stroke-width="2.5"></line>
+          <line x1="175" x2="175" y1="8" y2="72" style="stroke:var(--ref)" stroke-dasharray="4 3"></line>
+          <circle cx="60" cy="36" r="3.2" style="fill:var(--mute)"></circle><circle cx="118" cy="45" r="3.2" style="fill:var(--warn)"></circle><circle cx="190" cy="34" r="3.2" style="fill:var(--ok)"></circle><circle cx="255" cy="44" r="3.2" style="fill:var(--ok)"></circle>
+          <text x="20" y="88">10%</text><text x="90" y="88">25%</text><text x="132" y="88">ค่ากลาง</text><text x="196" y="88">75%</text><text x="262" y="88">90%</text>
+          <text x="179" y="12">เป้า 7,000</text>
+        </svg>
+        <ul>
+          <li><b>จุด</b> = 1 คน วางตามค่าเฉลี่ยก้าวต่อวันของคนนั้น สีบอกระดับ (เขียว ≥ เป้า · ส้ม ขาดไม่เกิน 2,000 · เทา ต่ำกว่านั้น) จุดเกินขวาสุดคือเกิน 20,000</li>
+          <li><b>ขีดดำหนา</b> = ค่ากลาง ครึ่งหนึ่งของฝ่ายเดินมากกว่านี้ อีกครึ่งน้อยกว่า ถ้าขีดอยู่ขวาของเส้นประ แปลว่าคนส่วนใหญ่ของฝ่ายเฉลี่ยผ่านเป้า</li>
+          <li><b>กล่อง</b> = คนครึ่งกลางของฝ่าย (ลำดับที่ 25%–75%) กล่องแคบ = คนในฝ่ายเดินใกล้เคียงกัน กล่องกว้าง = ต่างกันมาก</li>
+          <li><b>เส้นปลาย</b> = ช่วงของคน 80% (ลำดับ 10%–90%) ตัดคนที่สุดโต่งออก</li>
+          <li><b>ตัวเลขขวา</b> = % คนในฝ่ายที่เฉลี่ยผ่านเป้า · จุดสีส้มที่อยู่ซ้ายเส้นประใกล้ ๆ คือกลุ่มที่ช่วยได้ง่ายที่สุด</li>
+        </ul>
+      </div>
+      <ul class="ins" id="deptIns"></ul>
       <p class="hint">คลิกชื่อฝ่ายหรือกล่องเพื่อดูทั้งฝ่าย · คลิกจุดเพื่อดูรายบุคคล</p>
       <div class="chart" id="cDept"></div>
     </section>
@@ -365,7 +398,24 @@ const DEPT_COLORS = ['#2f6fd6', '#e0832a', '#1d9a7f', '#c8457f', '#8a63d2', '#6b
 const S = { raw: [], group: 'all', from: null, to: null, target: 7000, M: null, sel: null, dupes: false, q: '', sortK: 'key', sortDir: 1, limit: 300 };
 
 const dowOf = (k) => new Date(k + 'T00:00:00Z').getUTCDay();
-const thDate = (k) => { const [y, m, d] = k.split('-'); return `${+d} ${TH_MON[+m - 1]} ${y}`; };
+const thDate = (k) => { const [y, m, d] = k.split('-'); return `${+d} ${TH_MON[+m - 1]} ${+y + 543}`; }; // Thai Buddhist year
+// whole activity period; the date filter and the default range stay inside it
+const PROGRAM = { from: '2026-11-01', to: '2027-01-08' };
+const progDays = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 864e5) + 1;
+function renderProgram() {
+  const total = progDays(PROGRAM.from, PROGRAM.to);
+  const now = new Date(), today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const t = today < PROGRAM.from ? null : today > PROGRAM.to ? PROGRAM.to : today;
+  const done = t ? progDays(PROGRAM.from, t) : 0;
+  const dataTo = S.raw.length ? d3.max(S.raw, (r) => r.key) : null;
+  const dataDays = dataTo ? Math.max(0, Math.min(total, progDays(PROGRAM.from, dataTo < PROGRAM.to ? dataTo : PROGRAM.to))) : 0;
+  $('progTxt').textContent = `ระยะเวลากิจกรรม ${thDate(PROGRAM.from)} – ${thDate(PROGRAM.to)} · ${total} วัน`;
+  $('progSub').textContent = !t ? 'กิจกรรมยังไม่เริ่ม'
+    : today > PROGRAM.to ? 'กิจกรรมสิ้นสุดแล้ว'
+    : `วันนี้เป็นวันที่ ${done} จาก ${total} · เหลืออีก ${total - done} วัน` + (dataTo ? ` · ข้อมูลในไฟล์ถึง ${thDate(dataTo)} (${dataDays} วัน)` : '');
+  $('progDone').style.width = (done / total) * 100 + '%';
+  $('progData').style.width = (dataDays / total) * 100 + '%';
+}
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 
 // ---------- loading ----------
@@ -412,7 +462,9 @@ function loadText(text, fname) {
   S.raw = out;
   // auto date range: trim edge days with fewer than half the usual number of people
   const cnt = d3.rollup(out, (v) => new Set(v.map((d) => d.first + '|' + d.last + '|' + d.gid)).size, (d) => d.key);
-  const keys = [...cnt.keys()].sort();
+  let keys = [...cnt.keys()].sort();
+  const inProg = keys.filter((k) => k >= PROGRAM.from && k <= PROGRAM.to);
+  if (inProg.length) keys = inProg; // ignore rows logged outside the activity period
   const med = d3.median(keys, (k) => cnt.get(k));
   let i = 0, j = keys.length - 1;
   while (i < j && cnt.get(keys[i]) < med * 0.5) i++;
@@ -420,6 +472,7 @@ function loadText(text, fname) {
   S.from = keys[i]; S.to = keys[j];
   for (const id of ['fFrom', 'fTo']) { $(id).min = keys[0]; $(id).max = keys[keys.length - 1]; }
   $('fFrom').value = S.from; $('fTo').value = S.to;
+  renderProgram();
   const groups = [...new Set(out.map((d) => d.short))].sort();
   $('fGroup').replaceChildren(new Option('ทุกฝ่าย', 'all'), ...groups.map((g) => new Option(g, g)));
   S.group = 'all'; $('fGroup').value = 'all';
@@ -682,6 +735,20 @@ function chDept(M) {
   g.append('line').attr('x1', (d) => x(d.med)).attr('x2', (d) => x(d.med)).attr('y1', cy - bh * 0.36).attr('y2', cy + bh * 0.36).style('stroke', 'var(--fg)').attr('stroke-width', 2.5).style('pointer-events', 'none');
   g.append('text').attr('class', 'val').attr('x', W - 4).attr('y', cy + 4).attr('text-anchor', 'end').text((d) => pct(d.pass));
   svg.append('line').attr('x1', x(M.T)).attr('x2', x(M.T)).attr('y1', m.t).attr('y2', H - m.b).style('stroke', 'var(--ref)').attr('stroke-dasharray', '5 4').style('pointer-events', 'none');
+  // reading of this chart, written from the current data
+  const ins = $('deptIns'); ins.replaceChildren();
+  const add = (h) => { const x = document.createElement('li'); x.innerHTML = h; ins.append(x); };
+  const e = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  if (ds.length) {
+    const above = ds.filter((d) => d.med >= M.T);
+    add(above.length ? `ค่ากลางของ <b>${above.map((d) => e(d.k)).join(', ')}</b> อยู่เหนือเป้า คนส่วนใหญ่ของฝ่ายเฉลี่ยผ่านแล้ว` : `ค่ากลางของทุกฝ่ายยังต่ำกว่าเป้า ${fmt(M.T)} ก้าว (สูงสุด ${e(ds[0].k)} ${f0(ds[0].med)} ก้าว) คนส่วนใหญ่ของทุกฝ่ายยังเฉลี่ยไม่ถึง`);
+    if (ds.length > 1) {
+      const sp = ds.map((d) => ({ d, w: d.q3 - d.q1 })).sort((a, b) => b.w - a.w);
+      add(`<b>${e(sp[0].d.k)}</b> กระจายตัวมากที่สุด (คนครึ่งกลางห่างกัน ${f0(sp[0].w)} ก้าว) มีทั้งคนเดินมากและน้อยปนกัน ควรแยกวิธีดูแลรายคน · <b>${e(sp[sp.length - 1].d.k)}</b> เกาะกลุ่มที่สุด (${f0(sp[sp.length - 1].w)} ก้าว) ใช้กิจกรรมแบบเดียวทั้งฝ่ายได้`);
+    }
+    const near = ds.map((d) => ({ d, n: d.v.filter((q) => q.mean >= M.lowT && q.mean < M.T).length })).sort((a, b) => b.n - a.n)[0];
+    if (near && near.n) add(`<b>${e(near.d.k)}</b> มีคนใกล้เป้ามากที่สุด ${near.n} คน (เฉลี่ย ${fmt(M.lowT)}–${fmt(M.T - 1)} ก้าว) เดินเพิ่มวันละไม่เกิน 20 นาทีก็ผ่าน คลิกชื่อฝ่ายเพื่อดูรายชื่อ`);
+  }
 }
 
 function chScatter(M) {
@@ -1229,6 +1296,13 @@ function renderPred(M) {
   const ins = $('pIns'); ins.replaceChildren();
   if (beta) li(ins, beta[1] > 0.15 ? `แนวโน้มดีขึ้น ${sgn(beta[1] * 7)} จุดต่อสัปดาห์ ถ้าคงโมเมนตัมได้ จะผ่านเป้าเพิ่มขึ้นต่อเนื่อง` : beta[1] < -0.15 ? `แนวโน้มลดลง ${sgn(beta[1] * 7)} จุดต่อสัปดาห์ ต้องกระตุ้นก่อนแรงจูงใจหมด` : 'แนวโน้มทรงตัว ถ้าไม่มีกิจกรรมใหม่ ผลจะใกล้เคียงเดิม');
   if (bt) li(ins, `ทดสอบย้อนหลังแล้ว วิธีนี้คาดจำนวนคนผ่านครบ 7 วันได้ ${btExp.toFixed(0)} คน เทียบกับจริง ${btActual} คน ${Math.abs(btExp - btActual) <= Math.max(3, btActual * 0.2) ? 'ใกล้เคียง ใช้วางแผนได้' : 'คลาดเคลื่อนพอสมควร ใช้เป็นแนวทางเท่านั้น'}`);
+  if (beta) {
+    const endIdx = M.ND - 1 + progDays(end, PROGRAM.to) - 1;
+    if (end < PROGRAM.to) {
+      const v = Math.max(0, Math.min(100, beta[0] + beta[1] * endIdx));
+      li(ins, `กิจกรรมเหลืออีก ${progDays(end, PROGRAM.to) - 1} วัน ถึง ${thDate(PROGRAM.to)} ถ้าแนวโน้มเส้นตรงนี้ต่อเนื่อง วันธรรมดาช่วงท้ายกิจกรรมจะผ่านเป้าประมาณ ${pct(v)} · การคาดไกลแบบนี้คลาดเคลื่อนได้มาก โดยเฉพาะช่วงหยุดยาวปีใหม่ ควรดูประกอบกับข้อมูลใหม่ทุกสัปดาห์`);
+    }
+  }
   li(ins, `คนกลุ่มลุ้น ${bands[1].R.length} คน ถ้าช่วยให้ครึ่งหนึ่งผ่านได้ จะเพิ่มจำนวนคนผ่านครบ 7 วันอีกประมาณ ${Math.round(bands[1].R.length / 2 * (1 - d3.mean(bands[1].R, (r) => r.p) || 0))} คน`);
   // band chart -> list
   hbar($('cProb'), bands.map((b) => ({ label: b.label, value: b.R.length, text: `${b.R.length} คน`, color: b.color,
@@ -1391,7 +1465,7 @@ async function loadFromRepo(name) {
     loadText(decode(await res.arrayBuffer()), name);
     if (f && !$('status').classList.contains('err')) {
       const up = new Date(f.updated);
-      const when = isNaN(up) ? '' : ` · อัปเดตไฟล์ ${up.getDate()} ${TH_MON[up.getMonth()]} ${up.getFullYear()} ${String(up.getHours()).padStart(2, '0')}:${String(up.getMinutes()).padStart(2, '0')} น.`;
+      const when = isNaN(up) ? '' : ` · อัปเดตไฟล์ ${up.getDate()} ${TH_MON[up.getMonth()]} ${up.getFullYear() + 543} ${String(up.getHours()).padStart(2, '0')}:${String(up.getMinutes()).padStart(2, '0')} น.`;
       $('status').textContent = (MANIFEST[0].file === name ? 'ข้อมูลล่าสุดในระบบ' : 'ข้อมูลในระบบ') + when + ' · ' + $('status').textContent;
     }
   } catch (e) {
@@ -1421,6 +1495,7 @@ loadFile = async (f) => {
   }
   await _loadFile(f);
 };
+renderProgram();
 autoLoad();
 </script>
 </body>
