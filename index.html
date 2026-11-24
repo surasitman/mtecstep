@@ -78,6 +78,18 @@ tr.click.on td{background:var(--hover);font-weight:500}
 .tabs button{border:0;border-bottom:3px solid transparent;border-radius:0;background:none;padding:10px 14px;color:var(--muted);font-weight:500;white-space:nowrap}
 .tabs button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
 #mission{display:flex}
+.panel{display:flex;flex-direction:column;gap:20px}
+.ins{margin:8px 0 4px;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.ins b{font-weight:600}
+td.best{color:var(--ok);font-weight:600}
+td.worst{color:var(--bad);font-weight:600}
+.plays{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.play{cursor:pointer;display:flex;flex-direction:column;gap:6px;border-left:4px solid var(--line)}
+.play:hover{background:var(--hover)}
+.play h3{margin:0;font-size:15px;font-weight:600}
+.play ul{margin:0;padding-left:18px;font-size:13.5px}
+input[type=range]{padding:0;min-width:200px;accent-color:var(--accent)}
+button.link{border:0;background:none;color:var(--accent);padding:0;text-decoration:underline}
 .chk{flex-direction:row!important;align-items:center;gap:6px!important;font-size:14px!important;color:var(--fg)!important}
 .badge{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:500}
 .badge.done{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
@@ -117,6 +129,9 @@ tr.click.on td{background:var(--hover);font-weight:500}
 
   <nav class="tabs hidden" id="tabs" role="tablist" aria-label="มุมมอง">
     <button role="tab" data-tab="overview">ภาพรวม</button>
+    <button role="tab" data-tab="diagnostic">วินิจฉัย · Diagnostic</button>
+    <button role="tab" data-tab="predictive">พยากรณ์ · Predictive</button>
+    <button role="tab" data-tab="prescriptive">แนะนำ · Prescriptive</button>
     <button role="tab" data-tab="mission1">Mission#1 · 21–22 พ.ย.</button>
     <button role="tab" data-tab="mission2">Mission#2 · 23–29 พ.ย.</button>
   </nav>
@@ -124,6 +139,20 @@ tr.click.on td{background:var(--hover);font-weight:500}
   <div id="dash" class="hidden" style="display:flex;flex-direction:column;gap:20px">
     <p class="note" id="lead"></p>
     <div class="tiles" id="tiles"></div>
+
+    <section class="card" id="groupSec">
+      <h2>ผลวิเคราะห์รายฝ่าย</h2>
+      <ul class="ins" id="gIns"></ul>
+      <p class="hint">คลิกแถวเพื่อดูรายชื่อของฝ่าย · สีเขียว = ดีที่สุดในคอลัมน์ · สีแดง = ต่ำสุดในคอลัมน์</p>
+      <div class="tw"><table id="tGroup"><thead><tr>
+        <th>ฝ่าย</th><th class="n">คน</th><th class="n">ค่ากลางก้าว/คน</th><th class="n">% วันที่ผ่าน</th><th class="n">% วันที่บันทึก</th><th class="n">ผ่านครบทุกวัน</th><th class="n">วันธรรมดา</th><th class="n">เสาร์-อาทิตย์</th><th class="n">แนวโน้ม</th><th class="n">ใช้นาฬิกา</th>
+      </tr></thead><tbody></tbody></table></div>
+      <p class="note">% วันที่ผ่าน คิดจากวันที่บันทึก · % วันที่บันทึก = วันที่บันทึก ÷ (คน × จำนวนวัน) · แนวโน้ม = % วันที่ผ่านครึ่งหลังของช่วง ลบ ครึ่งแรก (จุด)</p>
+      <h2 style="margin-top:18px">สัดส่วนกลุ่มผู้เข้าร่วมในแต่ละฝ่าย</h2>
+      <div class="legend" id="lgSegMix"></div>
+      <p class="hint">คลิกส่วนของแท่งเพื่อดูรายชื่อ</p>
+      <div class="chart" id="cSegMix"></div>
+    </section>
 
     <section class="card">
       <h2>ค่ากลางจำนวนก้าวรายวัน เทียบเป้า</h2>
@@ -179,6 +208,109 @@ tr.click.on td{background:var(--hover);font-weight:500}
         <div class="chart" id="cSource"></div>
       </section>
     </div>
+  </div>
+
+  <div id="diag" class="hidden panel">
+    <section class="card">
+      <h2>Diagnostic Analytics: ทำไมยังไม่ถึงเป้า</h2>
+      <p class="note">หาสาเหตุจากข้อมูลในช่วงวันและฝ่ายที่เลือก ผลเป็นความสัมพันธ์ ไม่ได้พิสูจน์เหตุและผล</p>
+      <ul class="ins" id="dgIns"></ul>
+    </section>
+    <section class="card">
+      <h2>วันที่ควรเดินทั้งหมด แยกตามผลลัพธ์</h2>
+      <p class="note">นับทุกคน × ทุกวันในช่วง · "ไม่ได้บันทึก" รวมวันก่อนเริ่มเข้าร่วมด้วย</p>
+      <div class="legend" id="lgCause"></div>
+      <p class="hint">คลิกส่วนของแท่งเพื่อดูรายชื่อ</p>
+      <div class="chart" id="cCause"></div>
+    </section>
+    <div class="grid2">
+      <section class="card">
+        <h2>บันทึกสม่ำเสมอแค่ไหน กับ % วันที่ผ่าน</h2>
+        <p class="note">จัดกลุ่มคนตามสัดส่วนวันที่บันทึก · ค่าคือ % วันที่ผ่านเฉลี่ย (จากวันที่บันทึก)</p>
+        <p class="hint">คลิกแถวเพื่อดูรายชื่อ</p>
+        <div class="chart" id="cLog"></div>
+      </section>
+      <section class="card">
+        <h2>วันธรรมดา เทียบ เสาร์-อาทิตย์</h2>
+        <div class="legend"><span><i class="sw" style="background:var(--accent);border-radius:50%"></i>วันธรรมดา</span><span><i class="sw" style="background:var(--wk);border-radius:50%"></i>เสาร์-อาทิตย์</span><span>ตัวเลข = ส่วนต่าง (จุด)</span></div>
+        <p class="hint">คลิกแถวเพื่อดูวันเสาร์-อาทิตย์ที่ไม่ผ่านของฝ่ายนั้น</p>
+        <div class="chart" id="cWk"></div>
+      </section>
+    </div>
+    <div class="grid2">
+      <section class="card">
+        <h2>อุปกรณ์ที่ใช้บันทึก</h2>
+        <p class="note">คนที่ใช้นาฬิกาอาจเป็นคนที่ชอบออกกำลังอยู่แล้ว อย่าสรุปว่าแจกนาฬิกาแล้วจะเดินมากขึ้นทันที</p>
+        <p class="hint">คลิกแถวเพื่อดูรายชื่อ</p>
+        <div class="chart" id="cDev"></div>
+      </section>
+      <section class="card">
+        <h2>คนที่หยุดบันทึก</h2>
+        <p class="note" id="dropNote"></p>
+        <p class="hint">คลิกแถวเพื่อดูรายชื่อ</p>
+        <div class="chart" id="cDrop"></div>
+      </section>
+    </div>
+  </div>
+
+  <div id="pred" class="hidden panel">
+    <section class="card">
+      <h2>Predictive Analytics: ถ้าพฤติกรรมยังเหมือนเดิม จะเป็นอย่างไร</h2>
+      <p class="note" id="pNote"></p>
+      <div class="tiles" id="pTiles" style="margin-top:12px"></div>
+      <ul class="ins" id="pIns"></ul>
+    </section>
+    <section class="card">
+      <h2>% วันที่ผ่านเป้า: ข้อมูลจริง และคาดการณ์ 7 วันถัดไป</h2>
+      <div class="legend"><span><i class="sw" style="background:var(--accent)"></i>ข้อมูลจริง</span><span><i class="sw" style="background:var(--warn)"></i>คาดการณ์</span><span><i class="sw" style="background:var(--warn);opacity:.25"></i>ช่วงคาดการณ์ 95%</span></div>
+      <div class="chart" id="cFc"></div>
+      <p class="note" id="fcNote"></p>
+    </section>
+    <div class="grid2">
+      <section class="card">
+        <h2>โอกาสผ่านเป้าครบ 7 วันถัดไป (รายคน)</h2>
+        <p class="hint">คลิกแถวเพื่อแสดงรายชื่อด้านล่าง</p>
+        <div class="chart" id="cProb"></div>
+      </section>
+      <section class="card">
+        <h2>ทดสอบวิธีพยากรณ์ย้อนหลัง</h2>
+        <p class="note" id="btNote"></p>
+        <div class="tw"><table id="tBt"><thead><tr><th>ช่วงโอกาสที่คาด</th><th class="n">คน</th><th class="n">คาดเฉลี่ย</th><th class="n">ผ่านครบจริง</th></tr></thead><tbody></tbody></table></div>
+      </section>
+    </div>
+    <section class="card">
+      <h2>คาดการณ์รายฝ่าย (7 วันถัดไป)</h2>
+      <div class="tw"><table id="tPd"><thead><tr><th>ฝ่าย</th><th class="n">คน</th><th class="n">% ผ่าน 7 วันล่าสุด</th><th class="n">คาดว่าผ่านครบ 7 วัน</th><th class="n">% ของฝ่าย</th><th class="n">กลุ่มลุ้น (30–70%)</th></tr></thead><tbody></tbody></table></div>
+    </section>
+    <section class="card">
+      <h2 id="pListTitle"></h2>
+      <div class="bar" style="margin-bottom:8px"><input type="search" id="pSearch" placeholder="ค้นหาชื่อหรือฝ่าย" style="flex:1;min-width:180px"></div>
+      <p class="hint">คลิกชื่อเพื่อดูแถวข้อมูลของคนนั้น</p>
+      <div class="tw"><table id="tProb"><thead><tr><th class="n">#</th><th>ชื่อ-นามสกุล</th><th>ฝ่าย</th><th class="n">% ผ่าน 14 วันล่าสุด</th><th class="n">ผ่านครบ 7 วันติด (ครั้ง/ช่วงที่มี)</th><th class="n">โอกาสผ่านครบ</th></tr></thead><tbody></tbody></table></div>
+    </section>
+  </div>
+
+  <div id="presc" class="hidden panel">
+    <section class="card">
+      <h2>Prescriptive Analytics: ควรทำอะไรก่อน</h2>
+      <p class="note">ประเมินผลของแต่ละมาตรการจากข้อมูลจริง แล้วเรียงจากผลมากไปน้อย · ผลวัดเป็น % ของคน-วันทั้งหมดที่ผ่านเป้า (นับวันไม่บันทึกเป็นไม่ผ่าน)</p>
+      <div class="tw"><table id="tAct"><thead><tr><th class="n">ลำดับ</th><th>มาตรการ</th><th>กลุ่มเป้าหมาย</th><th class="n">ผลที่คาด</th><th>วิธีทำ</th></tr></thead><tbody></tbody></table></div>
+    </section>
+    <section class="card">
+      <h2>ทดลองสถานการณ์</h2>
+      <div class="bar" style="align-items:center;gap:14px 24px">
+        <label>ทุกคนเดินเพิ่มวันละ <b id="vBoost"></b> ก้าว<input type="range" id="sBoost" min="0" max="3000" step="250" value="1000"></label>
+        <label>วันที่ไม่ได้บันทึก กลับมาบันทึก <b id="vFill"></b><input type="range" id="sFill" min="0" max="100" step="10" value="50"></label>
+        <label class="chk"><input type="checkbox" id="sWk">เสาร์-อาทิตย์ผ่านได้เท่าวันธรรมดา</label>
+      </div>
+      <div class="tiles" id="sTiles" style="margin-top:14px"></div>
+      <p class="note">วันที่กลับมาบันทึก คิดว่าผ่านเป้าในอัตราเดียวกับวันอื่นของคนนั้น</p>
+    </section>
+    <section class="card">
+      <h2>แนวทางสำหรับแต่ละกลุ่มผู้เข้าร่วม</h2>
+      <p class="hint">คลิกการ์ดเพื่อดูรายชื่อ</p>
+      <div class="plays" id="plays"></div>
+    </section>
   </div>
 
   <div id="mission" class="hidden" style="flex-direction:column;gap:20px">
@@ -392,7 +524,7 @@ function hbar(el, items, opt) {
 // ---------- renderers ----------
 function renderAll() {
   const M = S.M;
-  renderTiles(M); chDaily(M); chWeekday(M); chGap(M); chDist(M); chDept(M); chScatter(M); tSeg(M); chSource(M);
+  renderTiles(M); renderGroups(M); chDaily(M); chWeekday(M); chGap(M); chDist(M); chDept(M); chScatter(M); tSeg(M); chSource(M);
 }
 
 function renderTiles(M) {
@@ -692,7 +824,7 @@ $('dDl').onclick = downloadCsv;
 document.querySelectorAll('.dbody th').forEach((th) => th.addEventListener('click', () => {
   const k = th.dataset.k; if (S.sortK === k) S.sortDir *= -1; else { S.sortK = k; S.sortDir = k === 'steps' ? -1 : 1; } renderDrawer();
 }));
-let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (S.M) renderAll(); }, 150); });
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (S.M) renderTab(); }, 150); });
 window.SX_loadText = loadText; // for testing
 
 // ---------- missions: fixed date ranges, everyone who walked >= 7,000 on every day ----------
@@ -702,7 +834,9 @@ const MISSIONS = {
 };
 const MISSION_T = 7000;
 const STATUS = { done: 'สำเร็จ', live: 'ยังลุ้นอยู่', fail: 'ไม่ผ่าน' };
-S.tab = MISSIONS[location.hash.slice(1)] ? location.hash.slice(1) : 'overview';
+const PANELS = { overview: 'dash', diagnostic: 'diag', predictive: 'pred', prescriptive: 'presc' };
+const validTab = (t) => !!(MISSIONS[t] || PANELS[t]);
+S.tab = validTab(location.hash.slice(1)) ? location.hash.slice(1) : 'overview';
 S.MS = null;
 
 function dayList(a, b) { const out = []; for (let t = Date.parse(a + 'T00:00:00Z'); t <= Date.parse(b + 'T00:00:00Z'); t += 864e5) out.push(new Date(t).toISOString().slice(0, 10)); return out; }
@@ -809,22 +943,442 @@ function missionCsv() {
   document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 
-function setTab(t) {
-  S.tab = MISSIONS[t] ? t : 'overview';
-  document.querySelectorAll('#tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === S.tab)));
-  const ov = S.tab === 'overview';
-  document.querySelectorAll('.ov-only').forEach((el) => el.classList.toggle('hidden', !ov));
-  if (history.replaceState) history.replaceState(null, '', ov ? location.pathname + location.search : '#' + S.tab);
+function renderTab() {
   if (!S.M) return;
-  $('dash').classList.toggle('hidden', !ov);
-  $('mission').classList.toggle('hidden', ov);
-  if (ov) renderAll(); else renderMission();
+  if (MISSIONS[S.tab]) renderMission();
+  else if (S.tab === 'diagnostic') renderDiag(S.M);
+  else if (S.tab === 'predictive') renderPred(S.M);
+  else if (S.tab === 'prescriptive') renderPresc(S.M);
+  else renderAll();
+}
+function setTab(t) {
+  S.tab = validTab(t) ? t : 'overview';
+  document.querySelectorAll('#tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === S.tab)));
+  const isM = !!MISSIONS[S.tab];
+  document.querySelectorAll('.ov-only').forEach((el) => el.classList.toggle('hidden', isM));
+  if (history.replaceState) history.replaceState(null, '', S.tab === 'overview' ? location.pathname + location.search : '#' + S.tab);
+  if (!S.M) return;
+  for (const [k, id] of Object.entries(PANELS)) $(id).classList.toggle('hidden', k !== S.tab);
+  $('mission').classList.toggle('hidden', !isM);
+  renderTab();
 }
 document.querySelectorAll('#tabs button').forEach((b) => (b.onclick = () => { closeDrawer(); setTab(b.dataset.tab); }));
 ['mShowDone', 'mShowLive', 'mShowFail'].forEach((id) => ($(id).onchange = renderMissionRows));
 $('mSearch').oninput = renderMissionRows;
 $('mDl').onclick = missionCsv;
-window.addEventListener('hashchange', () => { const t = location.hash.slice(1); if (MISSIONS[t] && t !== S.tab) setTab(t); });
+window.addEventListener('hashchange', () => { const t = location.hash.slice(1); if (validTab(t) && t !== S.tab) setTab(t); });
+
+// =====================================================================
+// Analytics: group view, diagnostic, predictive, prescriptive
+// =====================================================================
+const SEGS = ['A', 'B', 'C', 'D1', 'D2', 'E'];
+const SEG_COL = { A: '#13744a', B: '#45b07f', C: '#2f6fd6', D1: '#e0832a', D2: '#c2453d', E: '#9aa0a8' };
+const SEG_NAME = { A: 'A ผ่านครบทุกวัน', B: 'B ผ่าน ≥80%', C: 'C เฉลี่ยผ่าน ไม่สม่ำเสมอ', D1: 'D1 ใกล้เป้า', D2: 'D2 ต่ำ', E: 'E บันทึกไม่ถึงครึ่ง' };
+const KIND = (s) => (/garmin|watch/i.test(s) ? 'นาฬิกา' : /healthfit|thaisooksteps|steps/i.test(s) ? 'โทรศัพท์' : s === 'Manual' ? 'กรอกเอง' : 'ไม่ระบุ');
+const rate = (a) => (a.length ? (a.filter((p) => p.hit).length / a.length) * 100 : NaN);
+const isWk = (k) => { const d = dowOf(k); return d === 0 || d === 6; };
+const addDays = (k, n) => new Date(Date.parse(k + 'T00:00:00Z') + n * 864e5).toISOString().slice(0, 10);
+const shortD = (k) => `${+k.slice(8)} ${TH_MON[+k.slice(5, 7) - 1]}`;
+const sgn = (v, d = 1) => { const r = +v.toFixed(d); return (r > 0 ? '+' : r < 0 ? '−' : '±') + Math.abs(r).toFixed(d); };
+function li(el, html) { const x = document.createElement('li'); x.innerHTML = html; el.append(x); }
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function enrich(M) {
+  if (M._e) return M;
+  M._e = true;
+  M.half = M.dates[Math.floor(M.ND / 2)];
+  for (const q of M.P) {
+    q.logRatio = q.days / M.ND;
+    const wk = q.pds.filter((p) => p.wk), wd = q.pds.filter((p) => !p.wk);
+    q.wkHit = wk.length ? rate(wk) : NaN; q.wdHit = wd.length ? rate(wd) : NaN;
+    q.first = d3.min(q.pds, (p) => p.key); q.last = d3.max(q.pds, (p) => p.key);
+    q.near = q.pds.filter((p) => !p.hit && M.T - p.steps <= 2000).length;
+  }
+  return M;
+}
+
+function deptStats(M) {
+  enrich(M);
+  return [...d3.group(M.P, (q) => q.short)].map(([k, P]) => {
+    const pds = personPds(P);
+    const h1 = rate(pds.filter((p) => p.key < M.half)), h2 = rate(pds.filter((p) => p.key >= M.half));
+    return { k, P, pds, n: P.length, med: d3.median(P, (q) => q.mean), hit: rate(pds), logged: (pds.length / (P.length * M.ND)) * 100,
+      all: P.filter((q) => q.seg === 'A').length, wd: rate(pds.filter((p) => !p.wk)), we: rate(pds.filter((p) => p.wk)), h1, h2, trend: h2 - h1,
+      watch: (pds.filter((p) => KIND(p.source) === 'นาฬิกา').length / (pds.length || 1)) * 100 };
+  }).sort((a, b) => b.hit - a.hit);
+}
+const selDeptRows = (d) => select(`ฝ่าย ${d.k}`, `${d.n} คน · ผ่านเป้า ${pct(d.hit)} ของวันที่บันทึก`, d.pds);
+
+// 100% stacked horizontal bars. rows: {label, parts:{key:n}, total}
+function stack100(el, rows, keys, colors, names, onClick, aria) {
+  const RH = 36, H = rows.length * RH + 4;
+  const { svg, W } = svgFor(el, H, aria);
+  const lab = svg.append('g').selectAll('text').data(rows).join('text').text((d) => d.label).attr('y', (d, i) => i * RH + RH / 2 + 4).style('fill', 'var(--fg)');
+  const lw = measure(lab) + 10, x = d3.scaleLinear([0, 1], [lw, W - 2]);
+  rows.forEach((d, i) => {
+    let acc = 0;
+    keys.forEach((k) => {
+      const v = d.parts[k] || 0; if (!v || !d.total) return;
+      const w = v / d.total, x0 = x(acc), x1 = x(acc + w); acc += w;
+      svg.append('rect').attr('class', 'hit').attr('x', x0).attr('y', i * RH + 5).attr('width', Math.max(0, x1 - x0 - 1)).attr('height', RH - 10).style('fill', colors[k])
+        .on('pointermove', (ev) => tipShow(ev, `${d.label} · ${names[k]}`, [['จำนวน', fmt(v)], ['สัดส่วน', pct(w * 100)]])).on('pointerleave', tipHide)
+        .on('click', function () { markSel(this); onClick(d, k); });
+      if (x1 - x0 > 32) svg.append('text').attr('x', (x0 + x1) / 2).attr('y', i * RH + RH / 2 + 4).attr('text-anchor', 'middle').style('fill', '#fff').style('font-size', '11px').style('pointer-events', 'none').text(Math.round(w * 100) + '%');
+    });
+  });
+}
+function legendInto(el, keys, colors, names) {
+  el.replaceChildren(...keys.map((k) => { const s = document.createElement('span'); s.innerHTML = `<i class="sw" style="background:${colors[k]}"></i>`; s.append(names[k]); return s; }));
+}
+
+// ---------- overview: group analysis ----------
+function renderGroups(M) {
+  const ds = deptStats(M);
+  const ins = $('gIns'); ins.replaceChildren();
+  if (ds.length >= 2) {
+    const best = ds[0], worst = ds[ds.length - 1];
+    li(ins, `<b>${esc(best.k)}</b> ผ่านเป้าสูงสุด ${pct(best.hit)} ส่วน <b>${esc(worst.k)}</b> ต่ำสุด ${pct(worst.hit)} ต่างกัน ${(best.hit - worst.hit).toFixed(1)} จุด`);
+    const wkGap = ds.filter((d) => isFinite(d.wd - d.we)).sort((a, b) => (b.wd - b.we) - (a.wd - a.we))[0];
+    if (wkGap) li(ins, `<b>${esc(wkGap.k)}</b> ตกช่วงเสาร์-อาทิตย์มากที่สุด จาก ${pct(wkGap.wd)} เหลือ ${pct(wkGap.we)}`);
+    const tr = ds.filter((d) => isFinite(d.trend)).sort((a, b) => b.trend - a.trend);
+    if (tr.length) li(ins, `แนวโน้มครึ่งหลังของช่วง: <b>${esc(tr[0].k)}</b> ดีขึ้นมากที่สุด (${sgn(tr[0].trend)} จุด) · <b>${esc(tr[tr.length - 1].k)}</b> ${tr[tr.length - 1].trend <= -0.05 ? 'แย่ลงมากที่สุด' : 'ดีขึ้นน้อยที่สุด'} (${sgn(tr[tr.length - 1].trend)} จุด)`);
+    const lg = ds.slice().sort((a, b) => a.logged - b.logged)[0];
+    li(ins, `<b>${esc(lg.k)}</b> บันทึกน้อยที่สุด ${pct(lg.logged)} ของวันที่ควรบันทึก ควรแก้เรื่องการบันทึกก่อนเรื่องจำนวนก้าว`);
+  } else if (ds.length === 1) li(ins, `ดูเฉพาะฝ่าย <b>${esc(ds[0].k)}</b> · เลือก "ทุกฝ่าย" เพื่อเปรียบเทียบระหว่างฝ่าย`);
+  const cols = [['n', fmt, null], ['med', f0, 1], ['hit', pct, 1], ['logged', pct, 1], ['all', fmt, 1], ['wd', pct, 1], ['we', pct, 1], ['trend', (v) => (isFinite(v) ? sgn(v) : '–'), 1], ['watch', pct, null]];
+  const ext = {}; for (const [k, , dir] of cols) if (dir) { const v = ds.map((d) => d[k]).filter(isFinite); ext[k] = [d3.max(v), d3.min(v)]; }
+  $('tGroup').tBodies[0].replaceChildren(...ds.map((d) => {
+    const tr = document.createElement('tr'); tr.className = 'click'; tr.tabIndex = 0;
+    const a = document.createElement('td'); a.textContent = d.k; tr.append(a);
+    for (const [k, f, dir] of cols) {
+      const td = document.createElement('td'); td.className = 'n'; td.textContent = isFinite(d[k]) ? f(d[k]) : '–';
+      if (dir && ds.length > 1 && isFinite(d[k])) { if (d[k] === ext[k][0]) td.classList.add('best'); else if (d[k] === ext[k][1]) td.classList.add('worst'); }
+      tr.append(td);
+    }
+    const go = () => { markSel(null); tr.classList.add('on'); selDeptRows(d); };
+    tr.onclick = go; tr.onkeydown = (e) => { if (e.key === 'Enter') go(); };
+    return tr;
+  }));
+  legendInto($('lgSegMix'), SEGS, SEG_COL, SEG_NAME);
+  stack100($('cSegMix'), ds.map((d) => ({ label: d.k, d, total: d.n, parts: Object.fromEntries(SEGS.map((s) => [s, d.P.filter((q) => q.seg === s).length])) })),
+    SEGS, SEG_COL, SEG_NAME, (r, s) => { const P = r.d.P.filter((q) => q.seg === s); select(`${r.label} · ${SEG_NAME[s]}`, `${P.length} คน`, personPds(P)); }, 'แผนภูมิแท่งสัดส่วนกลุ่มผู้เข้าร่วมแต่ละฝ่าย');
+}
+
+// ---------- diagnostic ----------
+const CAUSE = ['pass', 'near', 'far', 'nolog'];
+const CAUSE_COL = { pass: 'var(--ok)', near: 'var(--warn)', far: 'var(--bad)', nolog: 'var(--mute)' };
+const CAUSE_NAME = { pass: 'ผ่านเป้า', near: 'ไม่ผ่าน ขาด ≤2,000', far: 'ไม่ผ่าน ขาดมากกว่า 2,000', nolog: 'ไม่ได้บันทึก' };
+function causeParts(P, M) {
+  const pds = personPds(P);
+  const pass = pds.filter((p) => p.hit).length, near = pds.filter((p) => !p.hit && M.T - p.steps <= 2000).length;
+  return { pass, near, far: pds.length - pass - near, nolog: P.length * M.ND - pds.length };
+}
+function renderDiag(M) {
+  enrich(M);
+  const ds = deptStats(M);
+  const all = causeParts(M.P, M), tot = M.P.length * M.ND;
+  const miss = tot - all.pass;
+  // insights
+  const ins = $('dgIns'); ins.replaceChildren();
+  const share = (v) => pct((v / (miss || 1)) * 100);
+  const top = ['nolog', 'near', 'far'].sort((a, b) => all[b] - all[a]);
+  li(ins, `จากวันที่ควรเดิน ${fmt(tot)} คน-วัน ผ่านเป้า ${pct((all.pass / tot) * 100)} · ในวันที่ไม่ผ่าน สาเหตุอันดับหนึ่งคือ <b>${CAUSE_NAME[top[0]]}</b> (${share(all[top[0]])} ของวันที่ไม่ผ่าน) รองลงมาคือ ${CAUSE_NAME[top[1]]} (${share(all[top[1]])})`);
+  const fullLog = M.P.filter((q) => q.logRatio === 1), halfLog = M.P.filter((q) => q.logRatio < 0.5);
+  if (fullLog.length && halfLog.length) li(ins, `คนที่บันทึกครบทุกวันผ่านเป้า ${pct(d3.mean(fullLog, (q) => q.hitrate) * 100)} ของวัน เทียบกับ ${pct(d3.mean(halfLog, (q) => q.hitrate) * 100)} ในคนที่บันทึกไม่ถึงครึ่ง คนที่บันทึกสม่ำเสมอมักเดินสม่ำเสมอด้วย`);
+  const wd = rate(M.pds.filter((p) => !p.wk)), we = rate(M.pds.filter((p) => p.wk));
+  if (isFinite(wd) && isFinite(we)) li(ins, `เสาร์-อาทิตย์ผ่าน ${pct(we)} เทียบกับวันธรรมดา ${pct(wd)} (${sgn(we - wd)} จุด) ${we < wd ? 'วันหยุดเป็นจุดอ่อน เพราะไม่มีการเดินระหว่างวันทำงาน' : 'วันหยุดไม่ใช่จุดอ่อนในช่วงนี้'}`);
+  const end = M.dates[M.ND - 1], cut = addDays(end, -3);
+  const drop = M.P.filter((q) => q.days >= 3 && q.last <= cut);
+  li(ins, `<b>${fmt(drop.length)} คน</b> หยุดบันทึกตั้งแต่ ${shortD(cut)} หรือก่อนหน้า ทั้งที่เคยบันทึกอย่างน้อย 3 วัน ควรติดต่อกลุ่มนี้ก่อนจะหลุดจากโครงการ`);
+  // cause chart
+  legendInto($('lgCause'), CAUSE, CAUSE_COL, CAUSE_NAME);
+  const rows = [{ label: 'ทั้งหมด', P: M.P, parts: all, total: tot }].concat(ds.map((d) => ({ label: d.k, P: d.P, parts: causeParts(d.P, M), total: d.n * M.ND })));
+  stack100($('cCause'), rows, CAUSE, CAUSE_COL, CAUSE_NAME, (r, k) => {
+    const pds = personPds(r.P);
+    if (k === 'nolog') { const P = r.P.filter((q) => q.days < M.ND); return select(`${r.label} · คนที่มีวันไม่ได้บันทึก`, `${P.length} คน · แสดงวันที่บันทึก`, personPds(P)); }
+    const f = k === 'pass' ? (p) => p.hit : k === 'near' ? (p) => !p.hit && M.T - p.steps <= 2000 : (p) => !p.hit && M.T - p.steps > 2000;
+    const v = pds.filter(f); select(`${r.label} · ${CAUSE_NAME[k]}`, `${fmt(v.length)} คน-วัน`, v);
+  }, 'แผนภูมิแท่งวันที่ควรเดินแยกตามผลลัพธ์');
+  // logging consistency
+  const lb = [[0, 0.25, '<25%'], [0.25, 0.5, '25–49%'], [0.5, 0.75, '50–74%'], [0.75, 1, '75–99%'], [1, 1.01, 'ครบทุกวัน']];
+  hbar($('cLog'), lb.map(([a, b, l]) => {
+    const P = M.P.filter((q) => q.logRatio >= a && q.logRatio < b); const h = P.length ? d3.mean(P, (q) => q.hitrate) * 100 : 0;
+    return { label: 'บันทึก ' + l, value: h, text: `${pct(h)} · ${P.length} คน`, color: 'var(--accent)',
+      tip: [['จำนวนคน', fmt(P.length)], ['% วันที่ผ่านเฉลี่ย', pct(h)], ['ก้าวเฉลี่ย', P.length ? f0(d3.mean(P, (q) => q.mean)) : '–']],
+      onClick: () => select(`คนที่บันทึก ${l} ของวัน`, `${P.length} คน`, personPds(P)) };
+  }), { aria: 'แผนภูมิแท่ง % วันที่ผ่านตามความสม่ำเสมอของการบันทึก', max: 100 });
+  // weekday vs weekend dumbbell
+  dumbbell($('cWk'), [{ k: 'ทั้งหมด', wd, we, pds: M.pds }].concat(ds.map((d) => ({ k: d.k, wd: d.wd, we: d.we, pds: d.pds }))));
+  // device
+  const byK = d3.group(M.pds, (p) => KIND(p.source));
+  hbar($('cDev'), [...byK].map(([k, v]) => ({ k, v, h: rate(v) })).sort((a, b) => b.h - a.h).map((d) => ({
+    label: d.k, value: d.h, text: `${pct(d.h)} · ${fmt(d.v.length)} คน-วัน`, color: d.k === 'นาฬิกา' ? 'var(--ok)' : d.k === 'กรอกเอง' ? 'var(--warn)' : 'var(--accent)',
+    tip: [['คน-วัน', fmt(d.v.length)], ['ค่ากลางก้าว', f0(d3.median(d.v, (p) => p.steps))], ['% ผ่านเป้า', pct(d.h)]],
+    onClick: () => select(`บันทึกด้วย${d.k}`, `${fmt(d.v.length)} คน-วัน · ผ่านเป้า ${pct(d.h)}`, d.v) })), { aria: 'แผนภูมิแท่ง % ผ่านเป้าตามอุปกรณ์', max: 100 });
+  // drop-off
+  $('dropNote').textContent = `เคยบันทึกอย่างน้อย 3 วัน แต่ไม่มีบันทึกตั้งแต่ ${shortD(addDays(cut, 1))} ถึง ${shortD(end)} · รวม ${drop.length} คน`;
+  const byD = d3.group(drop, (q) => q.short);
+  const dItems = ds.map((d) => ({ d, P: byD.get(d.k) || [] }));
+  hbar($('cDrop'), dItems.map(({ d, P }) => ({ label: d.k, value: P.length, text: `${P.length} คน (${pct((P.length / d.n) * 100)})`, color: 'var(--bad)',
+    tip: [['หยุดบันทึก', fmt(P.length) + ' คน'], ['จากทั้งฝ่าย', fmt(d.n) + ' คน']],
+    onClick: () => select(`${d.k} · คนที่หยุดบันทึก`, `${P.length} คน · บันทึกล่าสุดไม่เกิน ${shortD(cut)}`, personPds(P)) })), { aria: 'แผนภูมิแท่งจำนวนคนที่หยุดบันทึกแยกตามฝ่าย' });
+}
+function dumbbell(el, rows) {
+  const RH = 32, m = { t: 6, r: 56, b: 22 }, H = rows.length * RH + m.t + m.b;
+  const { svg, W } = svgFor(el, H, 'แผนภาพเปรียบเทียบ % ผ่านเป้าวันธรรมดากับเสาร์-อาทิตย์');
+  const lab = svg.append('g').selectAll('text').data(rows).join('text').text((d) => d.k).attr('y', (d, i) => m.t + i * RH + RH / 2 + 4).style('fill', 'var(--fg)');
+  const l = measure(lab) + 12, x = d3.scaleLinear([0, 100], [l, W - m.r]);
+  svg.insert('g', ':first-child').selectAll('line').data([0, 25, 50, 75, 100]).join('line').attr('x1', x).attr('x2', x).attr('y1', m.t).attr('y2', H - m.b).style('stroke', 'var(--grid)');
+  svg.append('g').selectAll('text').data([0, 25, 50, 75, 100]).join('text').attr('x', x).attr('y', H - 6).attr('text-anchor', 'middle').text((d) => d + '%');
+  rows.forEach((d, i) => {
+    const cy = m.t + i * RH + RH / 2; if (!isFinite(d.wd) || !isFinite(d.we)) return;
+    const g = svg.append('g').attr('class', 'hit')
+      .on('pointermove', (ev) => tipShow(ev, d.k, [['วันธรรมดา', pct(d.wd)], ['เสาร์-อาทิตย์', pct(d.we)], ['ส่วนต่าง', sgn(d.we - d.wd) + ' จุด']])).on('pointerleave', tipHide)
+      .on('click', function () { markSel(null); const v = d.pds.filter((p) => p.wk && !p.hit); select(`${d.k} · เสาร์-อาทิตย์ที่ไม่ผ่าน`, `${fmt(v.length)} คน-วัน`, v); });
+    g.append('rect').attr('x', l).attr('y', cy - RH / 2).attr('width', W - l).attr('height', RH).style('fill', 'transparent');
+    g.append('line').attr('x1', x(d.wd)).attr('x2', x(d.we)).attr('y1', cy).attr('y2', cy).style('stroke', 'var(--muted)').attr('stroke-width', 2);
+    g.append('circle').attr('cx', x(d.wd)).attr('cy', cy).attr('r', 6).style('fill', 'var(--accent)');
+    g.append('circle').attr('cx', x(d.we)).attr('cy', cy).attr('r', 6).style('fill', 'var(--wk)');
+    svg.append('text').attr('class', 'val').attr('x', W - 4).attr('y', cy + 4).attr('text-anchor', 'end').text(sgn(d.we - d.wd));
+  });
+}
+
+// ---------- predictive ----------
+// Least squares for y = b0 + b1*t + b2*weekend
+function ols(X, y) {
+  const k = X[0].length, A = Array.from({ length: k }, () => Array(k + 1).fill(0));
+  X.forEach((r, i) => { for (let a = 0; a < k; a++) { for (let b = 0; b < k; b++) A[a][b] += r[a] * r[b]; A[a][k] += r[a] * y[i]; } });
+  for (let c = 0; c < k; c++) {
+    let p = c; for (let r = c + 1; r < k; r++) if (Math.abs(A[r][c]) > Math.abs(A[p][c])) p = r;
+    [A[c], A[p]] = [A[p], A[c]];
+    if (Math.abs(A[c][c]) < 1e-9) return null;
+    for (let r = 0; r < k; r++) if (r !== c) { const f = A[r][c] / A[c][c]; for (let j = c; j <= k; j++) A[r][j] -= f * A[c][j]; }
+  }
+  return A.map((r, i) => r[k] / r[i]);
+}
+// Probability a person passes 7 days in a row: share of their past 7-day windows that were all passes,
+// recent windows weighted more (x0.7 per day back), smoothed toward the group average with 1 pseudo-window.
+// Captures habit better than multiplying daily rates. Tuned by backtest on the Nov 2026 data.
+function windowProbs(M, endKey) {
+  const days = M.dates.filter((k) => k <= endKey);
+  const nW = days.length - 6;
+  if (nW < 1) return null;
+  const rec = days.slice(-14);
+  const res = M.P.filter((q) => q.first <= endKey).map((q) => {
+    const hit = new Set(q.pds.filter((p) => p.hit && p.key <= endKey).map((p) => p.key));
+    let run = 0, wins = 0, ws = 0, wt = 0;
+    days.forEach((k, i) => {
+      run = hit.has(k) ? run + 1 : 0;
+      if (i >= 6) { const w = Math.pow(0.7, days.length - 1 - i); wt += w; if (run >= 7) { wins++; ws += w; } }
+    });
+    return { q, wins, nW, ws, wt, recent: (rec.filter((k) => hit.has(k)).length / rec.length) * 100 };
+  });
+  const prior = d3.mean(res, (r) => r.ws / r.wt) || 0;
+  res.forEach((r) => (r.p = (r.ws + prior) / (r.wt + 1)));
+  return res;
+}
+function probBands(res) {
+  const B = [['≥70% มีแนวโน้มสำเร็จ', 0.7, 1.01, 'var(--ok)'], ['30–69% กลุ่มลุ้น ควรกระตุ้น', 0.3, 0.7, 'var(--warn)'], ['10–29% ต้องช่วยมาก', 0.1, 0.3, 'var(--bad)'], ['<10% ไม่น่าสำเร็จ', 0, 0.1, 'var(--mute)']];
+  return B.map(([label, a, b, color]) => ({ label, color, R: res.filter((r) => r.p >= a && r.p < b) }));
+}
+function renderPred(M) {
+  enrich(M);
+  const end = M.dates[M.ND - 1];
+  const next = d3.range(1, 8).map((i) => addDays(end, i));
+  // 1) population forecast of daily % pass
+  const by = d3.group(M.pds, (p) => p.key);
+  const obs = M.dates.map((k, i) => ({ k, i, n: (by.get(k) || []).length, y: rate(by.get(k) || []) })).filter((d) => d.n >= 5 && isFinite(d.y));
+  const beta = obs.length >= 5 ? ols(obs.map((d) => [1, d.i, isWk(d.k) ? 1 : 0]), obs.map((d) => d.y)) : null;
+  let fc = [], sd = 0;
+  if (beta) {
+    const fit = (i, k) => beta[0] + beta[1] * i + beta[2] * (isWk(k) ? 1 : 0);
+    sd = Math.sqrt(d3.sum(obs, (d) => (d.y - fit(d.i, d.k)) ** 2) / Math.max(1, obs.length - 3));
+    fc = next.map((k, j) => { const v = Math.max(0, Math.min(100, fit(M.ND + j, k))); return { k, y: v, lo: Math.max(0, v - 1.96 * sd), hi: Math.min(100, v + 1.96 * sd) }; });
+  }
+  drawForecast($('cFc'), obs, fc);
+  $('fcNote').textContent = beta ? `แบบจำลองเส้นตรงตามเวลา + ผลของวันเสาร์-อาทิตย์ · แนวโน้ม ${sgn(beta[1] * 7)} จุดต่อสัปดาห์ · เสาร์-อาทิตย์ต่างจากวันธรรมดา ${sgn(beta[2])} จุด · คิดจาก % ของคนที่บันทึกในแต่ละวัน` : 'ข้อมูลไม่พอสำหรับคาดการณ์ (ต้องมีอย่างน้อย 5 วัน)';
+  // 2) individual probabilities for the next 7 days
+  const res = windowProbs(M, end) || [];
+  const exp = d3.sum(res, (r) => r.p);
+  const bands = probBands(res);
+  // 3) backtest: fit on data up to 7 days before the end, check the last 7 days
+  const bt = M.ND >= 14 ? windowProbs(M, M.dates[M.ND - 8]) : null;
+  let btActual = 0, btExp = 0;
+  const lastSet = M.dates.slice(-7);
+  if (bt) {
+    bt.forEach((r) => { const hit = new Set(r.q.pds.filter((p) => p.hit).map((p) => p.key)); r.actual = lastSet.every((k) => hit.has(k)) ? 1 : 0; btActual += r.actual; btExp += r.p; });
+    $('btNote').textContent = `ใช้ข้อมูลถึง ${shortD(M.dates[M.ND - 8])} ทำนายว่าใครจะผ่านครบ ${shortD(lastSet[0])}–${shortD(lastSet[6])} · คาดไว้ ${btExp.toFixed(1)} คน ผ่านจริง ${btActual} คน · Brier score ${d3.mean(bt, (r) => (r.p - r.actual) ** 2).toFixed(3)} (ยิ่งต่ำยิ่งแม่น, 0.25 = เดาสุ่ม)`;
+    $('tBt').tBodies[0].replaceChildren(...probBands(bt).map((b) => {
+      const tr = document.createElement('tr');
+      [b.label, fmt(b.R.length), b.R.length ? pct(d3.mean(b.R, (r) => r.p) * 100) : '–', b.R.length ? pct(d3.mean(b.R, (r) => r.actual) * 100) : '–'].forEach((t, i) => { const td = document.createElement('td'); td.textContent = t; if (i) td.className = 'n'; tr.append(td); });
+      return tr;
+    }));
+  } else { $('btNote').textContent = 'ต้องมีข้อมูลอย่างน้อย 14 วันจึงทดสอบย้อนหลังได้'; $('tBt').tBodies[0].replaceChildren(); }
+  // tiles + insights
+  const last7 = rate(M.pds.filter((p) => p.key > addDays(end, -7)));
+  $('pNote').textContent = `ใช้ข้อมูล ${thDate(S.from)} – ${thDate(end)} · ${S.group === 'all' ? 'ทุกฝ่าย' : S.group} · คาดการณ์ ${shortD(next[0])} – ${shortD(next[6])}${next.includes('2026-11-29') || next.includes('2026-11-23') ? ' (ใกล้เคียงช่วง Mission#2)' : ''}`;
+  const tiles = [
+    ['% ผ่านเป้า 7 วันล่าสุด', pct(last7), 'ของคนที่บันทึก'],
+    ['คาดการณ์ 7 วันถัดไป', fc.length ? pct(d3.mean(fc, (d) => d.y)) : '–', fc.length ? `ช่วง 95%: ${pct(d3.mean(fc, (d) => d.lo))} – ${pct(d3.mean(fc, (d) => d.hi))}` : ''],
+    bt && btExp > 0
+      ? ['คาดว่าผ่านครบ 7 วันถัดไป', Math.round(exp * (btActual / btExp)) + ' คน', `แบบจำลอง ${exp.toFixed(0)} คน ปรับตามผลทดสอบย้อนหลัง ×${(btActual / btExp).toFixed(2)}`]
+      : ['คาดว่าผ่านครบ 7 วันถัดไป', exp.toFixed(0) + ' คน', `จาก ${fmt(res.length)} คน`],
+    ['กลุ่มลุ้น (โอกาส 30–69%)', fmt(bands[1].R.length) + ' คน', 'กระตุ้นกลุ่มนี้ได้ผลมากที่สุด'],
+  ];
+  $('pTiles').replaceChildren(...tiles.map(([l, v, c]) => { const d = document.createElement('div'); d.className = 'card tile'; d.innerHTML = '<span class="l"></span><span class="v"></span><span class="c"></span>'; d.children[0].textContent = l; d.children[1].textContent = v; d.children[2].textContent = c; return d; }));
+  const ins = $('pIns'); ins.replaceChildren();
+  if (beta) li(ins, beta[1] > 0.15 ? `แนวโน้มดีขึ้น ${sgn(beta[1] * 7)} จุดต่อสัปดาห์ ถ้าคงโมเมนตัมได้ จะผ่านเป้าเพิ่มขึ้นต่อเนื่อง` : beta[1] < -0.15 ? `แนวโน้มลดลง ${sgn(beta[1] * 7)} จุดต่อสัปดาห์ ต้องกระตุ้นก่อนแรงจูงใจหมด` : 'แนวโน้มทรงตัว ถ้าไม่มีกิจกรรมใหม่ ผลจะใกล้เคียงเดิม');
+  if (bt) li(ins, `ทดสอบย้อนหลังแล้ว วิธีนี้คาดจำนวนคนผ่านครบ 7 วันได้ ${btExp.toFixed(0)} คน เทียบกับจริง ${btActual} คน ${Math.abs(btExp - btActual) <= Math.max(3, btActual * 0.2) ? 'ใกล้เคียง ใช้วางแผนได้' : 'คลาดเคลื่อนพอสมควร ใช้เป็นแนวทางเท่านั้น'}`);
+  li(ins, `คนกลุ่มลุ้น ${bands[1].R.length} คน ถ้าช่วยให้ครึ่งหนึ่งผ่านได้ จะเพิ่มจำนวนคนผ่านครบ 7 วันอีกประมาณ ${Math.round(bands[1].R.length / 2 * (1 - d3.mean(bands[1].R, (r) => r.p) || 0))} คน`);
+  // band chart -> list
+  hbar($('cProb'), bands.map((b) => ({ label: b.label, value: b.R.length, text: `${b.R.length} คน`, color: b.color,
+    tip: [['จำนวนคน', fmt(b.R.length)], ['โอกาสเฉลี่ย', b.R.length ? pct(d3.mean(b.R, (r) => r.p) * 100) : '–']],
+    onClick: () => showProbList(b) })), { aria: 'แผนภูมิแท่งจำนวนคนตามโอกาสผ่านครบ 7 วัน' });
+  S.pBand = bands[1]; S.pBands = bands; showProbList(bands[1], true);
+  // department projection
+  $('tPd').tBodies[0].replaceChildren(...deptStats(M).map((d) => {
+    const R = res.filter((r) => r.q.short === d.k), e = d3.sum(R, (r) => r.p), sw = R.filter((r) => r.p >= 0.3 && r.p < 0.7).length;
+    const tr = document.createElement('tr');
+    [d.k, fmt(d.n), pct(rate(d.pds.filter((p) => p.key > addDays(end, -7)))), e.toFixed(1) + ' คน', pct((e / (d.n || 1)) * 100), fmt(sw) + ' คน'].forEach((t, i) => { const td = document.createElement('td'); td.textContent = t; if (i) td.className = 'n'; tr.append(td); });
+    return tr;
+  }));
+}
+function showProbList(b, quiet) {
+  S.pBand = b;
+  $('pListTitle').textContent = `รายชื่อ: ${b.label} (${b.R.length} คน)`;
+  const q = $('pSearch').value.trim().toLowerCase();
+  const R = b.R.filter((r) => !q || (r.q.name + ' ' + r.q.group).toLowerCase().includes(q)).sort((a, c) => c.p - a.p);
+  $('tProb').tBodies[0].replaceChildren(...R.map((r, i) => {
+    const tr = document.createElement('tr');
+    const cells = [i + 1, r.q.name, r.q.short, pct(r.recent), `${r.wins}/${r.nW}`, pct(r.p * 100)];
+    cells.forEach((t, j) => { const td = document.createElement('td'); td.textContent = t; if (j !== 1 && j !== 2) td.className = 'n'; if (j === 1) { td.className = 'name'; td.style.color = 'var(--accent)'; td.style.cursor = 'pointer'; td.onclick = () => selPerson(r.q); } tr.append(td); });
+    return tr;
+  }));
+  if (!quiet) $('pListTitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+$('pSearch').oninput = () => S.pBand && showProbList(S.pBand, true);
+function drawForecast(el, obs, fc) {
+  const H = 280, m = { t: 14, r: 10, b: 30, l: 8 };
+  const { svg, W } = svgFor(el, H, 'แผนภูมิเส้น % วันที่ผ่านเป้ารายวันและค่าคาดการณ์ 7 วันถัดไป');
+  const keys = obs.map((d) => d.k).concat(fc.map((d) => d.k));
+  if (!keys.length) return;
+  const y = d3.scaleLinear([0, 100], [H - m.b, m.t]);
+  const yt = svg.append('g').selectAll('text').data([0, 25, 50, 75, 100]).join('text').text((d) => d + '%').attr('y', (d) => y(d) + 4);
+  m.l = measure(yt) + 8;
+  const x = d3.scalePoint(keys, [m.l + 6, W - m.r - 6]);
+  svg.insert('g', ':first-child').selectAll('line').data([0, 25, 50, 75, 100]).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--grid)');
+  keys.forEach((k) => { if (isWk(k)) svg.insert('rect', ':first-child').attr('x', x(k) - x.step() / 2).attr('width', x.step()).attr('y', m.t).attr('height', H - m.b - m.t).style('fill', 'var(--wk)').style('opacity', 0.07); });
+  const stepL = x.step() >= 22 ? 1 : 2;
+  svg.append('g').selectAll('text').data(keys.filter((k, i) => i % stepL === 0)).join('text').attr('x', x).attr('y', H - m.b + 16).attr('text-anchor', 'middle').text((k) => +k.slice(8));
+  if (fc.length) {
+    const join = obs.length ? [{ k: obs[obs.length - 1].k, y: obs[obs.length - 1].y, lo: obs[obs.length - 1].y, hi: obs[obs.length - 1].y }].concat(fc) : fc;
+    svg.append('path').datum(join).attr('d', d3.area().x((d) => x(d.k)).y0((d) => y(d.lo)).y1((d) => y(d.hi))).style('fill', 'var(--warn)').style('opacity', 0.18);
+    svg.append('path').datum(join).attr('d', d3.line().x((d) => x(d.k)).y((d) => y(d.y))).style('fill', 'none').style('stroke', 'var(--warn)').attr('stroke-width', 2).attr('stroke-dasharray', '6 4');
+    svg.append('g').selectAll('circle').data(fc).join('circle').attr('cx', (d) => x(d.k)).attr('cy', (d) => y(d.y)).attr('r', 3.5).style('fill', 'var(--warn)')
+      .on('pointermove', (ev, d) => tipShow(ev, `คาดการณ์ ${TH_DOW[dowOf(d.k)]} ${shortD(d.k)}`, [['% ผ่านเป้า', pct(d.y)], ['ช่วง 95%', `${pct(d.lo)} – ${pct(d.hi)}`]])).on('pointerleave', tipHide);
+  }
+  svg.append('path').datum(obs).attr('d', d3.line().x((d) => x(d.k)).y((d) => y(d.y))).style('fill', 'none').style('stroke', 'var(--accent)').attr('stroke-width', 2);
+  svg.append('g').selectAll('circle').data(obs).join('circle').attr('class', 'hit').attr('cx', (d) => x(d.k)).attr('cy', (d) => y(d.y)).attr('r', 3.5).style('fill', 'var(--accent)')
+    .on('pointermove', (ev, d) => tipShow(ev, `${TH_DOW[dowOf(d.k)]} ${shortD(d.k)}`, [['% ผ่านเป้า', pct(d.y)], ['คนที่บันทึก', fmt(d.n)]])).on('pointerleave', tipHide)
+    .on('click', function (ev, d) { markSel(this); const v = S.M.pds.filter((p) => p.key === d.k); select(`${TH_DOW[dowOf(d.k)]} ${thDate(d.k)}`, `${fmt(v.length)} คน · ผ่านเป้า ${pct(d.y)}`, v); });
+}
+
+// ---------- prescriptive ----------
+// Expected share of all person-days (people x days) that reach the target under a scenario.
+function scenario(M, boost, fill, wkPar) {
+  let hits = 0, steady = 0;
+  for (const q of M.P) {
+    const L = q.pds, ok = (p) => p.steps + boost >= M.T;
+    let h = L.filter(ok).length;
+    if (wkPar) {
+      const wk = L.filter((p) => p.wk), wd = L.filter((p) => !p.wk);
+      if (wk.length && wd.length) { const want = (wd.filter(ok).length / wd.length) * wk.length, have = wk.filter(ok).length; if (want > have) h += want - have; }
+    }
+    const r = L.length ? h / L.length : 0;
+    const eh = h + (M.ND - L.length) * (fill / 100) * r;
+    hits += eh; if (eh / M.ND >= 0.8) steady++;
+  }
+  return { pass: (hits / (M.P.length * M.ND || 1)) * 100, steady };
+}
+function renderPresc(M) {
+  enrich(M);
+  const base = scenario(M, 0, 0, false);
+  const ds = deptStats(M);
+  const tot = M.P.length * M.ND;
+  const nearP = M.P.filter((q) => q.near >= 2);
+  const logP = M.P.filter((q) => q.logRatio < 0.8);
+  const wkP = M.P.filter((q) => isFinite(q.wdHit) && isFinite(q.wkHit) && q.wdHit - q.wkHit >= 30);
+  const res = windowProbs(M, M.dates[M.ND - 1]) || [];
+  const swing = res.filter((r) => r.p >= 0.3 && r.p < 0.7).map((r) => r.q);
+  const acts = [
+    { name: 'แก้การบันทึกให้ครบทุกวัน', who: logP, whoTxt: 'บันทึกไม่ถึง 80% ของวัน', gain: scenario(M, 0, 100, false).pass - base.pass,
+      how: 'ตรวจการซิงก์แอป/นาฬิกา · ตั้งแจ้งเตือนบันทึกก่อน 21:00 · หัวหน้าทีมย่อยทักคนที่ไม่บันทึกเกิน 2 วัน' },
+    { name: 'กระตุ้นคนที่เกือบถึงเป้า', who: nearP, whoTxt: 'ขาดไม่เกิน 2,000 ก้าว อย่างน้อย 2 วัน', gain: scenario(M, 2000, 0, false).pass - base.pass,
+      how: 'แจ้งเตือนช่วง 18:00 ถ้ายังไม่ถึง 5,000 · เดินหลังอาหารเย็น 15–20 นาที · ประชุมแบบเดิน' },
+    { name: 'กิจกรรมเสาร์-อาทิตย์', who: wkP, whoTxt: 'วันหยุดผ่านน้อยกว่าวันธรรมดา ≥30 จุด', gain: scenario(M, 0, 0, true).pass - base.pass,
+      how: 'ชวนเดินเป็นกลุ่มวันเสาร์เช้า · โจทย์พิเศษวันหยุด · คะแนนทีมวันหยุดคูณสอง' },
+  ];
+  if (ds.length > 1) {
+    const low = ds[ds.length - 1], med = d3.median(ds, (d) => d.hit);
+    acts.push({ name: `ยกฝ่าย ${low.k} ขึ้นถึงค่ากลางของฝ่ายอื่น`, who: low.P.filter((q) => !['A', 'B'].includes(q.seg)), whoTxt: `สมาชิก ${low.k} ที่ยังไม่อยู่กลุ่ม A/B`,
+      gain: Math.max(0, ((med - low.hit) / 100) * low.pds.length / (tot || 1) * 100),
+      how: 'ให้คนกลุ่ม A/B ของฝ่ายเป็นพี่เลี้ยง · ตั้งเป้าขั้นบันไดรายสัปดาห์ · ประกาศความคืบหน้าทุกวันจันทร์' });
+  }
+  acts.sort((a, b) => b.gain - a.gain);
+  const tb = $('tAct').tBodies[0];
+  tb.replaceChildren(...acts.map((a, i) => {
+    const tr = document.createElement('tr');
+    const c = (t, cls) => { const td = document.createElement('td'); if (t instanceof Node) td.append(t); else td.textContent = t; if (cls) td.className = cls; tr.append(td); return td; };
+    c(i + 1, 'n'); c(a.name).style.fontWeight = '600';
+    const btn = document.createElement('button'); btn.className = 'link'; btn.textContent = `${a.who.length} คน · ${a.whoTxt}`; btn.onclick = () => { markSel(null); select(a.name, `${a.who.length} คน · ${a.whoTxt}`, personPds(a.who)); };
+    c(btn).style.whiteSpace = 'normal';
+    c(sgn(a.gain) + ' จุด', 'n');
+    c(a.how).style.whiteSpace = 'normal';
+    return tr;
+  }));
+  const tr = document.createElement('tr');
+  ['–', 'ติดต่อกลุ่มลุ้นก่อน Mission ถัดไป', null, '', 'ใช้รายชื่อจากแท็บพยากรณ์ (โอกาส 30–69%) ส่งข้อความรายคนและจับคู่เพื่อนเดิน'].forEach((t, j) => {
+    const td = document.createElement('td');
+    if (j === 2) { const b = document.createElement('button'); b.className = 'link'; b.textContent = `${swing.length} คน · โอกาสผ่านครบ 7 วัน 30–69%`; b.onclick = () => select('กลุ่มลุ้น (โอกาส 30–69%)', `${swing.length} คน`, personPds(swing)); td.append(b); td.style.whiteSpace = 'normal'; }
+    else td.textContent = t;
+    if (j === 0 || j === 3) td.className = 'n'; if (j === 1) td.style.fontWeight = '600'; if (j === 4) td.style.whiteSpace = 'normal';
+    tr.append(td);
+  });
+  tb.append(tr);
+  updateScenario();
+  // segment playbook
+  const PLAY = {
+    A: ['ให้เป็นหัวหน้าทีมย่อย / ทูต', 'ให้รางวัลความต่อเนื่อง', 'แชร์เทคนิคการเดิน'],
+    B: ['หาวันที่หลุดประจำ (มักเป็นวันหยุด)', 'วางแผนกิจกรรมวันนั้นล่วงหน้า'],
+    C: ['ตั้งขั้นต่ำรายวัน ไม่ดูค่าเฉลี่ย', 'เตือนวันที่ยังไม่ถึงตอนเย็น'],
+    D1: ['เดินเพิ่ม 1,000–2,000 ก้าว (10–20 นาที)', 'จับคู่เพื่อนเดินหลังเลิกงาน'],
+    D2: ['เป้าขั้นบันได 5k → 6k → 7k', 'ชมความก้าวหน้า ไม่ใช่แค่ผลผ่าน/ไม่ผ่าน'],
+    E: ['ตรวจการซิงก์อุปกรณ์ก่อน', 'แจ้งเตือนบันทึกทุกวัน', 'ติดต่อรายคนถ้าหายเกิน 3 วัน'],
+  };
+  $('plays').replaceChildren(...SEGS.map((s) => {
+    const P = M.P.filter((q) => q.seg === s);
+    const d = document.createElement('div'); d.className = 'card play'; d.style.borderLeftColor = SEG_COL[s]; d.tabIndex = 0;
+    const h = document.createElement('h3'); h.textContent = `${SEG_NAME[s]} · ${P.length} คน (${pct((P.length / (M.P.length || 1)) * 100)})`;
+    const ul = document.createElement('ul'); PLAY[s].forEach((t) => { const x = document.createElement('li'); x.textContent = t; ul.append(x); });
+    d.append(h, ul);
+    d.onclick = () => { markSel(null); select(SEG_NAME[s], `${P.length} คน`, personPds(P)); };
+    return d;
+  }));
+}
+function updateScenario() {
+  const M = S.M; if (!M || S.tab !== 'prescriptive') return;
+  const boost = +$('sBoost').value, fill = +$('sFill').value, wk = $('sWk').checked;
+  $('vBoost').textContent = fmt(boost); $('vFill').textContent = fill + '%';
+  const b = scenario(M, 0, 0, false), s = scenario(M, boost, fill, wk);
+  const tiles = [
+    ['% คน-วันที่ผ่านเป้า ตอนนี้', pct(b.pass), `${fmt(M.P.length)} คน × ${M.ND} วัน`],
+    ['% คน-วันที่ผ่านเป้า ตามสถานการณ์', pct(s.pass), `${sgn(s.pass - b.pass)} จุด`],
+    ['คนที่ผ่าน ≥80% ของทุกวัน ตอนนี้', fmt(b.steady) + ' คน', pct((b.steady / (M.P.length || 1)) * 100)],
+    ['คนที่ผ่าน ≥80% ของทุกวัน ตามสถานการณ์', Math.round(s.steady) + ' คน', `${sgn(s.steady - b.steady, 0)} คน`],
+  ];
+  $('sTiles').replaceChildren(...tiles.map(([l, v, c], i) => { const d = document.createElement('div'); d.className = 'card tile'; d.innerHTML = '<span class="l"></span><span class="v"></span><span class="c"></span>'; d.children[0].textContent = l; d.children[1].textContent = v; d.children[2].textContent = c; if (i % 2) d.children[2].style.color = 'var(--ok)'; return d; }));
+}
+['sBoost', 'sFill', 'sWk'].forEach((id) => $(id).addEventListener('input', updateScenario));
 
 // ---------- auto-load the newest CSV listed in data/manifest.json ----------
 let MANIFEST = [];
